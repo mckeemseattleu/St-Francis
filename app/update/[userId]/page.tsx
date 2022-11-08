@@ -33,7 +33,6 @@ export default function Update({ params }: UpdateProps) {
         );
 
         if (clientDoc.exists()) {
-            console.log(clientDoc.data());
             setOldClientData({
                 id: params.userId,
                 firstName: clientDoc.data().firstName,
