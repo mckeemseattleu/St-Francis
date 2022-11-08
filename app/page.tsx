@@ -4,8 +4,12 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import ClientList from '../components/ClientList/ClientList';
+import Login from '../components/Login/Login';
+import { useState } from 'react';
 
 export default function Home() {
+    const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+
     return (
         <div className={styles.container}>
             <Head>
@@ -21,6 +25,8 @@ export default function Home() {
                 <h1 className={styles.title}>St. Francis House</h1>
 
                 <ClientList />
+
+                <Login isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} />
             </main>
 
             <footer className={styles.footer}>
