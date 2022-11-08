@@ -84,6 +84,7 @@ export default function ClientList() {
     const clientsList = clients?.map((client: Client) => {
         return (
             <ClientCard
+                id={client.id}
                 firstName={client.firstName}
                 lastName={client.lastName}
                 notes={client.notes}
