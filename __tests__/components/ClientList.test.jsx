@@ -1,4 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import {
+    fireEvent,
+    getByLabelText,
+    render,
+    screen,
+} from '@testing-library/react';
 import ClientList from '../../components/ClientList';
 import '@testing-library/jest-dom';
 
@@ -11,5 +16,29 @@ describe('Home', () => {
         });
 
         expect(heading).toBeInTheDocument();
+    });
+
+    it('sets first name filter correctly', () => {
+        render(<ClientList />);
+
+        const firstNameFilterInput = screen.getByLabelText('First name');
+
+        fireEvent.change(firstNameFilterInput, {
+            target: { value: 'TestName' },
+        });
+
+        expect(screen.getByLabelText('First name')).toHaveValue('TestName');
+    });
+
+    it('sets last name filter correctly', () => {
+        render(<ClientList />);
+
+        const firstNameFilterInput = screen.getByLabelText('Last name');
+
+        fireEvent.change(firstNameFilterInput, {
+            target: { value: 'TestName' },
+        });
+
+        expect(screen.getByLabelText('Last name')).toHaveValue('TestName');
     });
 });
