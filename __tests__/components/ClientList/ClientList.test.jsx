@@ -4,7 +4,7 @@ import {
     render,
     screen,
 } from '@testing-library/react';
-import ClientList from '../../components/ClientList/ClientList';
+import ClientList from '../../../components/ClientList/ClientList';
 import '@testing-library/jest-dom';
 
 describe('Home', () => {
