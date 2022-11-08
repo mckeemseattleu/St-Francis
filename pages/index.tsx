@@ -54,7 +54,7 @@ export default function Home() {
             <main className={styles.main}>
                 <h1 className={styles.title}>St. Francis House</h1>
 
-                {clients ? <ClientList clients={clients} /> : null}
+                {clients ? <ClientList /> : null}
             </main>
 
             <footer className={styles.footer}>
