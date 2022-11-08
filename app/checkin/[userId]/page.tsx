@@ -1,6 +1,6 @@
 'use client';
 
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
 import { Client } from '../../../components/ClientList/ClientList';
