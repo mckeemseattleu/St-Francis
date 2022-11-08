@@ -18,8 +18,8 @@ export default function Home() {
     const clientsCollection = collection(firestore, 'clients');
 
     const getClientsData = async () => {
-        const canvasQuery = query(clientsCollection);
-        const querySnapshot = await getDocs(canvasQuery);
+        const clientsQuery = query(clientsCollection);
+        const querySnapshot = await getDocs(clientsQuery);
 
         const result: QueryDocumentSnapshot<DocumentData>[] = [];
 
