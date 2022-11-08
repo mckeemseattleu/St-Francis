@@ -1,34 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Setting up Development Environment
 
-## Getting Started
+## Dependencies
 
-First, run the development server:
+### Node.js
+
+You will need [Node.js](https://nodejs.org/en/) on your computer
+
+### Project dependencies
+
+Once you have Node, navigate to the project folder and run the following to install dependencies used by the project
+
+```bash
+npm install
+```
+
+### Environment variables
+
+Secret tokens for accessing and modifying the database from the frontend need to be in a `.env.local` file in the project root folder. It has the following format.
+
+```
+NEXT_PUBLIC_FIREBASE_API_KEY = your-key-here
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = your-domain-here
+NEXT_PUBLIC_FIREBASE_PROJECT_ID = your-project-id-here
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = your-link-here
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = your-id-here
+NEXT_PUBLIC_FIREBASE_APP_ID = your-id-here
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID = your-id-here
+```
+
+Don't push or expose these keys to GitHub or anywhere public. This file should be ignored by `.gitignore` already
+
+## Starting development server
+
+After installing all dependencies, you can start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You should then have a link that you can visit in your browser. By default it will be
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+# Tech stack
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Front end
 
-## Learn More
+This currently uses [Next.js 13](https://nextjs.org/) with the experimental `app` directory routing structure
 
-To learn more about Next.js, take a look at the following resources:
+The project uses [TypeScript](https://www.typescriptlang.org/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Unit testing is done with [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). [Babel](https://babeljs.io/) is used for compiling the TypeScript for the unit tests, but Next's Rust-based SWC is used for building the site
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Database
 
-## Deploy on Vercel
+Google's [Firestore](https://cloud.google.com/firestore) is used for the database. It's a NoSQL document database in structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Authentication
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Google's [Firebase Authentication](https://firebase.google.com/products/auth) is used for authentication
+
+## Hosting
+
+[Vercel](https://vercel.com/) is used for hosting of the front-end
