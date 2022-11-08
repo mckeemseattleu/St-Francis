@@ -7,7 +7,7 @@ import {
     where,
 } from 'firebase/firestore';
 import { useState } from 'react';
-import { firestore } from '../firebase/firebase';
+import { firestore } from '../../firebase/firebase';
 
 export interface Client {
     id: string;
@@ -28,10 +28,13 @@ export default function ClientList() {
     });
 
     const getClientsData = async (e: any) => {
+        // Prevent redirect
         e.preventDefault();
 
+        // Init query before choosing which filters to apply
         let clientsQuery;
 
+        // Apply filters
         if (filter.firstName === '' && filter.lastName === '') {
             // Get all clients
             clientsQuery = query(collection(firestore, 'clients'));

@@ -10,7 +10,7 @@ import {
     QueryDocumentSnapshot,
 } from 'firebase/firestore';
 import styles from '../styles/Home.module.css';
-import ClientList, { Client } from '../components/ClientList';
+import ClientList, { Client } from '../components/ClientList/ClientList';
 
 export default function Home() {
     const [clients, setClients] = useState<Array<Client>>();
