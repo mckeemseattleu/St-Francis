@@ -4,6 +4,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
 import { Client } from '../../../components/ClientList/ClientList';
+import { useRouter } from 'next/navigation';
 
 interface UpdateProps {
     params: { userId: string };
@@ -16,6 +17,7 @@ interface ClientDoc {
 }
 
 export default function Update({ params }: UpdateProps) {
+    const router = useRouter();
     const [oldClientData, setOldClientData] = useState<Client>();
     const [newClientData, setNewClientData] = useState<ClientDoc>({
         firstName: '',
@@ -46,8 +48,7 @@ export default function Update({ params }: UpdateProps) {
                 notes: clientDoc.data().notes,
             });
         } else {
-            // TODO: Redirect to 404 or index
-            console.log('Invalid user id');
+            router.push('/');
         }
     };
 
