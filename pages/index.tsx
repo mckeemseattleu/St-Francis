@@ -1,45 +1,9 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { firestore } from '../firebase/firebase';
-import {
-    collection,
-    DocumentData,
-    getDocs,
-    query,
-    QueryDocumentSnapshot,
-} from 'firebase/firestore';
 import styles from '../styles/Home.module.css';
-import ClientList, { Client } from '../components/ClientList/ClientList';
+import ClientList from '../components/ClientList/ClientList';
 
 export default function Home() {
-    const [clients, setClients] = useState<Array<Client>>();
-
-    const clientsCollection = collection(firestore, 'clients');
-
-    const getClientsData = async () => {
-        const clientsQuery = query(clientsCollection);
-        const querySnapshot = await getDocs(clientsQuery);
-
-        const result: QueryDocumentSnapshot<DocumentData>[] = [];
-
-        querySnapshot.forEach((snapshot) => {
-            result.push(snapshot);
-        });
-
-        setClients(
-            result.map((client) => ({
-                id: client.id,
-                firstName: client.data().firstName,
-                lastName: client.data().lastName,
-            }))
-        );
-    };
-
-    useEffect(() => {
-        getClientsData();
-    }, []);
-
     return (
         <div className={styles.container}>
             <Head>
@@ -54,7 +18,7 @@ export default function Home() {
             <main className={styles.main}>
                 <h1 className={styles.title}>St. Francis House</h1>
 
-                {clients ? <ClientList /> : null}
+                <ClientList />
             </main>
 
             <footer className={styles.footer}>
