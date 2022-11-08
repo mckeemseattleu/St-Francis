@@ -26,6 +26,9 @@ export default function ClientCard({
             <br />
 
             <Link href={`/checkin/${id}`}>Check in</Link>
+            <br />
+
+            <Link href={`/checkout/${id}`}>Check out</Link>
         </div>
     );
 }

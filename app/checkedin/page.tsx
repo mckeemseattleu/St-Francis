@@ -62,7 +62,6 @@ export default function CheckedIn() {
     return (
         <div>
             <h1>Checked in clients</h1>
-            <p>sdf</p>
             {clientsList}
         </div>
     );
