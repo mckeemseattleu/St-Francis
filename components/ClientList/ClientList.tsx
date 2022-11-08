@@ -8,11 +8,13 @@ import {
 } from 'firebase/firestore';
 import { useState } from 'react';
 import { firestore } from '../../firebase/firebase';
+import ClientCard from './ClientCard/ClientCard';
 
 export interface Client {
     id: string;
     firstName: string;
     lastName: string;
+    notes: string;
 }
 
 interface Filter {
@@ -72,15 +74,19 @@ export default function ClientList() {
                 id: client.id,
                 firstName: client.data().firstName,
                 lastName: client.data().lastName,
+                notes: client.data().notes,
             }))
         );
     };
 
     const clientsList = clients?.map((client: Client) => {
         return (
-            <p key={client.id}>
-                {client.firstName} {client.lastName}
-            </p>
+            <ClientCard
+                firstName={client.firstName}
+                lastName={client.lastName}
+                notes={client.notes}
+                key={client.id}
+            />
         );
     });
 
