@@ -15,4 +15,14 @@ describe('Home', () => {
 
         expect(title).toBeInTheDocument();
     });
+
+    it('does not render a client list when not signed in', () => {
+        render(<Home />);
+
+        const clientListHeading = screen.queryByRole('heading', {
+            name: 'Clients',
+        });
+
+        expect(clientListHeading).not.toBeInTheDocument();
+    });
 });
