@@ -10,10 +10,10 @@ import {
     QueryDocumentSnapshot,
 } from 'firebase/firestore';
 import styles from '../styles/Home.module.css';
+import ClientList, { Client } from '../components/ClientList';
 
 export default function Home() {
-    const [clients, setClients] = useState<Array<Object>>();
-    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [clients, setClients] = useState<Array<Client>>();
 
     const clientsCollection = collection(firestore, 'clients');
 
@@ -34,22 +34,11 @@ export default function Home() {
                 lastName: client.data().lastName,
             }))
         );
-
-        setIsLoaded(true);
     };
 
     useEffect(() => {
         getClientsData();
-        console.log(clients);
     }, []);
-
-    const clientsList = clients?.map((client) => {
-        return (
-            <p>
-                {client.firstName} {client.lastName}
-            </p>
-        );
-    });
 
     return (
         <div className={styles.container}>
@@ -67,7 +56,7 @@ export default function Home() {
                     Welcome to <a href="https://nextjs.org">Next.js!</a>
                 </h1>
 
-                {isLoaded ? clientsList : null}
+                {clients ? <ClientList clients={clients} /> : null}
             </main>
 
             <footer className={styles.footer}>
