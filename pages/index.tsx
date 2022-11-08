@@ -12,8 +12,8 @@ import {
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
-    const [clients, setClients] =
-        useState<QueryDocumentSnapshot<DocumentData>[]>();
+    const [clients, setClients] = useState<Array<Object>>();
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
     const clientsCollection = collection(firestore, 'clients');
 
@@ -27,14 +27,29 @@ export default function Home() {
             result.push(snapshot);
         });
 
-        setClients(result);
-        console.log(clients);
+        setClients(
+            result.map((client) => ({
+                id: client.id,
+                firstName: client.data().firstName,
+                lastName: client.data().lastName,
+            }))
+        );
+
+        setIsLoaded(true);
     };
 
     useEffect(() => {
         getClientsData();
         console.log(clients);
     }, []);
+
+    const clientsList = clients?.map((client) => {
+        return (
+            <p>
+                {client.firstName} {client.lastName}
+            </p>
+        );
+    });
 
     return (
         <div className={styles.container}>
@@ -52,7 +67,7 @@ export default function Home() {
                     Welcome to <a href="https://nextjs.org">Next.js!</a>
                 </h1>
 
-                <p className={styles.description}></p>
+                {isLoaded ? clientsList : null}
             </main>
 
             <footer className={styles.footer}>
