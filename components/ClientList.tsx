@@ -17,5 +17,10 @@ export default function ClientList({ clients }: ClientListProps) {
         );
     });
 
-    return <div>{clientsList}</div>;
+    return (
+        <div>
+            <h1>Clients</h1>
+            {clientsList}
+        </div>
+    );
 }
