@@ -1,9 +1,4 @@
-import {
-    fireEvent,
-    getByLabelText,
-    render,
-    screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ClientCard from '../../../../components/ClientList/ClientCard/ClientCard';
 

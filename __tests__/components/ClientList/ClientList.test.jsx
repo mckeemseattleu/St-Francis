@@ -1,9 +1,4 @@
-import {
-    fireEvent,
-    getByLabelText,
-    render,
-    screen,
-} from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import ClientList from '../../../components/ClientList/ClientList';
 import '@testing-library/jest-dom';
 
