@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './ClientCard.module.css';
 interface ClientCardProps {
     firstName: string;
