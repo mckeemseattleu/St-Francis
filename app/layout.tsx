@@ -1,6 +1,7 @@
 'use client';
 
 import Head from 'next/head';
+import NavBar from '../components/NavBar/NavBar';
 import '../styles/globals.css';
 import styles from '../styles/Home.module.css';
 
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: any) {
 
             <body>
                 <div className={styles.container}>
+                    <NavBar />
                     <main className={styles.main}>{children}</main>
                 </div>
             </body>
