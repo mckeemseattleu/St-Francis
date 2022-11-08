@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ClientList from '../../../components/ClientList/ClientList';
 import '@testing-library/jest-dom';
 
-describe('Home', () => {
+describe('ClientList', () => {
     it('renders a title', () => {
         render(<ClientList />);
 
