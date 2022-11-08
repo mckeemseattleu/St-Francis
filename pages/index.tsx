@@ -1,8 +1,41 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { firestore } from '../firebase/firebase';
+import {
+    collection,
+    DocumentData,
+    getDocs,
+    query,
+    QueryDocumentSnapshot,
+} from 'firebase/firestore';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
+    const [clients, setClients] =
+        useState<QueryDocumentSnapshot<DocumentData>[]>();
+
+    const clientsCollection = collection(firestore, 'clients');
+
+    const getClientsData = async () => {
+        const canvasQuery = query(clientsCollection);
+        const querySnapshot = await getDocs(canvasQuery);
+
+        const result: QueryDocumentSnapshot<DocumentData>[] = [];
+
+        querySnapshot.forEach((snapshot) => {
+            result.push(snapshot);
+        });
+
+        setClients(result);
+        console.log(clients);
+    };
+
+    useEffect(() => {
+        getClientsData();
+        console.log(clients);
+    }, []);
+
     return (
         <div className={styles.container}>
             <Head>
