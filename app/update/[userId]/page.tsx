@@ -40,6 +40,7 @@ export default function Update({ params }: UpdateProps) {
                 firstName: clientDoc.data().firstName,
                 lastName: clientDoc.data().lastName,
                 notes: clientDoc.data().notes,
+                isCheckedIn: clientDoc.data().isCheckedIn,
             });
 
             setNewClientData({
