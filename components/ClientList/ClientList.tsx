@@ -142,12 +142,6 @@ export default function ClientList() {
             </form>
 
             {clientsList}
-
-            {filter.firstName}
-            <br />
-
-            {filter.lastName}
-            <br />
         </div>
     );
 }
