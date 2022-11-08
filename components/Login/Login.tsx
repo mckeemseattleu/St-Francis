@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { StyledFirebaseAuth } from 'react-firebaseui';
 import styles from './Login.module.css';
 import { firebase } from '../../firebase/firebase';
