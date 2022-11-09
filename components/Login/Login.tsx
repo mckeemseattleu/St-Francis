@@ -5,11 +5,6 @@ import { firebase } from '../../firebase/firebase';
 import 'firebase/compat/auth';
 import { SignInContext } from '../../contexts/SignInContext';
 
-interface ProfileProps {
-    isSignedIn: boolean;
-    setIsSignedIn: Function;
-}
-
 function Login() {
     const { isSignedIn, setIsSignedIn } = useContext(SignInContext);
 
