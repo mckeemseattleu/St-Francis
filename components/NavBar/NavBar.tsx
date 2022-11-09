@@ -10,6 +10,9 @@ export default function NavBar() {
             <Link className={styles.navbarLink} href="/">
                 Home
             </Link>
+
+            <span className={styles.spacer} />
+
             <Link className={styles.navbarLink} href="/checkedin">
                 Checked in Clients
             </Link>
