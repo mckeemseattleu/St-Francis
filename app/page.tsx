@@ -1,5 +1,3 @@
-'use client';
-
 import styles from '../styles/Home.module.css';
 import ClientList from '../components/ClientList/ClientList';
 
