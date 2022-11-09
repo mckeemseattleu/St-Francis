@@ -21,7 +21,9 @@ export default function RootLayout({ children }: any) {
                 <SignInContext.Provider value={{ isSignedIn, setIsSignedIn }}>
                     <div className={styles.container}>
                         <NavBar />
-                        <main className={styles.main}>{children}</main>
+                        <main className={styles.main}>
+                            {isSignedIn ? children : <h1>Please sign in</h1>}
+                        </main>
                     </div>
                 </SignInContext.Provider>
             </body>
