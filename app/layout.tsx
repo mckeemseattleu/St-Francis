@@ -1,7 +1,7 @@
 'use client';
 
 import Head from 'next/head';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar/NavBar';
 import { Settings, SettingsContext } from '../contexts/SettingsContext';
 import { SignInContext } from '../contexts/SignInContext';
@@ -26,9 +26,13 @@ export default function RootLayout({ children }: any) {
             </Head>
 
             <body>
-                <SignInContext.Provider value={{ isSignedIn, setIsSignedIn }}>
-                    <SettingsContext.Provider value={{ settings, setSettings }}>
-                        <div className={styles.container}>
+                <div className={styles.container}>
+                    <SignInContext.Provider
+                        value={{ isSignedIn, setIsSignedIn }}
+                    >
+                        <SettingsContext.Provider
+                            value={{ settings, setSettings }}
+                        >
                             <NavBar />
                             <main className={styles.main}>
                                 {isSignedIn ? (
@@ -37,14 +41,14 @@ export default function RootLayout({ children }: any) {
                                     <h1>Please sign in</h1>
                                 )}
                             </main>
-                        </div>
-                    </SettingsContext.Provider>
-                </SignInContext.Provider>
-            </body>
+                        </SettingsContext.Provider>
+                    </SignInContext.Provider>
+                </div>
 
-            <footer className={styles.footer}>
-                <p>Footer content</p>
-            </footer>
+                <footer className={styles.footer}>
+                    <p>Footer content</p>
+                </footer>
+            </body>
         </html>
     );
 }
