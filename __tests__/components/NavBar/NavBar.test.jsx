@@ -23,4 +23,13 @@ describe('NavBar', () => {
         expect(homeLink).toBeInTheDocument();
         expect(homeLink).toHaveAttribute('href', '/checkedin');
     });
+
+    it('renders a link to settings page', () => {
+        render(<NavBar />);
+
+        const homeLink = screen.getByText('Settings').closest('a');
+
+        expect(homeLink).toBeInTheDocument();
+        expect(homeLink).toHaveAttribute('href', '/settings');
+    });
 });

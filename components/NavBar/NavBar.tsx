@@ -17,6 +17,10 @@ export default function NavBar() {
                 Checked in Clients
             </Link>
 
+            <Link className={styles.navbarLink} href="/settings">
+                Settings
+            </Link>
+
             <Login />
         </div>
     );
