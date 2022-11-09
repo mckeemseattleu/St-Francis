@@ -44,8 +44,7 @@ function Login() {
         </div>
     ) : (
         <div className={styles.wrapper}>
-            <p>Signed in</p>
-            <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
+            <button onClick={() => firebase.auth().signOut()}>Sign-out</button>
         </div>
     );
 }
