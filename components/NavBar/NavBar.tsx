@@ -13,6 +13,8 @@ export default function NavBar() {
             <Link className={styles.navbarLink} href="/checkedin">
                 Checked in Clients
             </Link>
+
+            <Login />
         </div>
     );
 }

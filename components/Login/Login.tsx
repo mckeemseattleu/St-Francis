@@ -1,15 +1,18 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { StyledFirebaseAuth } from 'react-firebaseui';
 import styles from './Login.module.css';
 import { firebase } from '../../firebase/firebase';
 import 'firebase/compat/auth';
+import { SignInContext } from '../../contexts/SignInContext';
 
 interface ProfileProps {
     isSignedIn: boolean;
     setIsSignedIn: Function;
 }
 
-function Login({ isSignedIn, setIsSignedIn }: ProfileProps) {
+function Login() {
+    const { isSignedIn, setIsSignedIn } = useContext(SignInContext);
+
     // Configure FirebaseUI.
     const uiConfig = {
         // Popup signin flow rather than redirect flow.
@@ -27,7 +30,7 @@ function Login({ isSignedIn, setIsSignedIn }: ProfileProps) {
         const unregisterAuthObserver = firebase
             .auth()
             .onAuthStateChanged((user: any) => {
-                setIsSignedIn(!!user);
+                if (setIsSignedIn) setIsSignedIn(!!user);
             });
         return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
     }, []);

@@ -2,17 +2,15 @@
 
 import styles from '../styles/Home.module.css';
 import ClientList from '../components/ClientList/ClientList';
-import Login from '../components/Login/Login';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { SignInContext } from '../contexts/SignInContext';
 
 export default function Home() {
-    const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+    const { isSignedIn } = useContext(SignInContext);
 
     return (
         <>
             <h1 className={styles.title}>St. Francis House</h1>
-
-            <Login isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} />
 
             {isSignedIn ? <ClientList /> : null}
         </>
