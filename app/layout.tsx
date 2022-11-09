@@ -1,7 +1,7 @@
 'use client';
 
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import NavBar from '../components/NavBar/NavBar';
 import { Settings, SettingsContext } from '../contexts/SettingsContext';
 import { SignInContext } from '../contexts/SignInContext';
