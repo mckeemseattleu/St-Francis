@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    padding-top: 25px;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbarLink {
+    height: 50px;
+    margin: 0 50px;
+    display: flex;
+    align-items: center;
+}
+
+.spacer {
+    margin: auto;
+}

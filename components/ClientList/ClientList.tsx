@@ -17,6 +17,7 @@ export interface Client {
     firstName: string;
     lastName: string;
     notes: string;
+    isCheckedIn: boolean;
 }
 
 interface Filter {
@@ -77,6 +78,7 @@ export default function ClientList() {
                 firstName: client.data().firstName,
                 lastName: client.data().lastName,
                 notes: client.data().notes,
+                isCheckedIn: client.data().isCheckedIn,
             }))
         );
     };

@@ -20,9 +20,15 @@ export default function ClientCard({
             <h1>{`${firstName} ${lastName}`}</h1>
             <h2>Notes:</h2>
             <p>{notes}</p>
-
             <br />
+
             <Link href={`/update/${id}`}>Edit</Link>
+            <br />
+
+            <Link href={`/checkin/${id}`}>Check in</Link>
+            <br />
+
+            <Link href={`/checkout/${id}`}>Check out</Link>
         </div>
     );
 }
