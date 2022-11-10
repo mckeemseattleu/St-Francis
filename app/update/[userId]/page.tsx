@@ -1,9 +1,8 @@
 'use client';
 
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
-import { Client } from '../../../components/ClientList/ClientList';
 import { useRouter } from 'next/navigation';
 import ClientInfoForm from '../../../components/ClientInfoForm/ClientInfoForm';
 
