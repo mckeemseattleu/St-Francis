@@ -14,12 +14,20 @@ interface UpdateProps {
 interface ClientDoc {
     firstName: string;
     lastName: string;
+    middleInitial: string;
+    birthday: string; // TODO: Consider saving as timestamp
+    gender: string;
+    race: string;
+    postalCode: string;
+    numKids: number;
     notes: string;
+    isCheckedIn: boolean;
+    isBanned: boolean;
 }
 
 export default function Update({ params }: UpdateProps) {
     const router = useRouter();
-    const [oldClientData, setOldClientData] = useState<Client>();
+    const [oldClientData, setOldClientData] = useState<ClientDoc>();
 
     useEffect(() => {
         getClientData();
@@ -32,11 +40,17 @@ export default function Update({ params }: UpdateProps) {
 
         if (clientDoc.exists()) {
             setOldClientData({
-                id: params.userId,
                 firstName: clientDoc.data().firstName,
                 lastName: clientDoc.data().lastName,
+                middleInitial: clientDoc.data().middleInitial,
+                birthday: clientDoc.data().birthday,
+                gender: clientDoc.data().gender,
+                race: clientDoc.data().race,
+                postalCode: clientDoc.data().postalCode,
+                numKids: clientDoc.data().numKids,
                 notes: clientDoc.data().notes,
                 isCheckedIn: clientDoc.data().isCheckedIn,
+                isBanned: clientDoc.data().isBanned,
             });
         } else {
             router.push('/');
@@ -52,8 +66,12 @@ export default function Update({ params }: UpdateProps) {
             <p>{oldClientData ? oldClientData.notes : null}</p>
 
             <h2>Edit data</h2>
-
-            <ClientInfoForm id={params.userId} />
+            {oldClientData ? (
+                <ClientInfoForm
+                    id={params.userId}
+                    initialData={oldClientData}
+                />
+            ) : null}
         </div>
     );
 }
