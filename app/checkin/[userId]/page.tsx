@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
 import { Client } from '../../../components/ClientList/ClientList';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface CheckinProps {
     params: { userId: string };
@@ -54,7 +55,8 @@ export default function Checkin({ params }: CheckinProps) {
                 {oldClientData?.isCheckedIn ? 'Checked in' : 'Not checked in'}
             </p>
 
-            <h2>Edit data</h2>
+            <Link href={`/update/${params.userId}`}>Edit data</Link>
+            <br />
 
             <form
                 onSubmit={(e) => {
