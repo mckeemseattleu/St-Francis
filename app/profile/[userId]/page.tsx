@@ -1,6 +1,7 @@
 'use client';
 
 import { doc, getDoc } from 'firebase/firestore';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
@@ -69,6 +70,13 @@ export default function Profile({ params }: ProfileProps) {
             <p>{clientData?.notes}</p>
             <p>{clientData?.isCheckedIn ? 'Checked in' : 'Not checked in'}</p>
             <p>{clientData?.isBanned ? 'Banned' : 'Not banned'}</p>
+
+            <h1>Options</h1>
+            <Link href={`/update/${params.userId}`}>Edit</Link>
+            <br />
+            <Link href={`/checkin/${params.userId}`}>Check in</Link>
+            <br />
+            <Link href={`/checkout/${params.userId}`}>Check out</Link>
         </>
     );
 }
