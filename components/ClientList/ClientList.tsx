@@ -8,6 +8,7 @@ import {
     QueryDocumentSnapshot,
     where,
 } from 'firebase/firestore';
+import Link from 'next/link';
 import { useState } from 'react';
 import { firestore } from '../../firebase/firebase';
 import ClientCard from './ClientCard/ClientCard';
@@ -98,6 +99,10 @@ export default function ClientList() {
     return (
         <div>
             <h1>Clients</h1>
+
+            <Link href="/add-client">New client</Link>
+            <br />
+            <br />
 
             <form
                 onSubmit={(e) => {
