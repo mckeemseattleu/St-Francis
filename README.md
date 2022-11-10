@@ -14,6 +14,12 @@ Once you have Node, navigate to the project folder and run the following to inst
 npm install
 ```
 
+Depending on when you do this, there may be issues with legacy peer dependencies as React went from 17 to 18. You can fix this by running
+
+```bash
+npm install --legacy-peer-deps
+```
+
 ### Environment variables
 
 Secret tokens for accessing and modifying the database from the frontend need to be in a `.env.local` file in the project root folder. It has the following format.
