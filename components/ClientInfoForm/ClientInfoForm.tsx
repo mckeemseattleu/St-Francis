@@ -1,26 +1,59 @@
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { firestore } from '../../firebase/firebase';
 
 interface ClientInfoFormProps {
     id?: string;
+    initialData?: {
+        firstName: string;
+        lastName: string;
+        middleInitial: string;
+        birthday: string; // TODO: Consider saving as timestamp
+        gender: string;
+        race: string;
+        postalCode: string;
+        numKids: number;
+        notes: string;
+        isCheckedIn: boolean;
+        isBanned: boolean;
+    };
 }
 
 export default function ClientInfoForm({
     id = undefined,
+    initialData = undefined,
 }: ClientInfoFormProps) {
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
-    const [middleInitial, setMiddleInitial] = useState<string>('');
-    const [birthday, setBirthday] = useState<any>(
-        new Date().toISOString().substring(0, 10)
+    // Use old info from props if it exists, else default values
+    const [firstName, setFirstName] = useState<string>(
+        initialData ? initialData.firstName : ''
     );
-    const [gender, setGender] = useState<string>('');
-    const [race, setRace] = useState<string>('');
-    const [postalCode, setPostalCode] = useState<string>('');
-    const [numKids, setNumKids] = useState<number>(0);
-    const [notes, setNotes] = useState<string>('');
+    const [lastName, setLastName] = useState<string>(
+        initialData ? initialData.lastName : ''
+    );
+    const [middleInitial, setMiddleInitial] = useState<string>(
+        initialData ? initialData.middleInitial : ''
+    );
+    const [birthday, setBirthday] = useState<any>(
+        initialData
+            ? initialData.birthday
+            : new Date().toISOString().substring(0, 10)
+    );
+    const [gender, setGender] = useState<string>(
+        initialData ? initialData.gender : ''
+    );
+    const [race, setRace] = useState<string>(
+        initialData ? initialData.race : ''
+    );
+    const [postalCode, setPostalCode] = useState<string>(
+        initialData ? initialData.postalCode : ''
+    );
+    const [numKids, setNumKids] = useState<number>(
+        initialData ? initialData.numKids : 0
+    );
+    const [notes, setNotes] = useState<string>(
+        initialData ? initialData.notes : ''
+    );
     const router = useRouter();
 
     const addNewClient = async () => {
