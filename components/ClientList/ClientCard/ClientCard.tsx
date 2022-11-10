@@ -17,7 +17,9 @@ export default function ClientCard({
 }: ClientCardProps) {
     return (
         <div className={styles.card}>
-            <h1>{`${firstName} ${lastName}`}</h1>
+            <Link href={`/profile/${id}`}>
+                <h1>{`${firstName} ${lastName}`}</h1>
+            </Link>
             <h2>Notes:</h2>
             <p>{notes}</p>
             <br />
