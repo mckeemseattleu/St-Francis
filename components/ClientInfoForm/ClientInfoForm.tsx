@@ -196,7 +196,7 @@ export default function ClientInfoForm({
             />
             <br />
 
-            <button type="submit">Create</button>
+            <button type="submit">Save</button>
         </form>
     );
 }
