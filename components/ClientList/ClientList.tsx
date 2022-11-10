@@ -24,6 +24,7 @@ export interface Client {
 interface Filter {
     firstName: string;
     lastName: string;
+    birthday: string;
 }
 
 export default function ClientList() {
@@ -31,7 +32,9 @@ export default function ClientList() {
     const [filter, setFilter] = useState<Filter>({
         firstName: '',
         lastName: '',
+        birthday: new Date().toISOString().substr(0, 10),
     });
+    const [filterByBirthday, setFilterByBirthday] = useState<boolean>(false);
 
     const getClientsData = async (e: any) => {
         // Prevent redirect
@@ -40,29 +43,62 @@ export default function ClientList() {
         // Init query before choosing which filters to apply
         let clientsQuery;
 
+        // TODO: Consider refactoring filter logic
         // Apply filters
-        if (filter.firstName === '' && filter.lastName === '') {
-            // Get all clients
-            clientsQuery = query(collection(firestore, 'clients'));
-        } else if (filter.firstName === '') {
-            // Get only by last name
-            clientsQuery = query(
-                collection(firestore, 'clients'),
-                where('lastName', '==', filter.lastName)
-            );
-        } else if (filter.lastName === '') {
-            // Get only by first name
-            clientsQuery = query(
-                collection(firestore, 'clients'),
-                where('firstName', '==', filter.firstName)
-            );
+        if (filterByBirthday) {
+            if (filter.firstName === '' && filter.lastName === '') {
+                // Get all clients with birthday
+                clientsQuery = query(
+                    collection(firestore, 'clients'),
+                    where('birthday', '==', filter.birthday)
+                );
+            } else if (filter.firstName === '') {
+                // Get only by last name and birthday
+                clientsQuery = query(
+                    collection(firestore, 'clients'),
+                    where('lastName', '==', filter.lastName),
+                    where('birthday', '==', filter.birthday)
+                );
+            } else if (filter.lastName === '') {
+                // Get only by first name and birthday
+                clientsQuery = query(
+                    collection(firestore, 'clients'),
+                    where('firstName', '==', filter.firstName),
+                    where('birthday', '==', filter.birthday)
+                );
+            } else {
+                // Get by first and last name and birthday
+                clientsQuery = query(
+                    collection(firestore, 'clients'),
+                    where('firstName', '==', filter.firstName),
+                    where('lastName', '==', filter.lastName),
+                    where('birthday', '==', filter.birthday)
+                );
+            }
         } else {
-            // Get by first and last name
-            clientsQuery = query(
-                collection(firestore, 'clients'),
-                where('firstName', '==', filter.firstName),
-                where('lastName', '==', filter.lastName)
-            );
+            if (filter.firstName === '' && filter.lastName === '') {
+                // Get all clients
+                clientsQuery = query(collection(firestore, 'clients'));
+            } else if (filter.firstName === '') {
+                // Get only by last name
+                clientsQuery = query(
+                    collection(firestore, 'clients'),
+                    where('lastName', '==', filter.lastName)
+                );
+            } else if (filter.lastName === '') {
+                // Get only by first name
+                clientsQuery = query(
+                    collection(firestore, 'clients'),
+                    where('firstName', '==', filter.firstName)
+                );
+            } else {
+                // Get by first and last name
+                clientsQuery = query(
+                    collection(firestore, 'clients'),
+                    where('firstName', '==', filter.firstName),
+                    where('lastName', '==', filter.lastName)
+                );
+            }
         }
 
         const querySnapshot = await getDocs(clientsQuery);
@@ -120,6 +156,7 @@ export default function ClientList() {
                                 return {
                                     firstName: e.target.value,
                                     lastName: prev.lastName,
+                                    birthday: prev.birthday,
                                 };
                             });
                         }}
@@ -138,8 +175,38 @@ export default function ClientList() {
                                 return {
                                     firstName: prev.firstName,
                                     lastName: e.target.value,
+                                    birthday: prev.birthday,
                                 };
                             });
+                        }}
+                    />
+                </label>
+                <br />
+
+                <label>
+                    Birthday
+                    <input
+                        type="date"
+                        name="birthday"
+                        id="birthday"
+                        value={filter.birthday}
+                        onChange={(e) => {
+                            setFilter((prev: Filter) => {
+                                return {
+                                    firstName: prev.firstName,
+                                    lastName: prev.lastName,
+                                    birthday: e.target.value,
+                                };
+                            });
+                        }}
+                    />
+                    <input
+                        type="checkbox"
+                        name="filterByBirthday"
+                        id="filterByBirthday"
+                        value={filterByBirthday ? 'on' : 'off'}
+                        onChange={(e) => {
+                            setFilterByBirthday(e.target.checked);
                         }}
                     />
                 </label>
