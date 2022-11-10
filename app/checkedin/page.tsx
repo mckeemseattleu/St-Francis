@@ -16,10 +16,12 @@ import { firestore } from '../../firebase/firebase';
 export default function CheckedIn() {
     const [clients, setClients] = useState<Array<Client>>();
 
+    // Get client data on component load
     useEffect(() => {
         getClientsData();
     }, []);
 
+    // Gets all clients whose isCheckedIn status is true
     const getClientsData = async () => {
         let clientsQuery;
 
@@ -36,6 +38,7 @@ export default function CheckedIn() {
             result.push(snapshot);
         });
 
+        // Take results and create an array of Client, set clients to that array
         setClients(
             result.map((client) => ({
                 id: client.id,
@@ -47,6 +50,7 @@ export default function CheckedIn() {
         );
     };
 
+    // Create a ClientCard for each Client in clients, if they exist
     const clientsList = clients?.map((client: Client) => {
         return (
             <ClientCard
