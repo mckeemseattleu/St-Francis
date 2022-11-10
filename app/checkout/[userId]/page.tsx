@@ -14,15 +14,18 @@ export default function CheckOut({ params }: CheckOutProps) {
     const router = useRouter();
     const [oldClientData, setOldClientData] = useState<Client>();
 
+    // Get client data on component load
     useEffect(() => {
         getClientData();
     }, []);
 
+    // Gets the client's data from firestore based on route's userId
     const getClientData = async () => {
         const clientDoc = await getDoc(
             doc(firestore, 'clients', params.userId)
         );
 
+        // Set local state if their doc exists, otherwise go back to homepage
         if (clientDoc.exists()) {
             setOldClientData({
                 id: params.userId,
@@ -36,7 +39,8 @@ export default function CheckOut({ params }: CheckOutProps) {
         }
     };
 
-    const checkIn = async () => {
+    // Sets isCheckedIn status to false then gets updated client data
+    const checkOut = async () => {
         await updateDoc(doc(firestore, 'clients', params.userId), {
             isCheckedIn: false,
         });
@@ -58,8 +62,8 @@ export default function CheckOut({ params }: CheckOutProps) {
 
             <form
                 onSubmit={(e) => {
-                    e.preventDefault();
-                    checkIn();
+                    e.preventDefault(); // Prevent redirect
+                    checkOut();
                 }}
             >
                 <button type="submit">Check out</button>

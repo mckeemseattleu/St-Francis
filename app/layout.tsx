@@ -27,6 +27,7 @@ export default function RootLayout({ children }: any) {
 
             <body>
                 <div className={styles.container}>
+                    {/* Context providers used for global state */}
                     <SignInContext.Provider
                         value={{ isSignedIn, setIsSignedIn }}
                     >
@@ -34,7 +35,9 @@ export default function RootLayout({ children }: any) {
                             value={{ settings, setSettings }}
                         >
                             <NavBar />
+
                             <main className={styles.main}>
+                                {/* Show a message if user's not signed in for all pages */}
                                 {isSignedIn ? (
                                     children
                                 ) : (

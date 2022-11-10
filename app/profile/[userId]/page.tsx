@@ -28,15 +28,18 @@ export default function Profile({ params }: ProfileProps) {
     const router = useRouter();
     const [clientData, setClientData] = useState<ClientDoc>();
 
+    // Get client data on component load
     useEffect(() => {
         getClientData();
     }, []);
 
+    // Gets the client's document from firestore based on route's userId
     const getClientData = async () => {
         const clientDoc = await getDoc(
             doc(firestore, 'clients', params.userId)
         );
 
+        // Set local state if their doc exists, otherwise go back to homepage
         if (clientDoc.exists()) {
             setClientData({
                 firstName: clientDoc.data().firstName,

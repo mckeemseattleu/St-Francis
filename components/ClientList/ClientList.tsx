@@ -110,6 +110,7 @@ export default function ClientList() {
             result.push(snapshot);
         });
 
+        // Take results and create an array of Client, set clients to that array
         setClients(
             result.map((client) => ({
                 id: client.id,
@@ -121,6 +122,7 @@ export default function ClientList() {
         );
     };
 
+    // Create a ClientCard for each Client in clients, if they exist
     const clientsList = clients?.map((client: Client) => {
         return (
             <ClientCard

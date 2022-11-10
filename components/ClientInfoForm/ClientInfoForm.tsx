@@ -20,6 +20,15 @@ interface ClientInfoFormProps {
     };
 }
 
+/**
+ * A form for creating or editing a client's document in the database.
+ *
+ * @param id The client's document we want to edit. If none is given, a new
+ * client document will be created
+ * @param initialData Initial values to have in the input fields. If none are
+ * given, empty strings will be used for text fields, 0 for number fields, and
+ * the current date used for birthday
+ */
 export default function ClientInfoForm({
     id = undefined,
     initialData = undefined,
@@ -56,6 +65,7 @@ export default function ClientInfoForm({
     );
     const router = useRouter();
 
+    // Creates a new doc with an automatically generated id for the client
     const addNewClient = async () => {
         // Only create if either first or last name is not empty
         if (firstName !== '' || lastName !== '') {
@@ -78,6 +88,8 @@ export default function ClientInfoForm({
         router.push('/');
     };
 
+    // Updates an existing client's document. If id is invalid will do nothing,
+    // but this should never run with an invalid id
     const updateClientData = async () => {
         // Ensure id's not undefined
         if (id)
@@ -99,6 +111,7 @@ export default function ClientInfoForm({
     return (
         <form
             onSubmit={(e) => {
+                // Prevent redirect
                 e.preventDefault();
                 // If we have an id as a prop, update, else create new
                 id ? updateClientData() : addNewClient();

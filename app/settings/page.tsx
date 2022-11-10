@@ -10,6 +10,8 @@ export default function Settings() {
         <>
             <h1>Settings</h1>
 
+            {/* If Context is ready show the form, otherwise show nothing;
+            prevents calling of functions or data before it's ready */}
             {setSettings ? (
                 <>
                     <h2>Days early threshold</h2>

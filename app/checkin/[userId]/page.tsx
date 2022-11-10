@@ -15,15 +15,18 @@ export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
     const [oldClientData, setOldClientData] = useState<Client>();
 
+    // Get client data on component load
     useEffect(() => {
         getClientData();
     }, []);
 
+    // Gets the client's data from firestore based on route's userId
     const getClientData = async () => {
         const clientDoc = await getDoc(
             doc(firestore, 'clients', params.userId)
         );
 
+        // Set local state if their doc exists, otherwise go back to homepage
         if (clientDoc.exists()) {
             setOldClientData({
                 id: params.userId,
@@ -37,6 +40,7 @@ export default function Checkin({ params }: CheckinProps) {
         }
     };
 
+    // Sets isCheckedIn status to true then gets updated client data
     const checkIn = async () => {
         await updateDoc(doc(firestore, 'clients', params.userId), {
             isCheckedIn: true,
@@ -60,7 +64,7 @@ export default function Checkin({ params }: CheckinProps) {
 
             <form
                 onSubmit={(e) => {
-                    e.preventDefault();
+                    e.preventDefault(); // Prevent redirect
                     checkIn();
                 }}
             >
