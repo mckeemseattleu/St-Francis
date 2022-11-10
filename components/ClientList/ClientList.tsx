@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { firestore } from '../../firebase/firebase';
 import ClientCard from './ClientCard/ClientCard';
+import styles from './ClientList.module.css';
 
 export interface Client {
     id: string;
@@ -215,7 +216,7 @@ export default function ClientList() {
                 <button type="submit">Filter</button>
             </form>
 
-            {clientsList}
+            <div className={styles.cardContainer}>{clientsList}</div>
         </div>
     );
 }
