@@ -5,23 +5,10 @@ import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
 import { useRouter } from 'next/navigation';
 import ClientInfoForm from '../../../components/ClientInfoForm/ClientInfoForm';
+import { ClientDoc } from '../../profile/[userId]/page';
 
 interface UpdateProps {
     params: { userId: string };
-}
-
-interface ClientDoc {
-    firstName: string;
-    lastName: string;
-    middleInitial: string;
-    birthday: string; // TODO: Consider saving as timestamp
-    gender: string;
-    race: string;
-    postalCode: string;
-    numKids: number;
-    notes: string;
-    isCheckedIn: boolean;
-    isBanned: boolean;
 }
 
 export default function Update({ params }: UpdateProps) {
