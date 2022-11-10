@@ -134,89 +134,91 @@ export default function ClientList() {
     });
 
     return (
-        <div>
-            <h1>Clients</h1>
+        <>
+            <div className={styles.formContainer}>
+                <h1>Clients</h1>
 
-            <Link href="/add-client">New client</Link>
-            <br />
-            <br />
-
-            <form
-                onSubmit={(e) => {
-                    getClientsData(e);
-                }}
-            >
-                <label>
-                    First name
-                    <input
-                        type="text"
-                        name="firstName"
-                        value={filter.firstName}
-                        onChange={(e) => {
-                            setFilter((prev: Filter) => {
-                                return {
-                                    firstName: e.target.value,
-                                    lastName: prev.lastName,
-                                    birthday: prev.birthday,
-                                };
-                            });
-                        }}
-                    />
-                </label>
+                <Link href="/add-client">New client</Link>
+                <br />
                 <br />
 
-                <label>
-                    Last name
-                    <input
-                        type="text"
-                        name="firstName"
-                        value={filter.lastName}
-                        onChange={(e) => {
-                            setFilter((prev: Filter) => {
-                                return {
-                                    firstName: prev.firstName,
-                                    lastName: e.target.value,
-                                    birthday: prev.birthday,
-                                };
-                            });
-                        }}
-                    />
-                </label>
-                <br />
+                <form
+                    onSubmit={(e) => {
+                        getClientsData(e);
+                    }}
+                >
+                    <label>
+                        First name
+                        <input
+                            type="text"
+                            name="firstName"
+                            value={filter.firstName}
+                            onChange={(e) => {
+                                setFilter((prev: Filter) => {
+                                    return {
+                                        firstName: e.target.value,
+                                        lastName: prev.lastName,
+                                        birthday: prev.birthday,
+                                    };
+                                });
+                            }}
+                        />
+                    </label>
+                    <br />
 
-                <label>
-                    Birthday
-                    <input
-                        type="date"
-                        name="birthday"
-                        id="birthday"
-                        value={filter.birthday}
-                        onChange={(e) => {
-                            setFilter((prev: Filter) => {
-                                return {
-                                    firstName: prev.firstName,
-                                    lastName: prev.lastName,
-                                    birthday: e.target.value,
-                                };
-                            });
-                        }}
-                    />
-                    <input
-                        type="checkbox"
-                        name="filterByBirthday"
-                        id="filterByBirthday"
-                        value={filterByBirthday ? 'on' : 'off'}
-                        onChange={(e) => {
-                            setFilterByBirthday(e.target.checked);
-                        }}
-                    />
-                </label>
-                <br />
+                    <label>
+                        Last name
+                        <input
+                            type="text"
+                            name="firstName"
+                            value={filter.lastName}
+                            onChange={(e) => {
+                                setFilter((prev: Filter) => {
+                                    return {
+                                        firstName: prev.firstName,
+                                        lastName: e.target.value,
+                                        birthday: prev.birthday,
+                                    };
+                                });
+                            }}
+                        />
+                    </label>
+                    <br />
 
-                <button type="submit">Filter</button>
-            </form>
+                    <label>
+                        Birthday
+                        <input
+                            type="date"
+                            name="birthday"
+                            id="birthday"
+                            value={filter.birthday}
+                            onChange={(e) => {
+                                setFilter((prev: Filter) => {
+                                    return {
+                                        firstName: prev.firstName,
+                                        lastName: prev.lastName,
+                                        birthday: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <input
+                            type="checkbox"
+                            name="filterByBirthday"
+                            id="filterByBirthday"
+                            value={filterByBirthday ? 'on' : 'off'}
+                            onChange={(e) => {
+                                setFilterByBirthday(e.target.checked);
+                            }}
+                        />
+                    </label>
+                    <br />
+
+                    <button type="submit">Filter</button>
+                </form>
+            </div>
 
             <div className={styles.cardContainer}>{clientsList}</div>
-        </div>
+        </>
     );
 }
