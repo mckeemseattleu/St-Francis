@@ -1,6 +1,6 @@
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { firestore } from '../../firebase/firebase';
 
 interface ClientInfoFormProps {
