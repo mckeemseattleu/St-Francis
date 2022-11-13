@@ -7,7 +7,7 @@ describe('ClientList', () => {
         render(<ClientList />);
 
         const heading = screen.getByRole('heading', {
-            name: 'Clients',
+            name: 'Lookup Client',
         });
 
         expect(heading).toBeInTheDocument();
