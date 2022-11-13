@@ -216,7 +216,9 @@ export default function ClientList() {
                     <div className={styles.formControls}>
                         <button type="submit">Filter</button>
 
-                        <Link href="/add-client">New client</Link>
+                        <button>
+                            <Link href="/add-client">New client</Link>
+                        </button>
                     </div>
                 </form>
                 <br />
