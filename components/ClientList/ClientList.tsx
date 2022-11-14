@@ -137,7 +137,7 @@ export default function ClientList() {
 
     return (
         <>
-            <div className={styles.container}>
+            <div className="container">
                 <h1>Lookup Client</h1>
 
                 <form

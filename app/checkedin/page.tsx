@@ -65,7 +65,7 @@ export default function CheckedIn() {
     });
 
     return (
-        <div className={styles.container}>
+        <div className="container">
             <h1>Checked in clients</h1>
             <div className={styles.cardContainer}>{clientsList}</div>
         </div>

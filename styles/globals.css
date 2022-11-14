@@ -28,3 +28,11 @@ button {
         background: #2b2d42;
     }
 }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 80vw;
+    max-width: 1000px;
+}
