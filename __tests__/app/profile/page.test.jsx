@@ -95,4 +95,136 @@ describe('Profile page', () => {
 
         expect(firstName).not.toBeInTheDocument();
     });
+
+    it('displays checked in status correctly with valid, checked in client', async () => {
+        // Mock returning some sample data
+        getDoc.mockImplementation(() => ({
+            // Needed for clientDoc.exists() check
+            exists: () => {
+                return true;
+            },
+            // Needed for clientDoc.data().whatever calls
+            data: () => ({
+                firstName: 'testFirst',
+                lastName: 'testLast',
+                middleInitial: 't',
+                birthday: '',
+                gender: '',
+                race: '',
+                postalCode: '',
+                numKids: 2,
+                notes: '',
+                isCheckedIn: true,
+                isBanned: false,
+            }),
+        }));
+
+        // TODO: Gives warning because of async useEffect()
+        await act(async () => {
+            render(<Profile params={{ userId: '1234' }} />);
+        });
+
+        const checkedInStatus = screen.getByText('Checked in');
+
+        expect(checkedInStatus).toBeInTheDocument();
+    });
+
+    it('displays checked in status correctly with valid, checked out client', async () => {
+        // Mock returning some sample data
+        getDoc.mockImplementation(() => ({
+            // Needed for clientDoc.exists() check
+            exists: () => {
+                return true;
+            },
+            // Needed for clientDoc.data().whatever calls
+            data: () => ({
+                firstName: 'testFirst',
+                lastName: 'testLast',
+                middleInitial: 't',
+                birthday: '',
+                gender: '',
+                race: '',
+                postalCode: '',
+                numKids: 2,
+                notes: '',
+                isCheckedIn: false,
+                isBanned: false,
+            }),
+        }));
+
+        // TODO: Gives warning because of async useEffect()
+        await act(async () => {
+            render(<Profile params={{ userId: '1234' }} />);
+        });
+
+        const checkedInStatus = screen.getByText('Not checked in');
+
+        expect(checkedInStatus).toBeInTheDocument();
+    });
+
+    it('displays banned status correctly with valid, banned client', async () => {
+        // Mock returning some sample data
+        getDoc.mockImplementation(() => ({
+            // Needed for clientDoc.exists() check
+            exists: () => {
+                return true;
+            },
+            // Needed for clientDoc.data().whatever calls
+            data: () => ({
+                firstName: 'testFirst',
+                lastName: 'testLast',
+                middleInitial: 't',
+                birthday: '',
+                gender: '',
+                race: '',
+                postalCode: '',
+                numKids: 2,
+                notes: '',
+                isCheckedIn: false,
+                isBanned: true,
+            }),
+        }));
+
+        // TODO: Gives warning because of async useEffect()
+        await act(async () => {
+            render(<Profile params={{ userId: '1234' }} />);
+        });
+
+        const checkedInStatus = screen.getByText('Banned');
+
+        expect(checkedInStatus).toBeInTheDocument();
+    });
+
+    it('displays banned status correctly with valid, not banned client', async () => {
+        // Mock returning some sample data
+        getDoc.mockImplementation(() => ({
+            // Needed for clientDoc.exists() check
+            exists: () => {
+                return true;
+            },
+            // Needed for clientDoc.data().whatever calls
+            data: () => ({
+                firstName: 'testFirst',
+                lastName: 'testLast',
+                middleInitial: 't',
+                birthday: '',
+                gender: '',
+                race: '',
+                postalCode: '',
+                numKids: 2,
+                notes: '',
+                isCheckedIn: false,
+                isBanned: false,
+            }),
+        }));
+
+        // TODO: Gives warning because of async useEffect()
+        await act(async () => {
+            render(<Profile params={{ userId: '1234' }} />);
+        });
+
+        const checkedInStatus = screen.getByText('Not banned');
+
+        expect(checkedInStatus).toBeInTheDocument();
+    });
 });
