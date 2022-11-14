@@ -7,7 +7,7 @@ export default function Settings() {
     const { settings, setSettings } = useContext(SettingsContext);
 
     return (
-        <>
+        <div className="container">
             <h1>Settings</h1>
 
             {/* If Context is ready show the form, otherwise show nothing;
@@ -60,6 +60,6 @@ export default function Settings() {
                     <br />
                 </>
             ) : null}
-        </>
+        </div>
     );
 }
