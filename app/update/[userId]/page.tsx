@@ -47,7 +47,7 @@ export default function Update({ params }: UpdateProps) {
     };
 
     return (
-        <div>
+        <div className="container">
             <h1>Update user page</h1>
 
             <h2>Old data</h2>
