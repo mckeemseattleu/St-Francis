@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import ClientCard from '../../components/ClientList/ClientCard/ClientCard';
 import { Client } from '../../components/ClientList/ClientList';
 import { firestore } from '../../firebase/firebase';
+import styles from './checkedin.module.css';
 
 export default function CheckedIn() {
     const [clients, setClients] = useState<Array<Client>>();
@@ -64,9 +65,9 @@ export default function CheckedIn() {
     });
 
     return (
-        <div>
+        <div className={styles.container}>
             <h1>Checked in clients</h1>
-            {clientsList}
+            <div className={styles.cardContainer}>{clientsList}</div>
         </div>
     );
 }
