@@ -86,7 +86,7 @@ export default function ClientInfoForm({
                 numKids,
                 notes,
                 isCheckedIn: false,
-                isBanned: false,
+                isBanned,
             });
         }
 
