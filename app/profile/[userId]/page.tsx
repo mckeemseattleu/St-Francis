@@ -78,7 +78,7 @@ export default function Profile({ params }: ProfileProps) {
             );
 
             // Build query to get 5 most recent
-            const q = query(visitsRef, orderBy('timestamp'), limit(5));
+            const q = query(visitsRef, orderBy('timestamp', 'desc'), limit(5));
 
             // Get array of documents
             const visits = await getDocs(q);
