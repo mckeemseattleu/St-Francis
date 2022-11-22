@@ -103,9 +103,13 @@ export default function Profile({ params }: ProfileProps) {
                 return (
                     <div key={i}>
                         <h2>
-                            {new Date(
+                            {`${new Date(
                                 visit.timestamp.seconds * 1000
                             ).toDateString()}
+                            -
+                            ${new Date(
+                                visit.timestamp.seconds * 1000
+                            ).toTimeString()}`}
                         </h2>
 
                         <h3>Clothing</h3>
