@@ -1,6 +1,14 @@
 'use client';
 
-import { doc, getDoc } from 'firebase/firestore';
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    limit,
+    orderBy,
+    query,
+} from 'firebase/firestore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -27,6 +35,7 @@ interface ProfileProps {
 export default function Profile({ params }: ProfileProps) {
     const router = useRouter();
     const [clientData, setClientData] = useState<ClientDoc>();
+    const [visitsData, setVisitsData] = useState<Array<any>>();
 
     // Get client data on component load
     useEffect(() => {
@@ -57,29 +66,95 @@ export default function Profile({ params }: ProfileProps) {
         } else {
             router.push('/');
         }
+
+        // Gets the client's 5 most recent visits
+        if (clientDoc.exists()) {
+            // Get visits subcollection
+            const visitsRef = await collection(
+                firestore,
+                'clients',
+                params.userId,
+                'visits'
+            );
+
+            // Build query to get 5 most recent
+            const q = query(visitsRef, orderBy('timestamp', 'desc'), limit(5));
+
+            // Get array of documents
+            const visits = await getDocs(q);
+            let visitsArr: any = [];
+
+            // Take the data for each visit and append to visitsArr
+            visits.forEach((visit) => {
+                visitsArr.push(visit.data());
+            });
+
+            // Set local state to be visitsArr
+            setVisitsData(visitsArr);
+        }
     };
 
+    // Format each visit
+    const visits =
+        !visitsData || visitsData.length === 0 ? (
+            <p>No visits in history</p>
+        ) : (
+            visitsData?.map((visit, i) => {
+                return (
+                    <div key={i}>
+                        <h2>
+                            {`${new Date(
+                                visit.timestamp.seconds * 1000
+                            ).toDateString()}
+                            -
+                            ${new Date(
+                                visit.timestamp.seconds * 1000
+                            ).toTimeString()}`}
+                        </h2>
+
+                        <h3>Clothing</h3>
+                        <p>{visit.clothingMen ? 'Men' : null}</p>
+                        <p>{visit.clothingWomen ? 'Women' : null}</p>
+                        <p>{visit.clothingBoy ? 'Kids (boy)' : null}</p>
+                        <p>{visit.clothingGirl ? 'Kids (girl)' : null}</p>
+
+                        <h3>Notes</h3>
+                        <p>{visit.notes.length === 0 ? 'None' : visit.notes}</p>
+                    </div>
+                );
+            })
+        );
+
     return (
-        <>
+        <div className="container">
             <h1>Profile</h1>
 
-            <h2>{`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}</h2>
-            <p>Birthday: {clientData?.birthday}</p>
-            <p>Gender: {clientData?.gender}</p>
-            <p>Race: {clientData?.race}</p>
-            <p>Postal code: {clientData?.postalCode}</p>
-            <p>Number of kids: {clientData?.numKids}</p>
-            <p> Notes:</p>
-            <p>{clientData?.notes}</p>
-            <p>{clientData?.isCheckedIn ? 'Checked in' : 'Not checked in'}</p>
-            <p>{clientData?.isBanned ? 'Banned' : 'Not banned'}</p>
+            <div>
+                <h2>{`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}</h2>
+                <p>Birthday: {clientData?.birthday}</p>
+                <p>Gender: {clientData?.gender}</p>
+                <p>Race: {clientData?.race}</p>
+                <p>Postal code: {clientData?.postalCode}</p>
+                <p>Number of kids: {clientData?.numKids}</p>
+                <p> Notes:</p>
+                <p>{clientData?.notes}</p>
+                <p>
+                    {clientData?.isCheckedIn ? 'Checked in' : 'Not checked in'}
+                </p>
+                <p>{clientData?.isBanned ? 'Banned' : 'Not banned'}</p>
 
-            <h1>Options</h1>
-            <Link href={`/update/${params.userId}`}>Edit</Link>
-            <br />
-            <Link href={`/checkin/${params.userId}`}>Check in</Link>
-            <br />
-            <Link href={`/checkout/${params.userId}`}>Check out</Link>
-        </>
+                <h1>Options</h1>
+                <Link href={`/update/${params.userId}`}>Edit</Link>
+                <br />
+                <Link href={`/checkin/${params.userId}`}>Check in</Link>
+                <br />
+                <Link href={`/checkout/${params.userId}`}>Check out</Link>
+            </div>
+
+            <div>
+                <h1>5 Most recent visits</h1>
+                {visits}
+            </div>
+        </div>
     );
 }

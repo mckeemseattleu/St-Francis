@@ -63,6 +63,12 @@ export default function ClientInfoForm({
     const [notes, setNotes] = useState<string>(
         initialData ? initialData.notes : ''
     );
+    const [isCheckedIn, setIsCheckedIn] = useState<boolean>(
+        initialData ? initialData.isCheckedIn : false
+    );
+    const [isBanned, setIsBanned] = useState<boolean>(
+        initialData ? initialData.isBanned : false
+    );
     const router = useRouter();
 
     // Creates a new doc with an automatically generated id for the client
@@ -80,7 +86,7 @@ export default function ClientInfoForm({
                 numKids,
                 notes,
                 isCheckedIn: false,
-                isBanned: false,
+                isBanned,
             });
         }
 
@@ -103,8 +109,8 @@ export default function ClientInfoForm({
                 postalCode,
                 numKids,
                 notes,
-                isCheckedIn: false,
-                isBanned: false,
+                isCheckedIn,
+                isBanned,
             });
     };
 
@@ -117,6 +123,17 @@ export default function ClientInfoForm({
                 id ? updateClientData() : addNewClient();
             }}
         >
+            <h2>Ban</h2>
+            <input
+                type="checkbox"
+                name="isBanned"
+                id="isBanned"
+                value={isBanned ? 'on' : 'off'}
+                onChange={(e) => {
+                    setIsBanned(e.target.checked);
+                }}
+            />
+
             <h2>First name</h2>
             <input
                 type="text"

@@ -1,8 +1,34 @@
-.formContainer {
+.container {
     display: flex;
     flex-direction: column;
     margin: auto;
+    width: 80vw;
+    max-width: 1000px;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: auto;
     align-items: center;
+}
+
+.formContainer label {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 10px;
+}
+
+.formControls {
+    display: flex;
+    margin-top: 25px;
+    justify-content: end;
+}
+
+.formControls button {
+    margin-right: 20px;
 }
 
 .cardContainer {

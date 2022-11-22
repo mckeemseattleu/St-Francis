@@ -137,87 +137,92 @@ export default function ClientList() {
 
     return (
         <>
-            <div className={styles.formContainer}>
-                <h1>Clients</h1>
-
-                <Link href="/add-client">New client</Link>
-                <br />
-                <br />
+            <div className="container">
+                <h1>Lookup Client</h1>
 
                 <form
                     onSubmit={(e) => {
                         getClientsData(e);
                     }}
                 >
-                    <label>
-                        First name
-                        <input
-                            type="text"
-                            name="firstName"
-                            value={filter.firstName}
-                            onChange={(e) => {
-                                setFilter((prev: Filter) => {
-                                    return {
-                                        firstName: e.target.value,
-                                        lastName: prev.lastName,
-                                        birthday: prev.birthday,
-                                    };
-                                });
-                            }}
-                        />
-                    </label>
-                    <br />
+                    <div className={styles.formContainer}>
+                        <label>
+                            First name
+                            <input
+                                type="text"
+                                name="firstName"
+                                value={filter.firstName}
+                                onChange={(e) => {
+                                    setFilter((prev: Filter) => {
+                                        return {
+                                            firstName: e.target.value,
+                                            lastName: prev.lastName,
+                                            birthday: prev.birthday,
+                                        };
+                                    });
+                                }}
+                            />
+                        </label>
 
-                    <label>
-                        Last name
-                        <input
-                            type="text"
-                            name="firstName"
-                            value={filter.lastName}
-                            onChange={(e) => {
-                                setFilter((prev: Filter) => {
-                                    return {
-                                        firstName: prev.firstName,
-                                        lastName: e.target.value,
-                                        birthday: prev.birthday,
-                                    };
-                                });
-                            }}
-                        />
-                    </label>
-                    <br />
+                        <label>
+                            Last name
+                            <input
+                                type="text"
+                                name="firstName"
+                                value={filter.lastName}
+                                onChange={(e) => {
+                                    setFilter((prev: Filter) => {
+                                        return {
+                                            firstName: prev.firstName,
+                                            lastName: e.target.value,
+                                            birthday: prev.birthday,
+                                        };
+                                    });
+                                }}
+                            />
+                        </label>
 
-                    <label>
-                        Birthday
-                        <input
-                            type="date"
-                            name="birthday"
-                            id="birthday"
-                            value={filter.birthday}
-                            onChange={(e) => {
-                                setFilter((prev: Filter) => {
-                                    return {
-                                        firstName: prev.firstName,
-                                        lastName: prev.lastName,
-                                        birthday: e.target.value,
-                                    };
-                                });
-                            }}
-                        />
-                        <input
-                            type="checkbox"
-                            name="filterByBirthday"
-                            id="filterByBirthday"
-                            value={filterByBirthday ? 'on' : 'off'}
-                            onChange={(e) => {
-                                setFilterByBirthday(e.target.checked);
-                            }}
-                        />
-                    </label>
-                    <br />
+                        <label>
+                            Birthday
+                            <div>
+                                <input
+                                    type="date"
+                                    name="birthday"
+                                    id="birthday"
+                                    value={filter.birthday}
+                                    onChange={(e) => {
+                                        setFilter((prev: Filter) => {
+                                            return {
+                                                firstName: prev.firstName,
+                                                lastName: prev.lastName,
+                                                birthday: e.target.value,
+                                            };
+                                        });
+                                    }}
+                                />
+                                <input
+                                    type="checkbox"
+                                    name="filterByBirthday"
+                                    id="filterByBirthday"
+                                    value={filterByBirthday ? 'on' : 'off'}
+                                    onChange={(e) => {
+                                        setFilterByBirthday(e.target.checked);
+                                    }}
+                                />
+                            </div>
+                        </label>
+                    </div>
 
-                    <button type="submit">Filter</button>
+                    <div className={styles.formControls}>
+                        <button type="submit">Filter</button>
+
+                        <button>
+                            <Link href="/add-client">New client</Link>
+                        </button>
+                    </div>
                 </form>
+                <br />
+                <br />
             </div>
 
             <div className={styles.cardContainer}>{clientsList}</div>
