@@ -70,6 +70,9 @@ export default function Checkin({ params }: CheckinProps) {
 
         // Get updated client data
         getClientData();
+
+        // Redirect to user profile page after checking user in
+        router.push(`/profile/${params.userId}`);
     };
 
     return (
