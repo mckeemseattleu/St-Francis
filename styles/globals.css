@@ -8,11 +8,13 @@
 
     --blue: #3d5169;
     --yellow: #b4975a;
+    --white: #ffffff;
 
     /* Old */
     /* --gray-1: var(--gray-2); */
     /* --gray-5: #7c7e7f; */
     /* --blue: var(--yellow); */
+    /* --white: var(--gray-1) */
 }
 html,
 body {
@@ -47,6 +49,18 @@ button {
 button:hover {
     background-color: var(--yellow);
     transition: background-color 0.2s ease;
+}
+
+input {
+    padding: 12px;
+    background-color: var(--white);
+    border: solid 1px var(--gray-4);
+    border-radius: 5px;
+}
+
+input:focus {
+    outline: none;
+    border: solid 1px var(--blue);
 }
 
 .container {
