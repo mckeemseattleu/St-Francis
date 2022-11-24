@@ -24,13 +24,24 @@ export default function ClientCard({
             <p>{notes}</p>
             <br />
 
-            <Link href={`/update/${id}`}>Edit</Link>
+            <Link href={`/profile/${id}`}>
+                <button>Profile</button>
+            </Link>
             <br />
 
-            <Link href={`/checkin/${id}`}>Check in</Link>
+            <Link href={`/update/${id}`}>
+                <button>Edit</button>
+            </Link>
             <br />
 
-            <Link href={`/checkout/${id}`}>Check out</Link>
+            <Link href={`/checkin/${id}`}>
+                <button>Check in</button>
+            </Link>
+            <br />
+
+            <Link href={`/checkout/${id}`}>
+                <button>Check out</button>
+            </Link>
         </div>
     );
 }
