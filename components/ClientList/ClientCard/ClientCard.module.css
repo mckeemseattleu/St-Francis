@@ -13,8 +13,8 @@
 .card:hover,
 .card:focus,
 .card:active {
-    color: #0070f3;
-    border-color: #0070f3;
+    color: var(--blue);
+    border-color: var(--blue);
 }
 
 .card h2 {
