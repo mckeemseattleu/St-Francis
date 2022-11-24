@@ -24,7 +24,7 @@
 .formControls {
     display: flex;
     margin-top: 25px;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .formControls button {
