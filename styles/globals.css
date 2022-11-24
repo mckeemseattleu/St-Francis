@@ -1,9 +1,38 @@
+@import './fonts.css';
+
+:root {
+    /* New */
+    --gray-1: #f6f5f2;
+    --gray-2: #e4e0d9;
+    --gray-3: #beb6af;
+    --gray-4: #8f8884;
+    --gray-5: #2f2e2e;
+
+    --blue: #3d5169;
+    --yellow: #b4975a;
+    --white: #ffffff;
+
+    /* Old */
+    /* --gray-1: var(--gray-2);
+    --blue: var(--yellow);
+    --white: var(--gray-1); */
+}
 html,
 body {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    color: var(--gray-5);
+    background: var(--gray-1);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Spectral SC', serif;
 }
 
 a {
@@ -16,17 +45,33 @@ a {
 }
 
 button {
+    font-family: inherit;
     cursor: pointer;
+    border: none;
+    color: var(--gray-5);
+    background-color: var(--gray-2);
+    transition: background-color 0.2s ease;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
 }
 
-@media (prefers-color-scheme: dark) {
-    html {
-        color-scheme: dark;
-    }
-    body {
-        color: white;
-        background: #2b2d42;
-    }
+button:hover {
+    background-color: var(--yellow);
+    transition: background-color 0.2s ease;
+}
+
+input {
+    font-family: inherit;
+    padding: 12px;
+    background-color: var(--white);
+    border: solid 1px var(--gray-4);
+    border-radius: 5px;
+}
+
+input:focus {
+    outline: none;
+    border: solid 1px var(--blue);
 }
 
 .container {

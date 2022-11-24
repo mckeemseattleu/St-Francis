@@ -20,17 +20,29 @@ export default function ClientCard({
             <Link href={`/profile/${id}`}>
                 <h1>{`${firstName} ${lastName}`}</h1>
             </Link>
-            <h2>Notes:</h2>
-            <p>{notes}</p>
-            <br />
 
-            <Link href={`/update/${id}`}>Edit</Link>
-            <br />
+            <div className={styles.detailsContainer}>
+                <h2>Notes:</h2>
+                <p>{notes}</p>
+            </div>
 
-            <Link href={`/checkin/${id}`}>Check in</Link>
-            <br />
+            <div className={styles.buttonContainer}>
+                <Link href={`/profile/${id}`}>
+                    <button className={styles.button}>Profile</button>
+                </Link>
 
-            <Link href={`/checkout/${id}`}>Check out</Link>
+                <Link href={`/update/${id}`}>
+                    <button className={styles.button}>Edit</button>
+                </Link>
+
+                <Link href={`/checkin/${id}`}>
+                    <button className={styles.button}>Check in</button>
+                </Link>
+
+                <Link href={`/checkout/${id}`}>
+                    <button className={styles.button}>Check out</button>
+                </Link>
+            </div>
         </div>
     );
 }

@@ -14,11 +14,11 @@ export default function NavBar() {
             <span className={styles.spacer} />
 
             <Link className={styles.navbarLink} href="/checkedin">
-                Checked in Clients
+                <button>Checked in Clients</button>
             </Link>
 
             <Link className={styles.navbarLink} href="/settings">
-                Settings
+                <button>Settings</button>
             </Link>
 
             <Login />
