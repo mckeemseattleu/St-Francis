@@ -11,10 +11,9 @@
     --white: #ffffff;
 
     /* Old */
-    /* --gray-1: var(--gray-2); */
-    /* --gray-5: #7c7e7f; */
-    /* --blue: var(--yellow); */
-    /* --white: var(--gray-1) */
+    /* --gray-1: var(--gray-2);
+    --blue: var(--yellow);
+    --white: var(--gray-1); */
 }
 html,
 body {
