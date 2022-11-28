@@ -98,7 +98,7 @@ export default function ClientInfoForm({
     // but this should never run with an invalid id
     const updateClientData = async () => {
         // Ensure id's not undefined
-        if (id)
+        if (id) {
             await setDoc(doc(firestore, 'clients', id), {
                 firstName,
                 lastName,
@@ -112,6 +112,9 @@ export default function ClientInfoForm({
                 isCheckedIn,
                 isBanned,
             });
+
+            router.push('/');
+        }
     };
 
     return (
@@ -128,6 +131,7 @@ export default function ClientInfoForm({
                 type="checkbox"
                 name="isBanned"
                 id="isBanned"
+                defaultChecked={isBanned}
                 value={isBanned ? 'on' : 'off'}
                 onChange={(e) => {
                     setIsBanned(e.target.checked);
