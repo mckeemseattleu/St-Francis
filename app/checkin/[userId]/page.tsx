@@ -41,8 +41,10 @@ export default function Checkin({ params }: CheckinProps) {
                 id: params.userId,
                 firstName: clientDoc.data().firstName,
                 lastName: clientDoc.data().lastName,
+                birthday: clientDoc.data().birthday,
                 notes: clientDoc.data().notes,
                 isCheckedIn: clientDoc.data().isCheckedIn,
+                isBanned: clientDoc.data().isBanned,
             });
         } else {
             router.push('/');
