@@ -6,14 +6,18 @@ interface ClientCardProps {
     id: string;
     firstName: string;
     lastName: string;
+    birthday: string;
     notes: string;
+    isBanned: boolean;
 }
 
 export default function ClientCard({
     id,
     firstName,
     lastName,
+    birthday,
     notes,
+    isBanned,
 }: ClientCardProps) {
     return (
         <div className={styles.card}>
@@ -22,6 +26,11 @@ export default function ClientCard({
             </Link>
 
             <div className={styles.detailsContainer}>
+                {isBanned ? <h2>Banned</h2> : null}
+
+                <h2>Birthday:</h2>
+                <p>{birthday}</p>
+
                 <h2>Notes:</h2>
                 <p>{notes}</p>
             </div>

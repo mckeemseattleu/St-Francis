@@ -18,8 +18,10 @@ export interface Client {
     id: string;
     firstName: string;
     lastName: string;
+    birthday: string;
     notes: string;
     isCheckedIn: boolean;
+    isBanned: boolean;
 }
 
 interface Filter {
@@ -116,8 +118,10 @@ export default function ClientList() {
                 id: client.id,
                 firstName: client.data().firstName,
                 lastName: client.data().lastName,
+                birthday: client.data().birthday,
                 notes: client.data().notes,
                 isCheckedIn: client.data().isCheckedIn,
+                isBanned: client.data().isBanned,
             }))
         );
     };
@@ -129,8 +133,10 @@ export default function ClientList() {
                 id={client.id}
                 firstName={client.firstName}
                 lastName={client.lastName}
+                birthday={client.birthday}
                 notes={client.notes}
                 key={client.id}
+                isBanned={client.isBanned}
             />
         );
     });
