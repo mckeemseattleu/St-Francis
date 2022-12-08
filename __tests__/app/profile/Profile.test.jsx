@@ -36,16 +36,6 @@ jest.mock('firebase/compat/app', () => ({
 }));
 
 describe('Profile page', () => {
-    it('renders a title', () => {
-        render(<Profile params={{ userId: '1234' }} />);
-
-        const title = screen.getByRole('heading', {
-            name: 'Profile',
-        });
-
-        expect(title).toBeInTheDocument();
-    });
-
     it('renders name correctly with valid id', async () => {
         // Mock returning some sample data
         getDoc.mockImplementation(() => ({
