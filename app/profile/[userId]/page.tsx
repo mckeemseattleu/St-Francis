@@ -153,9 +153,9 @@ export default function Profile({ params }: ProfileProps) {
                 {clientData?.numKids || clientData?.numKids === 0 ? (
                     <p>{clientData?.numKids}</p>
                 ) : null}
+            </div>
 
-                <span className={styles.spacer} />
-
+            <div className={styles.rowContainer}>
                 <h3>
                     {clientData?.isCheckedIn ? 'Checked in' : 'Not checked in'}
                 </h3>
