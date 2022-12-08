@@ -154,7 +154,7 @@ export default function Profile({ params }: ProfileProps) {
                     <p>{clientData?.numKids}</p>
                 ) : null}
 
-                <span className={styles.rowDivider} />
+                <span className={styles.spacer} />
 
                 <h3>
                     {clientData?.isCheckedIn ? 'Checked in' : 'Not checked in'}
