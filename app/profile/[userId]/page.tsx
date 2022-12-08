@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
+import styles from './profile.module.css';
 
 export interface ClientDoc {
     firstName: string;
@@ -127,23 +128,44 @@ export default function Profile({ params }: ProfileProps) {
 
     return (
         <div className="container">
-            <h1>Profile</h1>
+            <h1>
+                {`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}
+            </h1>
 
-            <div>
-                <h2>{`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}</h2>
-                <p>Birthday: {clientData?.birthday}</p>
-                <p>Gender: {clientData?.gender}</p>
-                <p>Race: {clientData?.race}</p>
-                <p>Postal code: {clientData?.postalCode}</p>
-                <p>Number of kids: {clientData?.numKids}</p>
-                <p> Notes:</p>
-                <p>{clientData?.notes}</p>
-                <p>
+            <div className={styles.rowContainer}>
+                {clientData?.birthday ? <h3>Birthday</h3> : null}
+                {clientData?.birthday ? <p>{clientData?.birthday}</p> : null}
+
+                {clientData?.gender ? <h3>Gender</h3> : null}
+                {clientData?.gender ? <p>{clientData?.gender}</p> : null}
+
+                {clientData?.race ? <h3>Race</h3> : null}
+                {clientData?.race ? <p>{clientData?.race}</p> : null}
+
+                {clientData?.postalCode ? <h3>Postal code</h3> : null}
+                {clientData?.postalCode ? (
+                    <p>{clientData?.postalCode}</p>
+                ) : null}
+
+                {clientData?.numKids || clientData?.numKids === 0 ? (
+                    <h3>'Number of kids'</h3>
+                ) : null}
+                {clientData?.numKids || clientData?.numKids === 0 ? (
+                    <p>{clientData?.numKids}</p>
+                ) : null}
+
+                <span className={styles.rowDivider} />
+
+                <h3>
                     {clientData?.isCheckedIn ? 'Checked in' : 'Not checked in'}
-                </p>
-                <p>{clientData?.isBanned ? 'Banned' : 'Not banned'}</p>
+                </h3>
 
-                <h1>Options</h1>
+                <h3>{clientData?.isBanned ? 'Banned' : 'Not banned'}</h3>
+            </div>
+
+            <h1>Options</h1>
+
+            <div className={styles.rowContainer}>
                 <Link href={`/update/${params.userId}`}>Edit</Link>
                 <br />
                 <Link href={`/checkin/${params.userId}`}>Check in</Link>
