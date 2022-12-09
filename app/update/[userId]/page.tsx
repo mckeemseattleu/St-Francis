@@ -59,6 +59,7 @@ export default function Update({ params }: UpdateProps) {
                 <ClientInfoForm
                     id={params.userId}
                     initialData={oldClientData}
+                    redirect={`/profile/${params.userId}`}
                 />
             ) : null}
         </div>
