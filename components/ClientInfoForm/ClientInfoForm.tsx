@@ -29,6 +29,7 @@ interface ClientInfoFormProps {
  * @param initialData Initial values to have in the input fields. If none are
  * given, empty strings will be used for text fields, 0 for number fields, and
  * the current date used for birthday
+ * @param redirect Route to redirect to when form is submitted. Defaults to homepage
  */
 export default function ClientInfoForm({
     id = undefined,
