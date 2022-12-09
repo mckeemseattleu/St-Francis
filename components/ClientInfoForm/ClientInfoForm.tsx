@@ -18,6 +18,7 @@ interface ClientInfoFormProps {
         isCheckedIn: boolean;
         isBanned: boolean;
     };
+    redirect?: string;
 }
 
 /**
@@ -32,6 +33,7 @@ interface ClientInfoFormProps {
 export default function ClientInfoForm({
     id = undefined,
     initialData = undefined,
+    redirect = '/',
 }: ClientInfoFormProps) {
     // Use old info from props if it exists, else default values
     const [firstName, setFirstName] = useState<string>(
@@ -90,8 +92,8 @@ export default function ClientInfoForm({
             });
         }
 
-        // Redirect back to index page
-        router.push('/');
+        // Redirect back to specified redirect route
+        router.push(redirect);
     };
 
     // Updates an existing client's document. If id is invalid will do nothing,
@@ -113,7 +115,8 @@ export default function ClientInfoForm({
                 isBanned,
             });
 
-            router.push('/');
+            // Redirect to specified route
+            router.push(redirect);
         }
     };
 
