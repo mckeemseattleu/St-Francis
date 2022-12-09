@@ -166,11 +166,17 @@ export default function Profile({ params }: ProfileProps) {
             <h1>Options</h1>
 
             <div className={styles.rowContainer}>
-                <Link href={`/update/${params.userId}`}>Edit</Link>
+                <Link href={`/update/${params.userId}`}>
+                    <button>Edit</button>
+                </Link>
                 <br />
-                <Link href={`/checkin/${params.userId}`}>Check in</Link>
+                <Link href={`/checkin/${params.userId}`}>
+                    <button>Check in</button>
+                </Link>
                 <br />
-                <Link href={`/checkout/${params.userId}`}>Check out</Link>
+                <Link href={`/checkout/${params.userId}`}>
+                    <button>Check out</button>
+                </Link>
             </div>
 
             <div>

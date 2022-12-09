@@ -13,3 +13,7 @@
 .rowContainer p {
     margin-right: 30px;
 }
+
+.rowContainer button {
+    margin-right: 15px;
+}
