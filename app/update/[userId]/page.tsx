@@ -48,18 +48,12 @@ export default function Update({ params }: UpdateProps) {
 
     return (
         <div className="container">
-            <h1>Update user page</h1>
-
-            <h2>Old data</h2>
-            <p>{`${oldClientData?.firstName} ${oldClientData?.lastName}`}</p>
-            <p>{oldClientData ? oldClientData.notes : null}</p>
-
-            <h2>Edit data</h2>
             {oldClientData ? (
                 <ClientInfoForm
                     id={params.userId}
                     initialData={oldClientData}
                     redirect={`/profile/${params.userId}`}
+                    title={'Update Client Form'}
                 />
             ) : null}
         </div>
