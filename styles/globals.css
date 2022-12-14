@@ -74,6 +74,19 @@ input:focus {
     border: solid 1px var(--blue);
 }
 
+textarea {
+    font-family: inherit;
+    padding: 12px;
+    background-color: var(--white);
+    border: solid 1px var(--gray-4);
+    border-radius: 5px;
+}
+
+textarea:focus {
+    outline: none;
+    border: solid 1px var(--blue);
+}
+
 .container {
     display: flex;
     flex-direction: column;
