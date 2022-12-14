@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ClientDoc } from '../../app/profile/[userId]/page';
 import { firestore } from '../../firebase/firebase';
+import styles from './ClientInfoForm.module.css';
 
 interface ClientInfoFormProps {
     id?: string;
@@ -70,131 +71,177 @@ export default function ClientInfoForm({
     };
 
     return (
-        <form
-            onSubmit={(e) => {
-                // Prevent redirect
-                e.preventDefault();
-                // If we have an id as a prop, update, else create new
-                id ? updateClientData() : addNewClient();
-            }}
-        >
-            <h2>Ban</h2>
-            <input
-                type="checkbox"
-                name="isBanned"
-                id="isBanned"
-                defaultChecked={clientData.isBanned}
-                value={clientData.isBanned ? 'on' : 'off'}
-                onChange={(e) => {
-                    setClientData({
-                        ...clientData,
-                        isBanned: e.target.checked,
-                    });
-                }}
-            />
+        <div className={styles.container}>
+            <div className={styles.titleContainer}>
+                <h1>Client form</h1>
 
-            <h2>First name</h2>
-            <input
-                type="text"
-                value={clientData.firstName}
-                onChange={(e) => {
-                    setClientData({ ...clientData, firstName: e.target.value });
-                }}
-            />
-            <br />
+                <div>
+                    <label htmlFor="isBanned">Ban</label>
+                    <input
+                        type="checkbox"
+                        name="isBanned"
+                        id="isBanned"
+                        defaultChecked={clientData.isBanned}
+                        value={clientData.isBanned ? 'on' : 'off'}
+                        onChange={(e) => {
+                            setClientData({
+                                ...clientData,
+                                isBanned: e.target.checked,
+                            });
+                        }}
+                    />
+                </div>
+            </div>
 
-            <h2>Middle initial</h2>
-            <input
-                type="text"
-                value={clientData.middleInitial}
-                onChange={(e) => {
-                    setClientData({
-                        ...clientData,
-                        middleInitial: e.target.value,
-                    });
+            <form
+                onSubmit={(e) => {
+                    // Prevent redirect
+                    e.preventDefault();
+                    // If we have an id as a prop, update, else create new
+                    id ? updateClientData() : addNewClient();
                 }}
-            />
-            <br />
+            >
+                <div className={styles.formRows}>
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="firstName">First name</label>
+                        <input
+                            type="text"
+                            value={clientData.firstName}
+                            id="firstName"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    firstName: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Last name</h2>
-            <input
-                type="text"
-                value={clientData.lastName}
-                onChange={(e) => {
-                    setClientData({ ...clientData, lastName: e.target.value });
-                }}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="middleInitial">Middle initial</label>
+                        <input
+                            type="text"
+                            value={clientData.middleInitial}
+                            id="middleInitial"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    middleInitial: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Birthday</h2>
-            <input
-                type="date"
-                name="birthday"
-                id="birthday"
-                value={clientData.birthday}
-                onChange={(e) => {
-                    setClientData({ ...clientData, birthday: e.target.value });
-                }}
-            />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="lastName">Last name</label>
+                        <input
+                            type="text"
+                            value={clientData.lastName}
+                            id="lastName"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    lastName: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Gender</h2>
-            <input
-                type="text"
-                value={clientData.gender}
-                onChange={(e) => {
-                    setClientData({ ...clientData, gender: e.target.value });
-                }}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="birthday">Birthday</label>
+                        <input
+                            type="date"
+                            name="birthday"
+                            id="birthday"
+                            value={clientData.birthday}
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    birthday: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Race</h2>
-            <input
-                type="text"
-                value={clientData.race}
-                onChange={(e) => {
-                    setClientData({ ...clientData, race: e.target.value });
-                }}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="gender">Gender</label>
+                        <input
+                            type="text"
+                            value={clientData.gender}
+                            id="gender"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    gender: e.target.value,
+                                });
+                            }}
+                        />
+                        <br />
+                    </div>
 
-            <h2>Postal code</h2>
-            <input
-                type="text"
-                value={clientData.postalCode}
-                onChange={(e) => {
-                    setClientData({
-                        ...clientData,
-                        postalCode: e.target.value,
-                    });
-                }}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="race">Race</label>
+                        <input
+                            type="text"
+                            value={clientData.race}
+                            id="race"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    race: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Number of kids</h2>
-            <input
-                type="number"
-                value={clientData.numKids}
-                onChange={(e) => {
-                    setClientData({
-                        ...clientData,
-                        numKids: parseInt(e.target.value),
-                    });
-                }}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="postalCode">Postal code</label>
+                        <input
+                            type="text"
+                            value={clientData.postalCode}
+                            id="postalCode"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    postalCode: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Notes</h2>
-            <textarea
-                value={clientData.notes}
-                onChange={(e) => {
-                    setClientData({ ...clientData, notes: e.target.value });
-                }}
-                cols={40}
-                rows={5}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="numKids">Number of Kids</label>
+                        <input
+                            type="number"
+                            value={clientData.numKids}
+                            id="numKids"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    numKids: parseInt(e.target.value),
+                                });
+                            }}
+                        />
+                    </div>
+                </div>
 
-            <button type="submit">Save</button>
-        </form>
+                <div>
+                    <label htmlFor="notes">Notes</label>
+                    <textarea
+                        value={clientData.notes}
+                        id="notes"
+                        onChange={(e) => {
+                            setClientData({
+                                ...clientData,
+                                notes: e.target.value,
+                            });
+                        }}
+                        rows={5}
+                    />
+                </div>
+
+                <button type="submit">Save</button>
+            </form>
+        </div>
     );
 }
