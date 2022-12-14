@@ -9,6 +9,7 @@ interface ClientInfoFormProps {
     id?: string;
     initialData?: ClientDoc;
     redirect?: string;
+    title?: string;
 }
 
 /**
@@ -25,6 +26,7 @@ export default function ClientInfoForm({
     id = undefined,
     initialData = undefined,
     redirect = '/',
+    title = 'Client Form',
 }: ClientInfoFormProps) {
     // Use default values if no initial data was passed in
     const [clientData, setClientData] = useState<ClientDoc>(
@@ -73,7 +75,7 @@ export default function ClientInfoForm({
     return (
         <div className={styles.container}>
             <div className={styles.titleContainer}>
-                <h1>Client form</h1>
+                <h1>{title}</h1>
 
                 <div>
                     <label htmlFor="isBanned">Ban</label>
