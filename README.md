@@ -71,3 +71,19 @@ Google's [Firebase Authentication](https://firebase.google.com/products/auth) is
 ## Hosting
 
 [Vercel](https://vercel.com/) is used for hosting of the front-end
+
+# Opinionated Decisions
+
+I'm (Kevin) not entirely sure about best practices for various decisions made in this project, and if there are known best practices that conflict with these it may be a good idea to refactor and change these in the future
+
+## Context
+
+There are currently two different Context providers, one for settings and one for Firebase's authentication and sign-in. These are found in the `contexts` folder, and wrap the `<main />` element in `app/layout.tsx`
+
+## Type Definitions
+
+There are no files that hold global type definitions for types that are used throughout the project. E.g., `ClientDoc` is defined in `app\profile\[userId]\page.tsx` and used in many other files as this is the Type for what the Firestore database expects. We could consider having a file just for these types for better organization
+
+## Babel vs SWC
+
+Due to Jest and Vercel the project currently uses both Babel and SWC. Ideally we'd only use SWC but I couldn't figure out how to make Jest work nicely without Babel
