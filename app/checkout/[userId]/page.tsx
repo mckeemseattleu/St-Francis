@@ -60,8 +60,6 @@ export default function CheckOut({ params }: CheckOutProps) {
                 {oldClientData?.isCheckedIn ? 'Checked in' : 'Not checked in'}
             </p>
 
-            <h2>Edit data</h2>
-
             <form
                 onSubmit={(e) => {
                     e.preventDefault(); // Prevent redirect
