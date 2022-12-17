@@ -6,6 +6,7 @@ import { firestore } from '../../../firebase/firebase';
 import { Client } from '../../../components/ClientList/ClientList';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import styles from './checkin.module.css';
 
 interface CheckinProps {
     params: { userId: string };
@@ -78,17 +79,29 @@ export default function Checkin({ params }: CheckinProps) {
     };
 
     return (
-        <div>
-            <h1>Check-in page</h1>
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h1>Check-in page</h1>
 
-            <p>{`${oldClientData?.firstName} ${oldClientData?.lastName}`}</p>
-            <p>{oldClientData ? oldClientData.notes : null}</p>
-            <p>
-                {oldClientData?.isCheckedIn ? 'Checked in' : 'Not checked in'}
-            </p>
+                <div className={styles.headerRow}>
+                    <h2>{`${oldClientData?.firstName} ${oldClientData?.lastName}`}</h2>
 
-            <Link href={`/update/${params.userId}`}>Edit data</Link>
-            <br />
+                    <p>
+                        {oldClientData?.isCheckedIn
+                            ? 'Checked in'
+                            : 'Not checked in'}
+                    </p>
+
+                    <Link href={`/update/${params.userId}`}>
+                        <button>Edit profile</button>
+                    </Link>
+                </div>
+
+                <p>Notes:</p>
+                <p>{oldClientData ? oldClientData.notes : null}</p>
+
+                <br />
+            </div>
 
             <form
                 onSubmit={(e) => {
