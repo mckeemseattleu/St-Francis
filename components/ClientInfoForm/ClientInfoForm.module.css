@@ -37,3 +37,14 @@
     width: calc(100% - 10px);
     margin: 5px;
 }
+
+.saveButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.saveButtons button {
+    width: 200px;
+}

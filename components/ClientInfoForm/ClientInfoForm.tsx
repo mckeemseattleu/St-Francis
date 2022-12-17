@@ -270,29 +270,31 @@ export default function ClientInfoForm({
                 </div>
             </form>
 
-            <button
-                onClick={() => {
-                    // If we have an id as a prop, update, else create new; also
-                    // keep current isCheckedIn status
-                    id
-                        ? updateClientData(clientData.isCheckedIn)
-                        : addNewClient(clientData.isCheckedIn);
-                }}
-            >
-                Save
-            </button>
+            <div className={styles.saveButtons}>
+                <button
+                    onClick={() => {
+                        // If we have an id as a prop, update, else create new; also
+                        // keep current isCheckedIn status
+                        id
+                            ? updateClientData(clientData.isCheckedIn)
+                            : addNewClient(clientData.isCheckedIn);
+                    }}
+                >
+                    Save
+                </button>
 
-            <button
-                onClick={() => {
-                    // If we have an id as a prop, update, else create new; also
-                    // toggle isCheckedIn status
-                    id
-                        ? updateClientData(!clientData.isCheckedIn)
-                        : addNewClient(!clientData.isCheckedIn);
-                }}
-            >
-                Save and check {clientData.isCheckedIn ? 'out' : 'in'}
-            </button>
+                <button
+                    onClick={() => {
+                        // If we have an id as a prop, update, else create new; also
+                        // toggle isCheckedIn status
+                        id
+                            ? updateClientData(!clientData.isCheckedIn)
+                            : addNewClient(!clientData.isCheckedIn);
+                    }}
+                >
+                    Save and check {clientData.isCheckedIn ? 'out' : 'in'}
+                </button>
+            </div>
         </div>
     );
 }
