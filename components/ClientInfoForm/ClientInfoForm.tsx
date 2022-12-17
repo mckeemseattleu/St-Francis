@@ -69,23 +69,37 @@ export default function ClientInfoForm({
 
     const router = useRouter();
 
-    // Creates a new doc with an automatically generated id for the client
-    const addNewClient = async () => {
+    /**
+     * Creates a new doc with an automatically generated id for the client
+     *
+     * @param newCheckedInStatus The new isCheckedIn status to save
+     */
+    const addNewClient = async (newCheckedInStatus: boolean) => {
         // Only create if either first or last name is not empty
         if (clientData.firstName !== '' || clientData.lastName !== '') {
-            await addDoc(collection(firestore, 'clients'), clientData);
+            await addDoc(collection(firestore, 'clients'), {
+                ...clientData,
+                isCheckedIn: newCheckedInStatus,
+            });
         }
 
         // Redirect back to specified redirect route
         router.push(redirect);
     };
 
-    // Updates an existing client's document. If id is invalid will do nothing,
-    // but this should never run with an invalid id
-    const updateClientData = async () => {
+    /**
+     *
+     * Updates an existing client's document. If id is invalid will do nothing,
+     * but this should never run with an invalid id
+     * @param newCheckedInStatus The new isCheckedIn status to save
+     */
+    const updateClientData = async (newCheckedInStatus: boolean) => {
         // Ensure id's not undefined
         if (id) {
-            await setDoc(doc(firestore, 'clients', id), clientData);
+            await setDoc(doc(firestore, 'clients', id), {
+                ...clientData,
+                isCheckedIn: newCheckedInStatus,
+            });
 
             // Redirect to specified route
             router.push(redirect);
@@ -115,14 +129,7 @@ export default function ClientInfoForm({
                 </div>
             </div>
 
-            <form
-                onSubmit={(e) => {
-                    // Prevent redirect
-                    e.preventDefault();
-                    // If we have an id as a prop, update, else create new
-                    id ? updateClientData() : addNewClient();
-                }}
-            >
+            <form>
                 <div className={styles.formRows}>
                     <div className={styles.formRowItem}>
                         <label htmlFor="firstName">First name</label>
@@ -261,9 +268,31 @@ export default function ClientInfoForm({
                         rows={5}
                     />
                 </div>
-
-                <button type="submit">Save</button>
             </form>
+
+            <button
+                onClick={() => {
+                    // If we have an id as a prop, update, else create new; also
+                    // keep current isCheckedIn status
+                    id
+                        ? updateClientData(clientData.isCheckedIn)
+                        : addNewClient(clientData.isCheckedIn);
+                }}
+            >
+                Save
+            </button>
+
+            <button
+                onClick={() => {
+                    // If we have an id as a prop, update, else create new; also
+                    // toggle isCheckedIn status
+                    id
+                        ? updateClientData(!clientData.isCheckedIn)
+                        : addNewClient(!clientData.isCheckedIn);
+                }}
+            >
+                Save and check {clientData.isCheckedIn ? 'out' : 'in'}
+            </button>
         </div>
     );
 }
