@@ -99,8 +99,6 @@ export default function Checkin({ params }: CheckinProps) {
 
                 <p>Notes:</p>
                 <p>{oldClientData ? oldClientData.notes : null}</p>
-
-                <br />
             </div>
 
             <form
