@@ -31,7 +31,27 @@ export default function ClientInfoForm({
     // Use default values if no initial data was passed in
     const [clientData, setClientData] = useState<ClientDoc>(
         initialData
-            ? initialData
+            ? {
+                  firstName: initialData.firstName ? initialData.firstName : '',
+                  lastName: initialData.lastName ? initialData.lastName : '',
+                  middleInitial: initialData.middleInitial
+                      ? initialData.middleInitial
+                      : '',
+                  birthday: initialData.birthday
+                      ? initialData.birthday
+                      : new Date().toISOString().substring(0, 10), // TODO: Consider saving as timestamp
+                  gender: initialData.gender ? initialData.gender : '',
+                  race: initialData.race ? initialData.race : '',
+                  postalCode: initialData.postalCode
+                      ? initialData.postalCode
+                      : '',
+                  numKids: initialData.numKids ? initialData.numKids : 0,
+                  notes: initialData.notes ? initialData.notes : '',
+                  isCheckedIn: initialData.isCheckedIn
+                      ? initialData.isCheckedIn
+                      : false,
+                  isBanned: initialData.isBanned ? initialData.isBanned : false,
+              }
             : {
                   firstName: '',
                   lastName: '',
