@@ -127,19 +127,29 @@ export default function ClientList() {
     };
 
     // Create a ClientCard for each Client in clients, if they exist
-    const clientsList = clients?.map((client: Client) => {
-        return (
-            <ClientCard
-                id={client.id}
-                firstName={client.firstName}
-                lastName={client.lastName}
-                birthday={client.birthday}
-                notes={client.notes}
-                key={client.id}
-                isBanned={client.isBanned}
-            />
-        );
-    });
+    const clientsList =
+        // If clients arr exist and isn't empty
+        clients && clients.length > 0 ? (
+            clients?.map((client: Client) => {
+                return (
+                    <ClientCard
+                        id={client.id}
+                        firstName={client.firstName}
+                        lastName={client.lastName}
+                        birthday={client.birthday}
+                        notes={client.notes}
+                        key={client.id}
+                        isBanned={client.isBanned}
+                    />
+                );
+            })
+        ) : clients ? (
+            // If clients is 0 length arr, user searched something but found
+            // nothing
+            <h1>No matching clients</h1>
+        ) : // If clients doesn't exist at all, the page just loaded and no
+        // search happened yet
+        null;
 
     return (
         <>
