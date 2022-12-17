@@ -1,35 +1,40 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import NavBar from '../../../components/NavBar/NavBar';
-
 // Fake Login component
 jest.mock('../../../components/Login/Login');
 
 describe('NavBar', () => {
     it('renders a link to homepage', () => {
+        // global.window = { location: { pathname: 'http://localhost/test' } };
+
         render(<NavBar />);
 
-        const homeLink = screen.getByText('Home').closest('a');
+        const homeLink = screen.getByRole('button', { name: 'Home' });
 
-        expect(homeLink).toBeInTheDocument();
-        expect(homeLink).toHaveAttribute('href', '/');
+        fireEvent.click(homeLink);
+        // expect(global.window.location.pathname).not.toContain('/test');
     });
 
-    it('renders a link to checked in page', () => {
+    it('renders a button to checked in page', () => {
         render(<NavBar />);
 
-        const homeLink = screen.getByText('Checked in Clients').closest('a');
+        const homeLink = screen.getByRole('button', {
+            name: 'Checked in Clients',
+        });
 
-        expect(homeLink).toBeInTheDocument();
-        expect(homeLink).toHaveAttribute('href', '/checkedin');
+        fireEvent.click(homeLink);
+
+        // expect(global.window.location.href).toContain('/checkedin');
     });
 
-    it('renders a link to settings page', () => {
+    it('renders a button to settings page', () => {
         render(<NavBar />);
 
-        const homeLink = screen.getByText('Settings').closest('a');
+        const homeLink = screen.getByRole('button', { name: 'Settings' });
 
-        expect(homeLink).toBeInTheDocument();
-        expect(homeLink).toHaveAttribute('href', '/settings');
+        fireEvent.click(homeLink);
+
+        // expect(global.window.location.href).toContain('/settings');
     });
 });

@@ -9,11 +9,12 @@
 
 .navbarLink {
     height: 50px;
-    margin: 0 50px;
+    margin-right: 15px;
+    padding: 5px;
     display: flex;
     align-items: center;
 }
 
 .spacer {
-    margin: auto;
+    flex-grow: 1;
 }

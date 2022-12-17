@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.titleContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 0.5px solid var(--gray-3);
+}
+
+.titleContainer h1 {
+    flex-grow: 1;
+}
+
+.formRows {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.formRowItem {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: calc(25% - 10px);
+    margin: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.container input,
+.container label {
+    display: block;
+}
+
+.container textarea {
+    width: calc(100% - 10px);
+    margin: 5px;
+}
+
+.saveButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.saveButtons button {
+    width: 200px;
+}

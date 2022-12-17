@@ -45,8 +45,10 @@ export default function CheckedIn() {
                 id: client.id,
                 firstName: client.data().firstName,
                 lastName: client.data().lastName,
+                birthday: client.data().birthday,
                 notes: client.data().notes,
                 isCheckedIn: client.data().isCheckedIn,
+                isBanned: client.data().isBanned,
             }))
         );
     };
@@ -58,6 +60,8 @@ export default function CheckedIn() {
                 id={client.id}
                 firstName={client.firstName}
                 lastName={client.lastName}
+                birthday={client.birthday}
+                isBanned={client.isBanned}
                 notes={client.notes}
                 key={client.id}
             />

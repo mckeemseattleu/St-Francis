@@ -6,6 +6,7 @@ import { firestore } from '../../../firebase/firebase';
 import { Client } from '../../../components/ClientList/ClientList';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import styles from './checkin.module.css';
 
 interface CheckinProps {
     params: { userId: string };
@@ -41,8 +42,10 @@ export default function Checkin({ params }: CheckinProps) {
                 id: params.userId,
                 firstName: clientDoc.data().firstName,
                 lastName: clientDoc.data().lastName,
+                birthday: clientDoc.data().birthday,
                 notes: clientDoc.data().notes,
                 isCheckedIn: clientDoc.data().isCheckedIn,
+                isBanned: clientDoc.data().isBanned,
             });
         } else {
             router.push('/');
@@ -76,87 +79,106 @@ export default function Checkin({ params }: CheckinProps) {
     };
 
     return (
-        <div>
-            <h1>Check-in page</h1>
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h1>Check-in page</h1>
 
-            <p>{`${oldClientData?.firstName} ${oldClientData?.lastName}`}</p>
-            <p>{oldClientData ? oldClientData.notes : null}</p>
-            <p>
-                {oldClientData?.isCheckedIn ? 'Checked in' : 'Not checked in'}
-            </p>
+                <div className={styles.headerRow}>
+                    <h2>{`${oldClientData?.firstName} ${oldClientData?.lastName}`}</h2>
 
-            <Link href={`/update/${params.userId}`}>Edit data</Link>
-            <br />
+                    <p>
+                        {oldClientData?.isCheckedIn
+                            ? 'Checked in'
+                            : 'Not checked in'}
+                    </p>
+
+                    <Link href={`/update/${params.userId}`}>
+                        <button>Edit profile</button>
+                    </Link>
+                </div>
+
+                <p>Notes:</p>
+                <p>{oldClientData ? oldClientData.notes : null}</p>
+            </div>
 
             <form
                 onSubmit={(e) => {
                     e.preventDefault(); // Prevent redirect
                     checkIn();
                 }}
+                className={styles.form}
             >
                 <h2>Clothing</h2>
 
-                <label htmlFor="clothingMen">Men</label>
-                <input
-                    type="checkbox"
-                    name="clothingMen"
-                    id="clothingMen"
-                    value={visitData.clothingMen ? 'on' : 'off'}
-                    onChange={(e) => {
-                        setVisitData((prev: any) => ({
-                            ...prev,
-                            clothingMen: e.target.checked,
-                        }));
-                    }}
-                />
-                <br />
+                <div className={styles.formRows}>
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="clothingMen">Men</label>
+                        <input
+                            type="checkbox"
+                            name="clothingMen"
+                            id="clothingMen"
+                            value={visitData.clothingMen ? 'on' : 'off'}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    clothingMen: e.target.checked,
+                                }));
+                            }}
+                        />
+                    </div>
 
-                <label htmlFor="clothingWomen">Women</label>
-                <input
-                    type="checkbox"
-                    name="clothingWomen"
-                    id="clothingWomen"
-                    value={visitData.clothingWomen ? 'on' : 'off'}
-                    onChange={(e) => {
-                        setVisitData((prev: any) => ({
-                            ...prev,
-                            clothingWomen: e.target.checked,
-                        }));
-                    }}
-                />
-                <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="clothingWomen">Women</label>
+                        <input
+                            type="checkbox"
+                            name="clothingWomen"
+                            id="clothingWomen"
+                            value={visitData.clothingWomen ? 'on' : 'off'}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    clothingWomen: e.target.checked,
+                                }));
+                            }}
+                        />
+                    </div>
 
-                <label htmlFor="clothingBoy">Kids (Boy)</label>
-                <input
-                    type="checkbox"
-                    name="clothingBoy"
-                    id="clothingBoy"
-                    value={visitData.clothingBoy ? 'on' : 'off'}
-                    onChange={(e) => {
-                        setVisitData((prev: any) => ({
-                            ...prev,
-                            clothingBoy: e.target.checked,
-                        }));
-                    }}
-                />
-                <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="clothingBoy">Kids (Boy)</label>
+                        <input
+                            type="checkbox"
+                            name="clothingBoy"
+                            id="clothingBoy"
+                            value={visitData.clothingBoy ? 'on' : 'off'}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    clothingBoy: e.target.checked,
+                                }));
+                            }}
+                        />
+                    </div>
 
-                <label htmlFor="clothingGirl">Kids (Girl)</label>
-                <input
-                    type="checkbox"
-                    name="clothingGirl"
-                    id="clothingGirl"
-                    value={visitData.clothingGirl ? 'on' : 'off'}
-                    onChange={(e) => {
-                        setVisitData((prev: any) => ({
-                            ...prev,
-                            clothingGirl: e.target.checked,
-                        }));
-                    }}
-                />
-                <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="clothingGirl">Kids (Girl)</label>
+                        <input
+                            type="checkbox"
+                            name="clothingGirl"
+                            id="clothingGirl"
+                            value={visitData.clothingGirl ? 'on' : 'off'}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    clothingGirl: e.target.checked,
+                                }));
+                            }}
+                        />
+                    </div>
+                </div>
 
-                <label htmlFor="notes">Notes</label>
+                <label htmlFor="notes">
+                    <h2>Notes</h2>
+                </label>
                 <input
                     type="text"
                     name="notes"
@@ -169,9 +191,10 @@ export default function Checkin({ params }: CheckinProps) {
                         }));
                     }}
                 />
-                <br />
 
-                <label htmlFor="household">Household items</label>
+                <label htmlFor="household">
+                    <h2>Household items</h2>
+                </label>
                 <input
                     type="text"
                     name="household"
@@ -184,7 +207,6 @@ export default function Checkin({ params }: CheckinProps) {
                         }));
                     }}
                 />
-                <br />
 
                 <button type="submit">Check in</button>
             </form>

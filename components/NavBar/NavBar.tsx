@@ -8,7 +8,7 @@ export default function NavBar() {
     return (
         <div className={styles.container}>
             <Link className={styles.navbarLink} href="/">
-                Home
+                <button>Home</button>
             </Link>
 
             <span className={styles.spacer} />

@@ -1,23 +1,15 @@
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ClientDoc } from '../../app/profile/[userId]/page';
 import { firestore } from '../../firebase/firebase';
+import styles from './ClientInfoForm.module.css';
 
 interface ClientInfoFormProps {
     id?: string;
-    initialData?: {
-        firstName: string;
-        lastName: string;
-        middleInitial: string;
-        birthday: string; // TODO: Consider saving as timestamp
-        gender: string;
-        race: string;
-        postalCode: string;
-        numKids: number;
-        notes: string;
-        isCheckedIn: boolean;
-        isBanned: boolean;
-    };
+    initialData?: ClientDoc;
+    redirect?: string;
+    title?: string;
 }
 
 /**
@@ -28,205 +20,281 @@ interface ClientInfoFormProps {
  * @param initialData Initial values to have in the input fields. If none are
  * given, empty strings will be used for text fields, 0 for number fields, and
  * the current date used for birthday
+ * @param redirect Route to redirect to when form is submitted. Defaults to homepage
  */
 export default function ClientInfoForm({
     id = undefined,
     initialData = undefined,
+    redirect = '/',
+    title = 'Client Form',
 }: ClientInfoFormProps) {
-    // Use old info from props if it exists, else default values
-    const [firstName, setFirstName] = useState<string>(
-        initialData ? initialData.firstName : ''
-    );
-    const [lastName, setLastName] = useState<string>(
-        initialData ? initialData.lastName : ''
-    );
-    const [middleInitial, setMiddleInitial] = useState<string>(
-        initialData ? initialData.middleInitial : ''
-    );
-    const [birthday, setBirthday] = useState<any>(
+    // Use default values if no initial data was passed in
+    const [clientData, setClientData] = useState<ClientDoc>(
         initialData
-            ? initialData.birthday
-            : new Date().toISOString().substring(0, 10)
+            ? {
+                  firstName: initialData.firstName ? initialData.firstName : '',
+                  lastName: initialData.lastName ? initialData.lastName : '',
+                  middleInitial: initialData.middleInitial
+                      ? initialData.middleInitial
+                      : '',
+                  birthday: initialData.birthday
+                      ? initialData.birthday
+                      : new Date().toISOString().substring(0, 10), // TODO: Consider saving as timestamp
+                  gender: initialData.gender ? initialData.gender : '',
+                  race: initialData.race ? initialData.race : '',
+                  postalCode: initialData.postalCode
+                      ? initialData.postalCode
+                      : '',
+                  numKids: initialData.numKids ? initialData.numKids : 0,
+                  notes: initialData.notes ? initialData.notes : '',
+                  isCheckedIn: initialData.isCheckedIn
+                      ? initialData.isCheckedIn
+                      : false,
+                  isBanned: initialData.isBanned ? initialData.isBanned : false,
+              }
+            : {
+                  firstName: '',
+                  lastName: '',
+                  middleInitial: '',
+                  birthday: new Date().toISOString().substring(0, 10), // TODO: Consider saving as timestamp
+                  gender: '',
+                  race: '',
+                  postalCode: '',
+                  numKids: 0,
+                  notes: '',
+                  isCheckedIn: false,
+                  isBanned: false,
+              }
     );
-    const [gender, setGender] = useState<string>(
-        initialData ? initialData.gender : ''
-    );
-    const [race, setRace] = useState<string>(
-        initialData ? initialData.race : ''
-    );
-    const [postalCode, setPostalCode] = useState<string>(
-        initialData ? initialData.postalCode : ''
-    );
-    const [numKids, setNumKids] = useState<number>(
-        initialData ? initialData.numKids : 0
-    );
-    const [notes, setNotes] = useState<string>(
-        initialData ? initialData.notes : ''
-    );
-    const [isCheckedIn, setIsCheckedIn] = useState<boolean>(
-        initialData ? initialData.isCheckedIn : false
-    );
-    const [isBanned, setIsBanned] = useState<boolean>(
-        initialData ? initialData.isBanned : false
-    );
+
     const router = useRouter();
 
-    // Creates a new doc with an automatically generated id for the client
-    const addNewClient = async () => {
+    /**
+     * Creates a new doc with an automatically generated id for the client
+     *
+     * @param newCheckedInStatus The new isCheckedIn status to save
+     */
+    const addNewClient = async (newCheckedInStatus: boolean) => {
         // Only create if either first or last name is not empty
-        if (firstName !== '' || lastName !== '') {
+        if (clientData.firstName !== '' || clientData.lastName !== '') {
             await addDoc(collection(firestore, 'clients'), {
-                firstName,
-                lastName,
-                middleInitial,
-                birthday, // TODO: Consider saving as timestamp
-                gender,
-                race,
-                postalCode,
-                numKids,
-                notes,
-                isCheckedIn: false,
-                isBanned,
+                ...clientData,
+                isCheckedIn: newCheckedInStatus,
             });
         }
 
-        // Redirect back to index page
-        router.push('/');
+        // Redirect back to specified redirect route
+        router.push(redirect);
     };
 
-    // Updates an existing client's document. If id is invalid will do nothing,
-    // but this should never run with an invalid id
-    const updateClientData = async () => {
+    /**
+     *
+     * Updates an existing client's document. If id is invalid will do nothing,
+     * but this should never run with an invalid id
+     * @param newCheckedInStatus The new isCheckedIn status to save
+     */
+    const updateClientData = async (newCheckedInStatus: boolean) => {
         // Ensure id's not undefined
-        if (id)
+        if (id) {
             await setDoc(doc(firestore, 'clients', id), {
-                firstName,
-                lastName,
-                middleInitial,
-                birthday, // TODO: Consider saving as timestamp
-                gender,
-                race,
-                postalCode,
-                numKids,
-                notes,
-                isCheckedIn,
-                isBanned,
+                ...clientData,
+                isCheckedIn: newCheckedInStatus,
             });
+
+            // Redirect to specified route
+            router.push(redirect);
+        }
     };
 
     return (
-        <form
-            onSubmit={(e) => {
-                // Prevent redirect
-                e.preventDefault();
-                // If we have an id as a prop, update, else create new
-                id ? updateClientData() : addNewClient();
-            }}
-        >
-            <h2>Ban</h2>
-            <input
-                type="checkbox"
-                name="isBanned"
-                id="isBanned"
-                value={isBanned ? 'on' : 'off'}
-                onChange={(e) => {
-                    setIsBanned(e.target.checked);
-                }}
-            />
+        <div className={styles.container}>
+            <div className={styles.titleContainer}>
+                <h1>{title}</h1>
 
-            <h2>First name</h2>
-            <input
-                type="text"
-                value={firstName}
-                onChange={(e) => {
-                    setFirstName(e.target.value);
-                }}
-            />
-            <br />
+                <div>
+                    <label htmlFor="isBanned">Ban</label>
+                    <input
+                        type="checkbox"
+                        name="isBanned"
+                        id="isBanned"
+                        defaultChecked={clientData.isBanned}
+                        value={clientData.isBanned ? 'on' : 'off'}
+                        onChange={(e) => {
+                            setClientData({
+                                ...clientData,
+                                isBanned: e.target.checked,
+                            });
+                        }}
+                    />
+                </div>
+            </div>
 
-            <h2>Middle initial</h2>
-            <input
-                type="text"
-                value={middleInitial}
-                onChange={(e) => {
-                    setMiddleInitial(e.target.value);
-                }}
-            />
-            <br />
+            <form>
+                <div className={styles.formRows}>
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="firstName">First name</label>
+                        <input
+                            type="text"
+                            value={clientData.firstName}
+                            id="firstName"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    firstName: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Last name</h2>
-            <input
-                type="text"
-                value={lastName}
-                onChange={(e) => {
-                    setLastName(e.target.value);
-                }}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="middleInitial">Middle initial</label>
+                        <input
+                            type="text"
+                            value={clientData.middleInitial}
+                            id="middleInitial"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    middleInitial: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Birthday</h2>
-            <input
-                type="date"
-                name="birthday"
-                id="birthday"
-                value={birthday}
-                onChange={(e) => {
-                    setBirthday(e.target.value);
-                }}
-            />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="lastName">Last name</label>
+                        <input
+                            type="text"
+                            value={clientData.lastName}
+                            id="lastName"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    lastName: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Gender</h2>
-            <input
-                type="text"
-                value={gender}
-                onChange={(e) => {
-                    setGender(e.target.value);
-                }}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="birthday">Birthday</label>
+                        <input
+                            type="date"
+                            name="birthday"
+                            id="birthday"
+                            value={clientData.birthday}
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    birthday: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Race</h2>
-            <input
-                type="text"
-                value={race}
-                onChange={(e) => {
-                    setRace(e.target.value);
-                }}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="gender">Gender</label>
+                        <input
+                            type="text"
+                            value={clientData.gender}
+                            id="gender"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    gender: e.target.value,
+                                });
+                            }}
+                        />
+                        <br />
+                    </div>
 
-            <h2>Postal code</h2>
-            <input
-                type="text"
-                value={postalCode}
-                onChange={(e) => {
-                    setPostalCode(e.target.value);
-                }}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="race">Race</label>
+                        <input
+                            type="text"
+                            value={clientData.race}
+                            id="race"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    race: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Number of kids</h2>
-            <input
-                type="number"
-                value={numKids}
-                onChange={(e) => {
-                    setNumKids(parseInt(e.target.value));
-                }}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="postalCode">Postal code</label>
+                        <input
+                            type="text"
+                            value={clientData.postalCode}
+                            id="postalCode"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    postalCode: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
 
-            <h2>Notes</h2>
-            <textarea
-                value={notes}
-                onChange={(e) => {
-                    setNotes(e.target.value);
-                }}
-                cols={40}
-                rows={5}
-            />
-            <br />
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="numKids">Number of Kids</label>
+                        <input
+                            type="number"
+                            value={clientData.numKids}
+                            id="numKids"
+                            onChange={(e) => {
+                                setClientData({
+                                    ...clientData,
+                                    numKids: parseInt(e.target.value),
+                                });
+                            }}
+                        />
+                    </div>
+                </div>
 
-            <button type="submit">Save</button>
-        </form>
+                <div>
+                    <label htmlFor="notes">Notes</label>
+                    <textarea
+                        value={clientData.notes}
+                        id="notes"
+                        onChange={(e) => {
+                            setClientData({
+                                ...clientData,
+                                notes: e.target.value,
+                            });
+                        }}
+                        rows={5}
+                    />
+                </div>
+            </form>
+
+            <div className={styles.saveButtons}>
+                <button
+                    onClick={() => {
+                        // If we have an id as a prop, update, else create new; also
+                        // keep current isCheckedIn status
+                        id
+                            ? updateClientData(clientData.isCheckedIn)
+                            : addNewClient(clientData.isCheckedIn);
+                    }}
+                >
+                    Save
+                </button>
+
+                <button
+                    onClick={() => {
+                        // If we have an id as a prop, update, else create new; also
+                        // toggle isCheckedIn status
+                        id
+                            ? updateClientData(!clientData.isCheckedIn)
+                            : addNewClient(!clientData.isCheckedIn);
+                    }}
+                >
+                    Save and check {clientData.isCheckedIn ? 'out' : 'in'}
+                </button>
+            </div>
+        </div>
     );
 }

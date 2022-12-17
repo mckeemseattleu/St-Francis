@@ -18,8 +18,10 @@ export interface Client {
     id: string;
     firstName: string;
     lastName: string;
+    birthday: string;
     notes: string;
     isCheckedIn: boolean;
+    isBanned: boolean;
 }
 
 interface Filter {
@@ -116,24 +118,38 @@ export default function ClientList() {
                 id: client.id,
                 firstName: client.data().firstName,
                 lastName: client.data().lastName,
+                birthday: client.data().birthday,
                 notes: client.data().notes,
                 isCheckedIn: client.data().isCheckedIn,
+                isBanned: client.data().isBanned,
             }))
         );
     };
 
     // Create a ClientCard for each Client in clients, if they exist
-    const clientsList = clients?.map((client: Client) => {
-        return (
-            <ClientCard
-                id={client.id}
-                firstName={client.firstName}
-                lastName={client.lastName}
-                notes={client.notes}
-                key={client.id}
-            />
-        );
-    });
+    const clientsList =
+        // If clients arr exist and isn't empty
+        clients && clients.length > 0 ? (
+            clients?.map((client: Client) => {
+                return (
+                    <ClientCard
+                        id={client.id}
+                        firstName={client.firstName}
+                        lastName={client.lastName}
+                        birthday={client.birthday}
+                        notes={client.notes}
+                        key={client.id}
+                        isBanned={client.isBanned}
+                    />
+                );
+            })
+        ) : clients ? (
+            // If clients is 0 length arr, user searched something but found
+            // nothing
+            <h1>No matching clients</h1>
+        ) : // If clients doesn't exist at all, the page just loaded and no
+        // search happened yet
+        null;
 
     return (
         <>

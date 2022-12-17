@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    max-width: 1000px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+}
+
+.headerRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.headerRow h2 {
+    flex-grow: 1;
+}
+
+.headerRow button {
+    margin-left: 20px;
+}
