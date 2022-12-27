@@ -31,7 +31,7 @@ interface Visit {
 export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
     const [oldClientData, setOldClientData] = useState<Client>();
-    const [visitData, setVisitData] = useState<any>({
+    const [visitData, setVisitData] = useState<Visit>({
         clothingMen: false,
         clothingWomen: false,
         clothingBoy: false,
@@ -39,6 +39,12 @@ export default function Checkin({ params }: CheckinProps) {
         household: '',
         notes: '',
         timestamp: new Date(),
+        backpack: false,
+        sleepingBag: false,
+        busTicket: 0,
+        giftCard: 0,
+        diaper: 0,
+        financialAssistance: 0,
     });
 
     // Get client data on component load
