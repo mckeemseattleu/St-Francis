@@ -198,6 +198,108 @@ export default function Checkin({ params }: CheckinProps) {
                     </div>
                 </div>
 
+                <h2>Special Requests</h2>
+
+                <div className={styles.formRows}>
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="backpack">Backpack</label>
+                        <input
+                            type="checkbox"
+                            name="backpack"
+                            id="backpack"
+                            value={visitData.backpack ? 'on' : 'off'}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    backpack: e.target.checked,
+                                }));
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="sleepingBag">Sleeping Bag</label>
+                        <input
+                            type="checkbox"
+                            name="sleepingBag"
+                            id="sleepingBag"
+                            value={visitData.sleepingBag ? 'on' : 'off'}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    sleepingBag: e.target.checked,
+                                }));
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="busTicket">Bus Ticket</label>
+                        <input
+                            type="number"
+                            name="busTicket"
+                            id="busTicket"
+                            value={visitData.busTicket}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    busTicket: e.target.value,
+                                }));
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="giftCard">Gift Card</label>
+                        <input
+                            type="number"
+                            name="giftCard"
+                            id="giftCard"
+                            value={visitData.giftCard}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    giftCard: e.target.value,
+                                }));
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="diaper">Diaper</label>
+                        <input
+                            type="number"
+                            name="diaper"
+                            id="diaper"
+                            value={visitData.diaper}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    diaper: e.target.value,
+                                }));
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="financialAssistance">
+                            Financial Assistance
+                        </label>
+                        <input
+                            type="number"
+                            name="financialAssistance"
+                            id="financialAssistance"
+                            value={visitData.financialAssistance}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    financialAssistance: e.target.value,
+                                }));
+                            }}
+                        />
+                    </div>
+                </div>
+
                 <label htmlFor="notes">
                     <h2>Notes</h2>
                 </label>
