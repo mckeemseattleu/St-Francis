@@ -74,35 +74,57 @@ export default function ClientInfoForm({
      *
      * @param newCheckedInStatus The new isCheckedIn status to save
      */
-    const addNewClient = async (newCheckedInStatus: boolean) => {
+    const addNewClient = async (newCheckedInStatus: boolean = false) => {
         // Only create if either first or last name is not empty
         if (clientData.firstName !== '' || clientData.lastName !== '') {
             await addDoc(collection(firestore, 'clients'), {
                 ...clientData,
-                isCheckedIn: newCheckedInStatus,
+                // If we want to check out we check out, otherwise keep current
+                // status
+                isCheckedIn:
+                    newCheckedInStatus == false
+                        ? false
+                        : clientData.isCheckedIn,
             });
         }
 
-        // Redirect back to specified redirect route
-        router.push(redirect);
+        // If client's currently checked out and we want to check them in,
+        // redirect to checkin page, otherwise back to specified redirect route
+        router.push(
+            newCheckedInStatus && clientData.isCheckedIn == false
+                ? `/checkin/${id}`
+                : redirect
+        );
     };
 
     /**
      *
      * Updates an existing client's document. If id is invalid will do nothing,
      * but this should never run with an invalid id
+     *
      * @param newCheckedInStatus The new isCheckedIn status to save
+     * @param redirectToCheckIn If we should redirect to checkin page instead
      */
-    const updateClientData = async (newCheckedInStatus: boolean) => {
+    const updateClientData = async (newCheckedInStatus: boolean = false) => {
         // Ensure id's not undefined
         if (id) {
             await setDoc(doc(firestore, 'clients', id), {
                 ...clientData,
-                isCheckedIn: newCheckedInStatus,
+                // If we want to check out we check out, otherwise keep current
+                // status
+                isCheckedIn:
+                    newCheckedInStatus == false
+                        ? false
+                        : clientData.isCheckedIn,
             });
 
-            // Redirect to specified route
-            router.push(redirect);
+            // If client's currently checked out and we want to check them in,
+            // redirect to checkin page, otherwise back to specified redirect route
+            router.push(
+                newCheckedInStatus && clientData.isCheckedIn == false
+                    ? `/checkin/${id}`
+                    : redirect
+            );
         }
     };
 
@@ -275,9 +297,7 @@ export default function ClientInfoForm({
                     onClick={() => {
                         // If we have an id as a prop, update, else create new; also
                         // keep current isCheckedIn status
-                        id
-                            ? updateClientData(clientData.isCheckedIn)
-                            : addNewClient(clientData.isCheckedIn);
+                        id ? updateClientData() : addNewClient();
                     }}
                 >
                     Save
@@ -285,8 +305,9 @@ export default function ClientInfoForm({
 
                 <button
                     onClick={() => {
-                        // If we have an id as a prop, update, else create new; also
-                        // toggle isCheckedIn status
+                        // If we have an id as a prop, update, else create new;
+                        // also toggle isCheckedIn status. Will redirect to
+                        // checkin page if checking in
                         id
                             ? updateClientData(!clientData.isCheckedIn)
                             : addNewClient(!clientData.isCheckedIn);
