@@ -12,6 +12,22 @@ interface CheckinProps {
     params: { userId: string };
 }
 
+interface Visit {
+    clothingMen: boolean;
+    clothingWomen: boolean;
+    clothingBoy: boolean;
+    clothingGirl: boolean;
+    household: string;
+    notes: string;
+    timestamp: Date;
+    backpack: boolean;
+    sleepingBag: boolean;
+    busTicket: number;
+    giftCard: number;
+    diaper: number;
+    financialAssistance: number;
+}
+
 export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
     const [oldClientData, setOldClientData] = useState<Client>();
