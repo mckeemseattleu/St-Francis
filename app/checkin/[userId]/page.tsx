@@ -300,22 +300,6 @@ export default function Checkin({ params }: CheckinProps) {
                     </div>
                 </div>
 
-                <label htmlFor="notes">
-                    <h2>Notes</h2>
-                </label>
-                <input
-                    type="text"
-                    name="notes"
-                    id="notes"
-                    value={visitData.notes}
-                    onChange={(e) => {
-                        setVisitData((prev: typeof visitData) => ({
-                            ...prev,
-                            notes: e.target.value,
-                        }));
-                    }}
-                />
-
                 <label htmlFor="household">
                     <h2>Household items</h2>
                 </label>
@@ -328,6 +312,22 @@ export default function Checkin({ params }: CheckinProps) {
                         setVisitData((prev: typeof visitData) => ({
                             ...prev,
                             household: e.target.value,
+                        }));
+                    }}
+                />
+
+                <label htmlFor="notes">
+                    <h2>Notes</h2>
+                </label>
+                <input
+                    type="text"
+                    name="notes"
+                    id="notes"
+                    value={visitData.notes}
+                    onChange={(e) => {
+                        setVisitData((prev: typeof visitData) => ({
+                            ...prev,
+                            notes: e.target.value,
                         }));
                     }}
                 />
