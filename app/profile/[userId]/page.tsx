@@ -115,10 +115,21 @@ export default function Profile({ params }: ProfileProps) {
                         </h2>
 
                         <h3>Clothing</h3>
-                        <p>{visit.clothingMen ? 'Men' : null}</p>
-                        <p>{visit.clothingWomen ? 'Women' : null}</p>
-                        <p>{visit.clothingBoy ? 'Kids (boy)' : null}</p>
-                        <p>{visit.clothingGirl ? 'Kids (girl)' : null}</p>
+                        {visit.clothingBoy ||
+                        visit.clothingWomen ||
+                        visit.clothingBoy ||
+                        visit.clothingGirl ? (
+                            <>
+                                <p>{visit.clothingMen ? 'Men' : null}</p>
+                                <p>{visit.clothingWomen ? 'Women' : null}</p>
+                                <p>{visit.clothingBoy ? 'Kids (boy)' : null}</p>
+                                <p>
+                                    {visit.clothingGirl ? 'Kids (girl)' : null}
+                                </p>
+                            </>
+                        ) : (
+                            <p>None</p>
+                        )}
 
                         <h3>Notes</h3>
                         <p>{visit.notes.length === 0 ? 'None' : visit.notes}</p>
