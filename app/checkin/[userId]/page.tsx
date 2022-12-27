@@ -1,6 +1,13 @@
 'use client';
 
-import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+    addDoc,
+    collection,
+    doc,
+    getDoc,
+    Timestamp,
+    updateDoc,
+} from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
 import { Client } from '../../../components/ClientList/ClientList';
@@ -12,14 +19,14 @@ interface CheckinProps {
     params: { userId: string };
 }
 
-interface Visit {
+export interface Visit {
     clothingMen: boolean;
     clothingWomen: boolean;
     clothingBoy: boolean;
     clothingGirl: boolean;
     household: string;
     notes: string;
-    timestamp: Date;
+    timestamp: Timestamp;
     backpack: boolean;
     sleepingBag: boolean;
     busTicket: number;
@@ -38,7 +45,7 @@ export default function Checkin({ params }: CheckinProps) {
         clothingGirl: false,
         household: '',
         notes: '',
-        timestamp: new Date(),
+        timestamp: Timestamp.fromDate(new Date()),
         backpack: false,
         sleepingBag: false,
         busTicket: 0,
@@ -84,7 +91,7 @@ export default function Checkin({ params }: CheckinProps) {
         // Update timestamp to current time
         setVisitData((prev: typeof visitData) => ({
             ...prev,
-            timestamp: new Date(),
+            timestamp: Timestamp.fromDate(new Date()),
         }));
 
         // Add new visit entry
