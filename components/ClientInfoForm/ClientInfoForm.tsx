@@ -1,4 +1,5 @@
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ClientDoc } from '../../app/profile/[userId]/page';
@@ -293,7 +294,16 @@ export default function ClientInfoForm({
             </form>
 
             <div className={styles.saveButtons}>
+                <Link href={`/profile/${id}`}>
+                    <button className={styles.backButton}>
+                        Back to Profile
+                    </button>
+                </Link>
+
+                <span />
+
                 <button
+                    className={styles.saveButton}
                     onClick={() => {
                         // If we have an id as a prop, update, else create new; also
                         // keep current isCheckedIn status
@@ -304,6 +314,7 @@ export default function ClientInfoForm({
                 </button>
 
                 <button
+                    className={styles.saveButton}
                     onClick={() => {
                         // If we have an id as a prop, update, else create new;
                         // also toggle isCheckedIn status. Will redirect to
