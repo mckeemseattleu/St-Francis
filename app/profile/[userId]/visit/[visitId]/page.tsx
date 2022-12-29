@@ -1,6 +1,7 @@
 'use client';
 
 import { doc, getDoc } from 'firebase/firestore';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../../../firebase/firebase';
@@ -34,7 +35,12 @@ export default function Visit({ params }: VisitProps) {
 
     return (
         <>
-            <h1>Visit</h1>
+            <h1>Visit Details</h1>
+            <Link
+                href={`/profile/${params.userId}/visit/${params.visitId}/printout`}
+            >
+                <button>Go to printout</button>
+            </Link>
         </>
     );
 }
