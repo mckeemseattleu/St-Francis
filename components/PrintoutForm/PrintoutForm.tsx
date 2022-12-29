@@ -42,14 +42,14 @@ export default function PrintoutForm({
             // TODO: Refactor from tertiary to switch case in case we have more
             // than 2 possible values for section.type in the future
             section.type === 'checkbox'
-                ? section.items.map((item: any) => (
-                      <div className={styles.item}>
+                ? section.items.map((item: any, i: number) => (
+                      <div key={i} className={styles.item}>
                           <label>{item}</label>
                           <span />
                       </div>
                   ))
-                : section.items.map((item: any) => (
-                      <div className={styles.item}>
+                : section.items.map((item: any, i: number) => (
+                      <div key={i} className={styles.item}>
                           <p>{item}</p>
                       </div>
                   ));
