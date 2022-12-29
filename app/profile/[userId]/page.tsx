@@ -120,63 +120,6 @@ export default function Profile({ params }: ProfileProps) {
                             ).toTimeString()}`}
                             </h2>
                         </Link>
-
-                        <h3>Clothing</h3>
-                        {visit.clothingBoy ||
-                        visit.clothingWomen ||
-                        visit.clothingBoy ||
-                        visit.clothingGirl ? (
-                            <>
-                                <p>{visit.clothingMen ? 'Men' : null}</p>
-                                <p>{visit.clothingWomen ? 'Women' : null}</p>
-                                <p>{visit.clothingBoy ? 'Kids (boy)' : null}</p>
-                                <p>
-                                    {visit.clothingGirl ? 'Kids (girl)' : null}
-                                </p>
-                            </>
-                        ) : (
-                            <p>None</p>
-                        )}
-
-                        <h3>Special Requests</h3>
-                        {visit.backpack ||
-                        visit.sleepingBag ||
-                        visit.busTicket ||
-                        visit.giftCard ||
-                        visit.diaper ||
-                        visit.financialAssistance ? (
-                            <>
-                                <p>{visit.backpack ? 'Backpack' : null}</p>
-                                <p>
-                                    {visit.sleepingBag ? 'Sleeping Bag' : null}
-                                </p>
-                                <p>
-                                    {visit.busTicket
-                                        ? `Bus Tickets: ${visit.busTicket}`
-                                        : null}
-                                </p>
-                                <p>
-                                    {visit.giftCard
-                                        ? `Gift Card: ${visit.giftCard}`
-                                        : null}
-                                </p>
-                                <p>
-                                    {visit.diaper
-                                        ? `Diapers: ${visit.diaper}`
-                                        : null}
-                                </p>
-                                <p>
-                                    {visit.financialAssistance
-                                        ? `Financial Assistance: ${visit.financialAssistance}`
-                                        : null}
-                                </p>
-                            </>
-                        ) : (
-                            <p>None</p>
-                        )}
-
-                        <h3>Notes</h3>
-                        <p>{visit.notes.length === 0 ? 'None' : visit.notes}</p>
                     </div>
                 );
             })

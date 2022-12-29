@@ -32,10 +32,78 @@ export default function Visit({ params }: VisitProps) {
             router.push(`/profile/${params.userId}`);
         }
     };
-
     return (
         <>
             <h1>Visit Details</h1>
+            <div>
+                {visitData?.timestamp ? (
+                    <h2>
+                        {`${new Date(
+                            visitData?.timestamp?.seconds * 1000
+                        ).toDateString()}
+                            -
+                            ${new Date(
+                                visitData?.timestamp?.seconds * 1000
+                            ).toTimeString()}`}
+                    </h2>
+                ) : null}
+
+                <h3>Clothing</h3>
+                {visitData?.clothingBoy ||
+                visitData?.clothingWomen ||
+                visitData?.clothingBoy ||
+                visitData?.clothingGirl ? (
+                    <>
+                        <p>{visitData?.clothingMen ? 'Men' : null}</p>
+                        <p>{visitData?.clothingWomen ? 'Women' : null}</p>
+                        <p>{visitData?.clothingBoy ? 'Kids (boy)' : null}</p>
+                        <p>{visitData?.clothingGirl ? 'Kids (girl)' : null}</p>
+                    </>
+                ) : (
+                    <p>None</p>
+                )}
+
+                <h3>Special Requests</h3>
+                {visitData?.backpack ||
+                visitData?.sleepingBag ||
+                visitData?.busTicket ||
+                visitData?.giftCard ||
+                visitData?.diaper ||
+                visitData?.financialAssistance ? (
+                    <>
+                        <p>{visitData?.backpack ? 'Backpack' : null}</p>
+                        <p>{visitData?.sleepingBag ? 'Sleeping Bag' : null}</p>
+                        <p>
+                            {visitData?.busTicket
+                                ? `Bus Tickets: ${visitData?.busTicket}`
+                                : null}
+                        </p>
+                        <p>
+                            {visitData?.giftCard
+                                ? `Gift Card: ${visitData?.giftCard}`
+                                : null}
+                        </p>
+                        <p>
+                            {visitData?.diaper
+                                ? `Diapers: ${visitData?.diaper}`
+                                : null}
+                        </p>
+                        <p>
+                            {visitData?.financialAssistance
+                                ? `Financial Assistance: ${visitData?.financialAssistance}`
+                                : null}
+                        </p>
+                    </>
+                ) : (
+                    <p>None</p>
+                )}
+
+                <h3>Notes</h3>
+                <p>
+                    {visitData?.notes.length === 0 ? 'None' : visitData?.notes}
+                </p>
+            </div>
+
             <Link
                 href={`/profile/${params.userId}/visit/${params.visitId}/printout`}
             >
