@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
-import { Visit } from '../../checkin/[userId]/page';
+import { VisitDoc } from '../../checkin/[userId]/page';
 import styles from './profile.module.css';
 
 export interface ClientDoc {
@@ -37,7 +37,7 @@ interface ProfileProps {
 export default function Profile({ params }: ProfileProps) {
     const router = useRouter();
     const [clientData, setClientData] = useState<ClientDoc>();
-    const [visitsData, setVisitsData] = useState<Array<Visit>>();
+    const [visitsData, setVisitsData] = useState<Array<VisitDoc>>();
 
     // Get client data on component load
     useEffect(() => {

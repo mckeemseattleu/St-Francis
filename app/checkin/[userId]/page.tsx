@@ -19,7 +19,7 @@ interface CheckinProps {
     params: { userId: string };
 }
 
-export interface Visit {
+export interface VisitDoc {
     clothingMen: boolean;
     clothingWomen: boolean;
     clothingBoy: boolean;
@@ -38,7 +38,7 @@ export interface Visit {
 export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
     const [oldClientData, setOldClientData] = useState<Client>();
-    const [visitData, setVisitData] = useState<Visit>({
+    const [visitData, setVisitData] = useState<VisitDoc>({
         clothingMen: false,
         clothingWomen: false,
         clothingBoy: false,
