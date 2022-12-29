@@ -1,6 +1,13 @@
 'use client';
 
-import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+    addDoc,
+    collection,
+    doc,
+    getDoc,
+    Timestamp,
+    updateDoc,
+} from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
 import { Client } from '../../../components/ClientList/ClientList';
@@ -12,17 +19,39 @@ interface CheckinProps {
     params: { userId: string };
 }
 
+export interface VisitDoc {
+    clothingMen: boolean;
+    clothingWomen: boolean;
+    clothingBoy: boolean;
+    clothingGirl: boolean;
+    household: string;
+    notes: string;
+    timestamp: Timestamp;
+    backpack: boolean;
+    sleepingBag: boolean;
+    busTicket: number;
+    giftCard: number;
+    diaper: number;
+    financialAssistance: number;
+}
+
 export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
     const [oldClientData, setOldClientData] = useState<Client>();
-    const [visitData, setVisitData] = useState<any>({
+    const [visitData, setVisitData] = useState<VisitDoc>({
         clothingMen: false,
         clothingWomen: false,
         clothingBoy: false,
         clothingGirl: false,
         household: '',
         notes: '',
-        timestamp: new Date(),
+        timestamp: Timestamp.fromDate(new Date()),
+        backpack: false,
+        sleepingBag: false,
+        busTicket: 0,
+        giftCard: 0,
+        diaper: 0,
+        financialAssistance: 0,
     });
 
     // Get client data on component load
@@ -62,7 +91,7 @@ export default function Checkin({ params }: CheckinProps) {
         // Update timestamp to current time
         setVisitData((prev: typeof visitData) => ({
             ...prev,
-            timestamp: new Date(),
+            timestamp: Timestamp.fromDate(new Date()),
         }));
 
         // Add new visit entry
@@ -176,21 +205,107 @@ export default function Checkin({ params }: CheckinProps) {
                     </div>
                 </div>
 
-                <label htmlFor="notes">
-                    <h2>Notes</h2>
-                </label>
-                <input
-                    type="text"
-                    name="notes"
-                    id="notes"
-                    value={visitData.notes}
-                    onChange={(e) => {
-                        setVisitData((prev: typeof visitData) => ({
-                            ...prev,
-                            notes: e.target.value,
-                        }));
-                    }}
-                />
+                <h2>Special Requests</h2>
+
+                <div className={styles.formRows}>
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="backpack">Backpack</label>
+                        <input
+                            type="checkbox"
+                            name="backpack"
+                            id="backpack"
+                            value={visitData.backpack ? 'on' : 'off'}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    backpack: e.target.checked,
+                                }));
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="sleepingBag">Sleeping Bag</label>
+                        <input
+                            type="checkbox"
+                            name="sleepingBag"
+                            id="sleepingBag"
+                            value={visitData.sleepingBag ? 'on' : 'off'}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    sleepingBag: e.target.checked,
+                                }));
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="busTicket">Bus Ticket</label>
+                        <input
+                            type="number"
+                            name="busTicket"
+                            id="busTicket"
+                            value={visitData.busTicket}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    busTicket: e.target.value,
+                                }));
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="giftCard">Gift Card</label>
+                        <input
+                            type="number"
+                            name="giftCard"
+                            id="giftCard"
+                            value={visitData.giftCard}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    giftCard: e.target.value,
+                                }));
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="diaper">Diaper</label>
+                        <input
+                            type="number"
+                            name="diaper"
+                            id="diaper"
+                            value={visitData.diaper}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    diaper: e.target.value,
+                                }));
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.formRowItem}>
+                        <label htmlFor="financialAssistance">
+                            Financial Assistance
+                        </label>
+                        <input
+                            type="number"
+                            name="financialAssistance"
+                            id="financialAssistance"
+                            value={visitData.financialAssistance}
+                            onChange={(e) => {
+                                setVisitData((prev: any) => ({
+                                    ...prev,
+                                    financialAssistance: e.target.value,
+                                }));
+                            }}
+                        />
+                    </div>
+                </div>
 
                 <label htmlFor="household">
                     <h2>Household items</h2>
@@ -204,6 +319,22 @@ export default function Checkin({ params }: CheckinProps) {
                         setVisitData((prev: typeof visitData) => ({
                             ...prev,
                             household: e.target.value,
+                        }));
+                    }}
+                />
+
+                <label htmlFor="notes">
+                    <h2>Notes</h2>
+                </label>
+                <input
+                    type="text"
+                    name="notes"
+                    id="notes"
+                    value={visitData.notes}
+                    onChange={(e) => {
+                        setVisitData((prev: typeof visitData) => ({
+                            ...prev,
+                            notes: e.target.value,
                         }));
                     }}
                 />

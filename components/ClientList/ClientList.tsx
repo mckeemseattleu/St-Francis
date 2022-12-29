@@ -4,6 +4,7 @@ import {
     collection,
     DocumentData,
     getDocs,
+    limit,
     query,
     QueryDocumentSnapshot,
     where,
@@ -38,6 +39,11 @@ export default function ClientList() {
         birthday: new Date().toISOString().substr(0, 10),
     });
     const [filterByBirthday, setFilterByBirthday] = useState<boolean>(false);
+
+    // TODO: Reevaluate if open queries with no filters should even be allowed
+    // Max number of clients returned when no search params are provided and
+    // query will return all clients
+    const MAX_CLIENTS_RETURNED = 50;
 
     const getClientsData = async (e: any) => {
         // Prevent redirect
@@ -81,7 +87,10 @@ export default function ClientList() {
         } else {
             if (filter.firstName === '' && filter.lastName === '') {
                 // Get all clients
-                clientsQuery = query(collection(firestore, 'clients'));
+                clientsQuery = query(
+                    collection(firestore, 'clients'),
+                    limit(MAX_CLIENTS_RETURNED)
+                );
             } else if (filter.firstName === '') {
                 // Get only by last name
                 clientsQuery = query(

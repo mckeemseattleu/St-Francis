@@ -1,0 +1,45 @@
+/* Deviating from website theme colors for pure black for better printability */
+.title {
+    width: 95vw;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid black;
+}
+
+.title h1 {
+    margin: auto;
+    font-size: 1.4rem;
+    color: black;
+}
+
+.body {
+    padding-left: 25px;
+    padding-right: 25px;
+    display: flex;
+    flex-direction: column;
+    border: solid 1px red;
+    color: black;
+}
+
+.body h1 {
+    font-size: 1.2rem;
+}
+
+.section {
+    display: flex;
+    flex-direction: row;
+}
+
+.item {
+    margin-right: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section span {
+    width: 50px;
+    height: 50px;
+    margin-top: 5px;
+    border: solid 1px black;
+}

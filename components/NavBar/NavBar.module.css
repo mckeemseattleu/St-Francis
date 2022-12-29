@@ -7,6 +7,12 @@
     align-items: center;
 }
 
+@media print {
+    .container {
+        display: none;
+    }
+}
+
 .navbarLink {
     height: 50px;
     margin-right: 15px;

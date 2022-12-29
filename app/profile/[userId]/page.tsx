@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
+import { VisitDoc } from '../../checkin/[userId]/page';
 import styles from './profile.module.css';
 
 export interface ClientDoc {
@@ -36,7 +37,8 @@ interface ProfileProps {
 export default function Profile({ params }: ProfileProps) {
     const router = useRouter();
     const [clientData, setClientData] = useState<ClientDoc>();
-    const [visitsData, setVisitsData] = useState<Array<any>>();
+    const [visitsData, setVisitsData] =
+        useState<Array<VisitDoc & { id: string }>>();
 
     // Get client data on component load
     useEffect(() => {
@@ -87,7 +89,9 @@ export default function Profile({ params }: ProfileProps) {
 
             // Take the data for each visit and append to visitsArr
             visits.forEach((visit) => {
-                visitsArr.push(visit.data());
+                let visitData = visit.data();
+                visitData.id = visit.id;
+                visitsArr.push(visitData);
             });
 
             // Set local state to be visitsArr
@@ -103,21 +107,73 @@ export default function Profile({ params }: ProfileProps) {
             visitsData?.map((visit, i) => {
                 return (
                     <div key={i}>
-                        <h2>
-                            {`${new Date(
-                                visit.timestamp.seconds * 1000
-                            ).toDateString()}
+                        <Link
+                            href={`/profile/${params.userId}/visit/${visit.id}`}
+                        >
+                            <h2>
+                                {`${new Date(
+                                    visit.timestamp.seconds * 1000
+                                ).toDateString()}
                             -
                             ${new Date(
                                 visit.timestamp.seconds * 1000
                             ).toTimeString()}`}
-                        </h2>
+                            </h2>
+                        </Link>
 
                         <h3>Clothing</h3>
-                        <p>{visit.clothingMen ? 'Men' : null}</p>
-                        <p>{visit.clothingWomen ? 'Women' : null}</p>
-                        <p>{visit.clothingBoy ? 'Kids (boy)' : null}</p>
-                        <p>{visit.clothingGirl ? 'Kids (girl)' : null}</p>
+                        {visit.clothingBoy ||
+                        visit.clothingWomen ||
+                        visit.clothingBoy ||
+                        visit.clothingGirl ? (
+                            <>
+                                <p>{visit.clothingMen ? 'Men' : null}</p>
+                                <p>{visit.clothingWomen ? 'Women' : null}</p>
+                                <p>{visit.clothingBoy ? 'Kids (boy)' : null}</p>
+                                <p>
+                                    {visit.clothingGirl ? 'Kids (girl)' : null}
+                                </p>
+                            </>
+                        ) : (
+                            <p>None</p>
+                        )}
+
+                        <h3>Special Requests</h3>
+                        {visit.backpack ||
+                        visit.sleepingBag ||
+                        visit.busTicket ||
+                        visit.giftCard ||
+                        visit.diaper ||
+                        visit.financialAssistance ? (
+                            <>
+                                <p>{visit.backpack ? 'Backpack' : null}</p>
+                                <p>
+                                    {visit.sleepingBag ? 'Sleeping Bag' : null}
+                                </p>
+                                <p>
+                                    {visit.busTicket
+                                        ? `Bus Tickets: ${visit.busTicket}`
+                                        : null}
+                                </p>
+                                <p>
+                                    {visit.giftCard
+                                        ? `Gift Card: ${visit.giftCard}`
+                                        : null}
+                                </p>
+                                <p>
+                                    {visit.diaper
+                                        ? `Diapers: ${visit.diaper}`
+                                        : null}
+                                </p>
+                                <p>
+                                    {visit.financialAssistance
+                                        ? `Financial Assistance: ${visit.financialAssistance}`
+                                        : null}
+                                </p>
+                            </>
+                        ) : (
+                            <p>None</p>
+                        )}
 
                         <h3>Notes</h3>
                         <p>{visit.notes.length === 0 ? 'None' : visit.notes}</p>

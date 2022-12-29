@@ -87,3 +87,7 @@ There are no files that hold global type definitions for types that are used thr
 ## Babel vs SWC
 
 Due to Jest and Vercel the project currently uses both Babel and SWC. Ideally we'd only use SWC but I couldn't figure out how to make Jest work nicely without Babel
+
+## Queries with no Filter
+
+Currently if the user searches with no filters (first name, last name, and/or birthday) then the first 50 clients will be returned. We should discuss if this functionality should even be allowed. If it is, ideally we paginate data so the user can eventually click through all users, but a limit should still be in place to prevent having too many document reads as one client returned is one document read

@@ -48,9 +48,9 @@ export default function RootLayout({ children }: any) {
                     </SignInContext.Provider>
                 </div>
 
-                <footer className={styles.footer}>
+                {/* <footer className={styles.footer}>
                     <p>Footer content</p>
-                </footer>
+                </footer> */}
             </body>
         </html>
     );

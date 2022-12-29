@@ -45,6 +45,15 @@
     margin-top: 25px;
 }
 
-.saveButtons button {
+.saveButtons .backButton {
     width: 200px;
+}
+
+.saveButtons .saveButton {
+    width: 200px;
+    margin-left: 25px;
+}
+
+.saveButtons span {
+    flex-grow: 1;
 }
