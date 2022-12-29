@@ -37,7 +37,8 @@ interface ProfileProps {
 export default function Profile({ params }: ProfileProps) {
     const router = useRouter();
     const [clientData, setClientData] = useState<ClientDoc>();
-    const [visitsData, setVisitsData] = useState<Array<VisitDoc>>();
+    const [visitsData, setVisitsData] =
+        useState<Array<VisitDoc & { id: string }>>();
 
     // Get client data on component load
     useEffect(() => {
@@ -88,7 +89,9 @@ export default function Profile({ params }: ProfileProps) {
 
             // Take the data for each visit and append to visitsArr
             visits.forEach((visit) => {
-                visitsArr.push(visit.data());
+                let visitData = visit.data();
+                visitData.id = visit.id;
+                visitsArr.push(visitData);
             });
 
             // Set local state to be visitsArr
@@ -104,15 +107,19 @@ export default function Profile({ params }: ProfileProps) {
             visitsData?.map((visit, i) => {
                 return (
                     <div key={i}>
-                        <h2>
-                            {`${new Date(
-                                visit.timestamp.seconds * 1000
-                            ).toDateString()}
+                        <Link
+                            href={`/profile/${params.userId}/visit/${visit.id}`}
+                        >
+                            <h2>
+                                {`${new Date(
+                                    visit.timestamp.seconds * 1000
+                                ).toDateString()}
                             -
                             ${new Date(
                                 visit.timestamp.seconds * 1000
                             ).toTimeString()}`}
-                        </h2>
+                            </h2>
+                        </Link>
 
                         <h3>Clothing</h3>
                         {visit.clothingBoy ||
