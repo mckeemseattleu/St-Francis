@@ -11,6 +11,7 @@ interface ClientInfoFormProps {
     initialData?: ClientDoc;
     redirect?: string;
     title?: string;
+    showBackButton?: boolean;
 }
 
 /**
@@ -28,6 +29,7 @@ export default function ClientInfoForm({
     initialData = undefined,
     redirect = '/',
     title = 'Client Form',
+    showBackButton = true,
 }: ClientInfoFormProps) {
     // Use default values if no initial data was passed in
     const [clientData, setClientData] = useState<ClientDoc>(
@@ -294,13 +296,17 @@ export default function ClientInfoForm({
             </form>
 
             <div className={styles.saveButtons}>
-                <Link href={`/profile/${id}`}>
-                    <button className={styles.backButton}>
-                        Back to Profile
-                    </button>
-                </Link>
+                {showBackButton ? (
+                    <>
+                        <Link href={`/profile/${id}`}>
+                            <button className={styles.backButton}>
+                                Back to Profile
+                            </button>
+                        </Link>
 
-                <span />
+                        <span />
+                    </>
+                ) : null}
 
                 <button
                     className={styles.saveButton}

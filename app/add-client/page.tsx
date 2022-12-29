@@ -7,7 +7,7 @@ export default function AddClient() {
         <>
             <h1>New client</h1>
 
-            <ClientInfoForm />
+            <ClientInfoForm showBackButton={false} />
         </>
     );
 }

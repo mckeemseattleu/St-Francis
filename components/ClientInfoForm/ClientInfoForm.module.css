@@ -43,10 +43,12 @@
     flex-direction: row;
     justify-content: space-between;
     margin-top: 25px;
+    margin-left: -25px;
 }
 
 .saveButtons .backButton {
     width: 200px;
+    margin-left: 25px;
 }
 
 .saveButtons .saveButton {
