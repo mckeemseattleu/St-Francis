@@ -23,7 +23,7 @@ export default function Settings() {
                         onChange={(e) => {
                             setSettings((prev: typeof settings) => ({
                                 ...prev,
-                                daysEarlyThreshold: e.target.value,
+                                daysEarlyThreshold: parseInt(e.target.value),
                             }));
                         }}
                     />
@@ -38,7 +38,7 @@ export default function Settings() {
                         onChange={(e) => {
                             setSettings((prev: typeof settings) => ({
                                 ...prev,
-                                backpackThreshold: e.target.value,
+                                backpackThreshold: parseInt(e.target.value),
                             }));
                         }}
                     />
@@ -53,7 +53,7 @@ export default function Settings() {
                         onChange={(e) => {
                             setSettings((prev: typeof settings) => ({
                                 ...prev,
-                                sleepingBagThreshold: e.target.value,
+                                sleepingBagThreshold: parseInt(e.target.value),
                             }));
                         }}
                     />
