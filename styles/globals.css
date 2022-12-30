@@ -16,6 +16,7 @@
     /* --gray-1: var(--gray-2);
     --blue: var(--yellow);
     --white: var(--gray-1); */
+    overflow-y: scroll;
 }
 html,
 body {
