@@ -1,0 +1,10 @@
+.rowContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+}
+
+.rowContainer button {
+    margin-right: 15px;
+}

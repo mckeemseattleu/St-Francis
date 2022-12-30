@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../../../firebase/firebase';
 import { VisitDoc } from '../../../../checkin/[userId]/page';
+import styles from './visit.module.css';
 
 interface VisitProps {
     params: { visitId: string; userId: string };
@@ -114,13 +115,15 @@ export default function Visit({ params }: VisitProps) {
             </div>
 
             <h2>Options</h2>
-            <Link
-                href={`/profile/${params.userId}/visit/${params.visitId}/printout`}
-            >
-                <button>Go to printout</button>
-            </Link>
+            <div className={styles.rowContainer}>
+                <Link
+                    href={`/profile/${params.userId}/visit/${params.visitId}/printout`}
+                >
+                    <button>Go to printout</button>
+                </Link>
 
-            <button onClick={deleteVisit}>Delete visit</button>
+                <button onClick={deleteVisit}>Delete visit</button>
+            </div>
         </>
     );
 }
