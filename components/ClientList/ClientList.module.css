@@ -37,3 +37,8 @@
     max-width: 95vw;
     justify-content: center;
 }
+
+.birthdayControlsContainer {
+    display: flex;
+    align-items: center;
+}

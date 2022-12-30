@@ -209,7 +209,7 @@ export default function ClientList() {
 
                         <label>
                             Birthday
-                            <div>
+                            <div className={styles.birthdayControlsContainer}>
                                 <input
                                     type="date"
                                     name="birthday"
