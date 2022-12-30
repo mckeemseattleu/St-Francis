@@ -1,6 +1,6 @@
 'use client';
 
-import { doc, getDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc } from 'firebase/firestore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -32,12 +32,21 @@ export default function Visit({ params }: VisitProps) {
             router.push(`/profile/${params.userId}`);
         }
     };
+
+    const deleteVisit = async () => {
+        await deleteDoc(
+            doc(firestore, 'clients', params.userId, 'visits', params.visitId)
+        );
+
+        router.push(`/profile/${params.userId}`);
+    };
+
     return (
         <>
             <h1>Visit Details</h1>
             <div>
                 {visitData?.timestamp ? (
-                    <h2>
+                    <h3>
                         {`${new Date(
                             visitData?.timestamp?.seconds * 1000
                         ).toDateString()}
@@ -45,7 +54,7 @@ export default function Visit({ params }: VisitProps) {
                             ${new Date(
                                 visitData?.timestamp?.seconds * 1000
                             ).toTimeString()}`}
-                    </h2>
+                    </h3>
                 ) : null}
 
                 <h3>Clothing</h3>
@@ -104,11 +113,14 @@ export default function Visit({ params }: VisitProps) {
                 </p>
             </div>
 
+            <h2>Options</h2>
             <Link
                 href={`/profile/${params.userId}/visit/${params.visitId}/printout`}
             >
                 <button>Go to printout</button>
             </Link>
+
+            <button onClick={deleteVisit}>Delete visit</button>
         </>
     );
 }
