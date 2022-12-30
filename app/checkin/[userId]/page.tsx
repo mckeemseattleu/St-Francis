@@ -5,15 +5,20 @@ import {
     collection,
     doc,
     getDoc,
+    getDocs,
+    limit,
+    orderBy,
+    query,
     Timestamp,
     updateDoc,
 } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
 import { Client } from '../../../components/ClientList/ClientList';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './checkin.module.css';
+import { SettingsContext } from '../../../contexts/SettingsContext';
 
 interface CheckinProps {
     params: { userId: string };
@@ -53,6 +58,9 @@ export default function Checkin({ params }: CheckinProps) {
         diaper: 0,
         financialAssistance: 0,
     });
+    const [validationData, setValidationData] = useState<any>({});
+    const [validates, setValidates] = useState<boolean>(true);
+    const { settings, setSettings } = useContext(SettingsContext);
 
     // Get client data on component load
     useEffect(() => {
@@ -83,6 +91,15 @@ export default function Checkin({ params }: CheckinProps) {
 
     // Checkin process
     const checkIn = async () => {
+        // Calculate validation data (days between last and threshold)
+        getValidationData();
+
+        // If not past threshold
+        if (!validatesSuccessfully()) {
+            setValidates(false); // Used to display error message
+            return; // Don't check in
+        }
+
         // Update isCheckedIn status to true
         await updateDoc(doc(firestore, 'clients', params.userId), {
             isCheckedIn: true,
@@ -106,6 +123,63 @@ export default function Checkin({ params }: CheckinProps) {
         // Redirect to user profile page after checking user in
         router.push(`/profile/${params.userId}`);
     };
+
+    // Validates the new check in passes thresholds as specified in settings
+    // page
+    const validatesSuccessfully = () => {
+        if (settings.earlyOverride) return true;
+
+        // TODO: Validate >= vs >
+        // TODO: Add backpack and sleeping bag
+        return (
+            // (
+            validationData.daysVisit > settings.daysEarlyThreshold
+            // && validationData.daysBackpack > settings.backpackThreshold
+            // && validationData.daysSleepingBag > settings.sleepingBagThreshold)
+        );
+    };
+
+    const getValidationData = async () => {
+        // TODO: Think about if we should record data as fields in client doc to
+        // prevent multiple queries here
+        const visitRef = await collection(
+            firestore,
+            'clients',
+            params.userId,
+            'visits'
+        );
+
+        const q = query(visitRef, orderBy('timestamp', 'desc'), limit(1));
+
+        const visit = await getDocs(q);
+
+        if (visit.docs[0].exists()) {
+            const lastVisit = new Date(
+                visit.docs[0].data().timestamp.seconds * 1000
+            );
+
+            // TODO: Finish for backpack and sleeping bag
+            setValidationData({
+                daysVisit: daysBetween(lastVisit, new Date()),
+                daysBackpack: daysBetween(lastVisit, new Date()),
+                daysSleepingBag: daysBetween(lastVisit, new Date()),
+            });
+        }
+    };
+
+    // TODO: Validate for edge cases with daylight savings and different timezones
+    const daysBetween = (start: Date, end: Date) => {
+        const msPerDay = 24 * 60 * 60 * 1000;
+
+        return Math.round(
+            Math.abs((start.getTime() - end.getTime()) / msPerDay)
+        );
+    };
+
+    // TODO: Give more details
+    const validationErrorMessage = validates ? null : (
+        <p>Trying to check in too early</p>
+    );
 
     return (
         <div className={styles.container}>
@@ -340,6 +414,8 @@ export default function Checkin({ params }: CheckinProps) {
                 />
 
                 <button type="submit">Check in</button>
+
+                {validationErrorMessage}
             </form>
         </div>
     );
