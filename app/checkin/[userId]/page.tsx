@@ -73,9 +73,11 @@ export default function Checkin({ params }: CheckinProps) {
     const [validates, setValidates] = useState<boolean>(true);
     const { settings, setSettings } = useContext(SettingsContext);
 
-    // Get client data on component load
     useEffect(() => {
+        // Get client data on component load
         getClientData();
+        // Calculate validation data (days between last and threshold)
+        getValidationData();
     }, []);
 
     // Gets the client's data from firestore based on route's userId
@@ -102,9 +104,6 @@ export default function Checkin({ params }: CheckinProps) {
 
     // Checkin process
     const checkIn = async () => {
-        // Calculate validation data (days between last and threshold)
-        getValidationData();
-
         // If not past threshold
         if (!validatesSuccessfully()) {
             setValidates(false); // Used to display error message
@@ -171,9 +170,10 @@ export default function Checkin({ params }: CheckinProps) {
 
             // TODO: Finish for backpack and sleeping bag
             setValidationData({
+                ...validationData,
                 daysVisit: daysBetween(lastVisit, new Date()),
-                daysBackpack: daysBetween(lastVisit, new Date()),
-                daysSleepingBag: daysBetween(lastVisit, new Date()),
+                // daysBackpack: daysBetween(lastVisit, new Date()),
+                // daysSleepingBag: daysBetween(lastVisit, new Date()),
             });
         }
     };
