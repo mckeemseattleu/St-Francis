@@ -120,6 +120,20 @@ export default function Profile({ params }: ProfileProps) {
                             ).toTimeString()}`}
                             </h2>
                         </Link>
+
+                        <div className={styles.rowContainer}>
+                            <Link
+                                href={`/profile/${params.userId}/visit/${visit.id}/printout`}
+                            >
+                                <button>Printout</button>
+                            </Link>
+
+                            <Link
+                                href={`/profile/${params.userId}/visit/${visit.id}`}
+                            >
+                                <button>Details</button>
+                            </Link>
+                        </div>
                     </div>
                 );
             })
