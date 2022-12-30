@@ -171,10 +171,9 @@ export default function Checkin({ params }: CheckinProps) {
 
             // TODO: Finish for backpack and sleeping bag
             setValidationData({
-                ...validationData,
                 daysVisit: daysBetween(lastVisit, new Date()),
-                // daysBackpack: daysBetween(lastVisit, new Date()),
-                // daysSleepingBag: daysBetween(lastVisit, new Date()),
+                daysBackpack: daysBetween(lastVisit, new Date()),
+                daysSleepingBag: daysBetween(lastVisit, new Date()),
             });
         }
     };
