@@ -40,6 +40,12 @@ export interface VisitDoc {
     financialAssistance: number;
 }
 
+interface ValidationData {
+    daysVisit: number;
+    daysBackpack: number;
+    daysSleepingBag: number;
+}
+
 export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
     const [oldClientData, setOldClientData] = useState<Client>();
@@ -58,7 +64,12 @@ export default function Checkin({ params }: CheckinProps) {
         diaper: 0,
         financialAssistance: 0,
     });
-    const [validationData, setValidationData] = useState<any>({});
+    const [validationData, setValidationData] = useState<ValidationData>({
+        // Set to max to always pass validation if no data available
+        daysVisit: Number.MAX_SAFE_INTEGER,
+        daysBackpack: Number.MAX_SAFE_INTEGER,
+        daysSleepingBag: Number.MAX_SAFE_INTEGER,
+    });
     const [validates, setValidates] = useState<boolean>(true);
     const { settings, setSettings } = useContext(SettingsContext);
 
