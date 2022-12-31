@@ -5,10 +5,6 @@ import {
     collection,
     doc,
     getDoc,
-    getDocs,
-    limit,
-    orderBy,
-    query,
     Timestamp,
     updateDoc,
 } from 'firebase/firestore';
