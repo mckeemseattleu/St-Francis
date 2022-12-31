@@ -161,12 +161,15 @@ export default function Checkin({ params }: CheckinProps) {
         console.log(validationData);
 
         // TODO: Validate >= vs >
-        return validationData.daysVisit > settings.daysEarlyThreshold &&
-            visitData.backpack
-            ? validationData.daysBackpack > settings.backpackThreshold
-            : true && visitData.sleepingBag
-            ? validationData.daysSleepingBag > settings.sleepingBagThreshold
-            : true;
+        return (
+            validationData.daysVisit > settings.daysEarlyThreshold &&
+            (visitData.backpack
+                ? validationData.daysBackpack > settings.backpackThreshold
+                : true) &&
+            (visitData.sleepingBag
+                ? validationData.daysSleepingBag > settings.sleepingBagThreshold
+                : true)
+        );
     };
 
     const getValidationData = async () => {
