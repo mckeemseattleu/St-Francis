@@ -47,13 +47,6 @@ export default function Visit({ params }: VisitProps) {
     };
 
     const deleteVisit = async () => {
-        // Get information about visit we're about to delete
-        const visitData = await getDoc(
-            doc(firestore, 'clients', params.userId, 'visits', params.visitId)
-        ).then((visit) => {
-            return visit.data();
-        });
-
         // Delete this visit
         await deleteDoc(
             doc(firestore, 'clients', params.userId, 'visits', params.visitId)
