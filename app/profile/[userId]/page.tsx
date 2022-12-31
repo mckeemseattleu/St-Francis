@@ -8,6 +8,7 @@ import {
     limit,
     orderBy,
     query,
+    Timestamp,
 } from 'firebase/firestore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -28,6 +29,9 @@ export interface ClientDoc {
     notes: string;
     isCheckedIn: boolean;
     isBanned: boolean;
+    dateLastVisit: Timestamp;
+    dateLastBackpack: Timestamp;
+    dateLastSleepingBag: Timestamp;
 }
 
 interface ProfileProps {
@@ -53,19 +57,7 @@ export default function Profile({ params }: ProfileProps) {
 
         // Set local state if their doc exists, otherwise go back to homepage
         if (clientDoc.exists()) {
-            setClientData({
-                firstName: clientDoc.data().firstName,
-                lastName: clientDoc.data().lastName,
-                middleInitial: clientDoc.data().middleInitial,
-                birthday: clientDoc.data().birthday,
-                gender: clientDoc.data().gender,
-                race: clientDoc.data().race,
-                postalCode: clientDoc.data().postalCode,
-                numKids: clientDoc.data().numKids,
-                notes: clientDoc.data().notes,
-                isCheckedIn: clientDoc.data().isCheckedIn,
-                isBanned: clientDoc.data().isBanned,
-            });
+            setClientData(clientDoc.data() as ClientDoc);
         } else {
             router.push('/');
         }

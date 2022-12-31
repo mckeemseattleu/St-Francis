@@ -14,11 +14,11 @@ import {
 } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
-import { Client } from '../../../components/ClientList/ClientList';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './checkin.module.css';
 import { SettingsContext } from '../../../contexts/SettingsContext';
+import { ClientDoc } from '../../profile/[userId]/page';
 
 interface CheckinProps {
     params: { userId: string };
@@ -48,7 +48,9 @@ interface ValidationData {
 
 export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
-    const [oldClientData, setOldClientData] = useState<Client>();
+    const [oldClientData, setOldClientData] = useState<
+        ClientDoc & { id: string }
+    >();
     const [visitData, setVisitData] = useState<VisitDoc>({
         clothingMen: false,
         clothingWomen: false,
@@ -90,12 +92,7 @@ export default function Checkin({ params }: CheckinProps) {
         if (clientDoc.exists()) {
             setOldClientData({
                 id: params.userId,
-                firstName: clientDoc.data().firstName,
-                lastName: clientDoc.data().lastName,
-                birthday: clientDoc.data().birthday,
-                notes: clientDoc.data().notes,
-                isCheckedIn: clientDoc.data().isCheckedIn,
-                isBanned: clientDoc.data().isBanned,
+                ...(clientDoc.data() as ClientDoc),
             });
         } else {
             router.push('/');
