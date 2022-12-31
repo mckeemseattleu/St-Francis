@@ -29,9 +29,9 @@ export interface ClientDoc {
     notes: string;
     isCheckedIn: boolean;
     isBanned: boolean;
-    dateLastVisit: Timestamp;
-    dateLastBackpack: Timestamp;
-    dateLastSleepingBag: Timestamp;
+    dateLastVisit?: Timestamp;
+    dateLastBackpack?: Timestamp;
+    dateLastSleepingBag?: Timestamp;
 }
 
 interface ProfileProps {
