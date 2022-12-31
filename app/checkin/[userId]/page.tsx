@@ -78,9 +78,12 @@ export default function Checkin({ params }: CheckinProps) {
     useEffect(() => {
         // Get client data on component load
         getClientData();
+    }, []);
+
+    useEffect(() => {
         // Calculate validation data (days between last and threshold)
         getValidationData();
-    }, []);
+    }, [oldClientData]);
 
     // Gets the client's data from firestore based on route's userId
     const getClientData = async () => {
@@ -97,6 +100,25 @@ export default function Checkin({ params }: CheckinProps) {
         } else {
             router.push('/');
         }
+    };
+
+    // Updates validation data in client doc based on new check in
+    const updateValidationData = async () => {
+        const updateData: {
+            dateLastVisit: Timestamp;
+            dateLastBackpack?: Timestamp;
+            dateLastSleepingBag?: Timestamp;
+        } = { dateLastVisit: visitData.timestamp };
+
+        if (visitData.backpack) {
+            updateData.dateLastBackpack = visitData.timestamp;
+        }
+
+        if (visitData.sleepingBag) {
+            updateData.dateLastSleepingBag = visitData.timestamp;
+        }
+
+        await updateDoc(doc(firestore, 'clients', params.userId), updateData);
     };
 
     // Checkin process
@@ -124,8 +146,8 @@ export default function Checkin({ params }: CheckinProps) {
             visitData
         );
 
-        // Get updated client data
-        getClientData();
+        // Update validation data in client doc
+        await updateValidationData();
 
         // Redirect to user profile page after checking user in
         router.push(`/profile/${params.userId}`);
@@ -136,47 +158,39 @@ export default function Checkin({ params }: CheckinProps) {
     const validatesSuccessfully = () => {
         if (settings.earlyOverride) return true;
 
+        console.log(validationData);
+
         // TODO: Validate >= vs >
-        // TODO: Add backpack and sleeping bag
-        return (
-            // (
-            validationData.daysVisit > settings.daysEarlyThreshold
-            // && validationData.daysBackpack > settings.backpackThreshold
-            // && validationData.daysSleepingBag > settings.sleepingBagThreshold)
-        );
+        return validationData.daysVisit > settings.daysEarlyThreshold &&
+            visitData.backpack
+            ? validationData.daysBackpack > settings.backpackThreshold
+            : true && visitData.sleepingBag
+            ? validationData.daysSleepingBag > settings.sleepingBagThreshold
+            : true;
     };
 
     const getValidationData = async () => {
-        // TODO: Think about if we should record data as fields in client doc to
-        // prevent multiple queries here
-        const visitRef = await collection(
-            firestore,
-            'clients',
-            params.userId,
-            'visits'
-        );
-
-        const q = query(visitRef, orderBy('timestamp', 'desc'), limit(1));
-
-        const visit = await getDocs(q);
-
-        if (visit.docs[0].exists()) {
-            const lastVisit = new Date(
-                visit.docs[0].data().timestamp.seconds * 1000
-            );
-
-            // TODO: Finish for backpack and sleeping bag
-            setValidationData({
-                ...validationData,
-                daysVisit: daysBetween(lastVisit, new Date()),
-                // daysBackpack: daysBetween(lastVisit, new Date()),
-                // daysSleepingBag: daysBetween(lastVisit, new Date()),
-            });
-        }
+        setValidationData({
+            ...validationData,
+            daysVisit: daysBetween(
+                oldClientData?.dateLastVisit?.toDate(),
+                new Date()
+            ),
+            daysBackpack: daysBetween(
+                oldClientData?.dateLastBackpack?.toDate(),
+                new Date()
+            ),
+            daysSleepingBag: daysBetween(
+                oldClientData?.dateLastSleepingBag?.toDate(),
+                new Date()
+            ),
+        });
     };
 
     // TODO: Validate for edge cases with daylight savings and different timezones
-    const daysBetween = (start: Date, end: Date) => {
+    const daysBetween = (start: Date | undefined, end: Date) => {
+        if (start == undefined) return Number.MAX_SAFE_INTEGER;
+
         const msPerDay = 24 * 60 * 60 * 1000;
 
         return Math.round(
