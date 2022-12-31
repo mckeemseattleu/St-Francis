@@ -158,8 +158,6 @@ export default function Checkin({ params }: CheckinProps) {
     const validatesSuccessfully = () => {
         if (settings.earlyOverride) return true;
 
-        console.log(validationData);
-
         // TODO: Validate >= vs >
         return (
             validationData.daysVisit > settings.daysEarlyThreshold &&
