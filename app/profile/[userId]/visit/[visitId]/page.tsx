@@ -1,6 +1,18 @@
 'use client';
 
-import { deleteDoc, doc, getDoc } from 'firebase/firestore';
+import {
+    collection,
+    deleteDoc,
+    deleteField,
+    doc,
+    getDoc,
+    getDocs,
+    limit,
+    orderBy,
+    query,
+    updateDoc,
+    where,
+} from 'firebase/firestore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -35,10 +47,87 @@ export default function Visit({ params }: VisitProps) {
     };
 
     const deleteVisit = async () => {
+        // Get information about visit we're about to delete
+        const visitData = await getDoc(
+            doc(firestore, 'clients', params.userId, 'visits', params.visitId)
+        ).then((visit) => {
+            return visit.data();
+        });
+
+        // Delete this visit
         await deleteDoc(
             doc(firestore, 'clients', params.userId, 'visits', params.visitId)
         );
 
+        // Find updated most recent visit after we delete this visit
+        const visitRef = collection(
+            firestore,
+            'clients',
+            params.userId,
+            'visits'
+        );
+
+        // Get most recent visit
+        const mostRecentVisit = await getDocs(
+            query(visitRef, orderBy('timestamp', 'desc'), limit(1))
+        );
+
+        // Get timestamp of most recent visit if it exists
+        const newDateLastVisit = mostRecentVisit.docs[0]
+            ?.data()
+            .timestamp.toDate();
+
+        // If newDateLastVisit is undefined, we just deleted the only visit, so
+        // we can delete all validation fields
+        if (newDateLastVisit == null) {
+            // Delete validation data fields
+            await updateDoc(doc(firestore, 'clients', params.userId), {
+                dateLastVisit: deleteField(),
+                dateLastBackpack: deleteField(),
+                dateLastSleepingBag: deleteField(),
+            });
+        } else {
+            // Otherwise we need to calculate when the client last requested a backpack or sleeping bag
+
+            // Backpack
+            const mostRecentBackpack = await getDocs(
+                query(
+                    visitRef,
+                    where('backpack', '==', true),
+                    orderBy('timestamp', 'desc'),
+                    limit(1)
+                )
+            );
+
+            // Sleeping bag
+            const mostRecentSleepingBag = await getDocs(
+                query(
+                    visitRef,
+                    where('sleepingBag', '==', true),
+                    orderBy('timestamp', 'desc'),
+                    limit(1)
+                )
+            );
+
+            // Update client doc with new validation data
+            await updateDoc(doc(firestore, 'clients', params.userId), {
+                dateLastVisit: newDateLastVisit,
+                dateLastBackpack:
+                    mostRecentBackpack.docs[0]?.data().timestamp.toDate() ==
+                    null
+                        ? deleteField()
+                        : mostRecentBackpack.docs[0].data().timestamp.toDate(),
+                dateLastSleepingBag:
+                    mostRecentSleepingBag.docs[0]?.data().timestamp.toDate() ==
+                    null
+                        ? deleteField()
+                        : mostRecentSleepingBag.docs[0]
+                              .data()
+                              .timestamp.toDate(),
+            });
+        }
+
+        // Redirect back to client profile
         router.push(`/profile/${params.userId}`);
     };
 
