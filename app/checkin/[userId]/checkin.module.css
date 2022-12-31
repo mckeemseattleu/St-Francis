@@ -16,7 +16,7 @@
     align-items: center;
 }
 
-.headerRow h2 {
+.headerRow span {
     flex-grow: 1;
 }
 

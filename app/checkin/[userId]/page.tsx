@@ -212,7 +212,11 @@ export default function Checkin({ params }: CheckinProps) {
                 <h1>Check-in page</h1>
 
                 <div className={styles.headerRow}>
-                    <h2>{`${oldClientData?.firstName} ${oldClientData?.lastName}`}</h2>
+                    <Link href={`/profile/${params.userId}`}>
+                        <h2>{`${oldClientData?.firstName} ${oldClientData?.lastName}`}</h2>
+                    </Link>
+
+                    <span />
 
                     <p>
                         {oldClientData?.isCheckedIn
