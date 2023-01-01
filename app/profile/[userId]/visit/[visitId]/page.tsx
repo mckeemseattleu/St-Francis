@@ -190,6 +190,13 @@ export default function Visit({ params }: VisitProps) {
                     <p>None</p>
                 )}
 
+                <h3>Household items</h3>
+                <p>
+                    {visitData?.household.length === 0
+                        ? 'None'
+                        : visitData?.household}
+                </p>
+
                 <h3>Notes</h3>
                 <p>
                     {visitData?.notes.length === 0 ? 'None' : visitData?.notes}
