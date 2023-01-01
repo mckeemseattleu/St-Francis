@@ -71,7 +71,11 @@ export default function CheckedIn() {
     return (
         <div className="container">
             <h1>Checked in clients</h1>
-            <div className={styles.cardContainer}>{clientsList}</div>
+            {clients && clients.length > 0 ? (
+                <div className={styles.cardContainer}>{clientsList}</div>
+            ) : (
+                <p>No clients are currently checked in</p>
+            )}
         </div>
     );
 }
