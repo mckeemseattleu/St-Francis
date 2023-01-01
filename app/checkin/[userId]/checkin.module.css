@@ -47,6 +47,28 @@
     justify-content: center;
 }
 
+.errorMessageContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.errorMessageContainer p {
+    margin-right: 50px;
+    color: var(--red);
+}
+
+.errorMessageContainer button {
+    margin: 0;
+}
+
+.errorMessageContainer button:hover {
+    background-color: var(--red);
+    color: var(--gray-1);
+}
+
 .container input,
 .container label {
     display: block;

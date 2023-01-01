@@ -118,9 +118,9 @@ export default function Checkin({ params }: CheckinProps) {
     };
 
     // Checkin process
-    const checkIn = async () => {
-        // If not past threshold
-        if (!validatesSuccessfully()) {
+    const checkIn = async (tempOverride = false) => {
+        // If not past threshold and tempOverride's not set
+        if (!tempOverride && !validatesSuccessfully()) {
             setValidates(false); // Used to display error message
             return; // Don't check in
         }
@@ -197,7 +197,16 @@ export default function Checkin({ params }: CheckinProps) {
 
     // TODO: Give more details
     const validationErrorMessage = validates ? null : (
-        <p>Trying to check in too early</p>
+        <div className={styles.errorMessageContainer}>
+            <p>Trying to check in too early</p>
+            <button
+                onClick={() => {
+                    checkIn(true);
+                }}
+            >
+                Force Check-in
+            </button>
+        </div>
     );
 
     return (
