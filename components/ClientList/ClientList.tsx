@@ -15,7 +15,7 @@ import { firestore } from '../../firebase/firebase';
 import ClientCard from './ClientCard/ClientCard';
 import styles from './ClientList.module.css';
 
-export interface Client {
+export interface ClientCardInfo {
     id: string;
     firstName: string;
     lastName: string;
@@ -32,7 +32,7 @@ interface Filter {
 }
 
 export default function ClientList() {
-    const [clients, setClients] = useState<Array<Client>>();
+    const [clients, setClients] = useState<Array<ClientCardInfo>>();
     const [filter, setFilter] = useState<Filter>({
         firstName: '',
         lastName: '',
@@ -139,7 +139,7 @@ export default function ClientList() {
     const clientsList =
         // If clients arr exist and isn't empty
         clients && clients.length > 0 ? (
-            clients?.map((client: Client) => {
+            clients?.map((client: ClientCardInfo) => {
                 return (
                     <ClientCard
                         id={client.id}
