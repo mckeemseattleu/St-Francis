@@ -65,22 +65,22 @@ export default function ClientList() {
                 // Get only by last name and birthday
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('lastName', '==', filter.lastName),
+                    where('lastNameLower', '==', filter.lastName.toLowerCase()),
                     where('birthday', '==', filter.birthday)
                 );
             } else if (filter.lastName === '') {
                 // Get only by first name and birthday
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstName', '==', filter.firstName),
+                    where('firstNameLower', '==', filter.firstName.toLowerCase()),
                     where('birthday', '==', filter.birthday)
                 );
             } else {
                 // Get by first and last name and birthday
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstName', '==', filter.firstName),
-                    where('lastName', '==', filter.lastName),
+                    where('firstNameLower', '==', filter.firstNameLower.toLowerCase()),
+                    where('lastNameLower', '==', filter.lastName.toLowerCase()),
                     where('birthday', '==', filter.birthday)
                 );
             }
@@ -95,20 +95,20 @@ export default function ClientList() {
                 // Get only by last name
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('lastName', '==', filter.lastName)
+                    where('lastNameLower', '==', filter.lastName)
                 );
             } else if (filter.lastName === '') {
                 // Get only by first name
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstName', '==', filter.firstName)
+                    where('firstNameLower', '==', filter.firstName)
                 );
             } else {
                 // Get by first and last name
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstName', '==', filter.firstName),
-                    where('lastName', '==', filter.lastName)
+                    where('firstNameLower', '==', filter.firstName),
+                    where('lastNameLower', '==', filter.lastName)
                 );
             }
         }
