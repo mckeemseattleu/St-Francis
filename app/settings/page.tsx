@@ -1,7 +1,7 @@
 'use client';
 
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { useContext, useEffect, useState } from 'react';
+import { doc, setDoc } from 'firebase/firestore';
+import { useContext, useState } from 'react';
 import { SettingsContext } from '../../contexts/SettingsContext';
 import { firestore } from '../../firebase/firebase';
 
@@ -15,28 +15,8 @@ export interface SettingsDoc {
 export default function Settings() {
     // Local settings
     const { settings, setSettings } = useContext(SettingsContext);
-    // Default settings saved on database
-    const [settingsDoc, setSettingsDoc] = useState<SettingsDoc>();
     // "Saved" status message
     const [justUpdated, setJustUpdated] = useState<boolean>(false);
-
-    // Get default settings on load
-    useEffect(() => {
-        getSettingsDoc();
-    }, []);
-
-    const getSettingsDoc = async () => {
-        const settingsDoc = await getDoc(doc(firestore, 'settings', 'default'));
-
-        if (settingsDoc.exists()) {
-            setSettingsDoc(settingsDoc.data() as SettingsDoc);
-        }
-
-        // TODO: Probably a better way to init Context default values
-        while (!setSettings) {}
-
-        setSettings(settingsDoc.data());
-    };
 
     const updateSettingsDoc = async () => {
         await setDoc(doc(firestore, 'settings', 'default'), settings);
@@ -50,7 +30,7 @@ export default function Settings() {
 
             {/* If Context is ready show the form, otherwise show nothing;
             prevents calling of functions or data before it's ready */}
-            {setSettings && settingsDoc ? (
+            {setSettings ? (
                 <form
                     onSubmit={(e) => {
                         // Prevent redirect
