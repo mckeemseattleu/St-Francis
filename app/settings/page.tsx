@@ -44,10 +44,6 @@ export default function Settings() {
         setJustUpdated(true);
     };
 
-    useEffect(() => {
-        console.log(justUpdated);
-    }, [justUpdated]);
-
     return (
         <div className="container">
             <h1>Settings</h1>
