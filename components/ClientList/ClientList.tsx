@@ -72,14 +72,22 @@ export default function ClientList() {
                 // Get only by first name and birthday
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstNameLower', '==', filter.firstName.toLowerCase()),
+                    where(
+                        'firstNameLower',
+                        '==',
+                        filter.firstName.toLowerCase()
+                    ),
                     where('birthday', '==', filter.birthday)
                 );
             } else {
                 // Get by first and last name and birthday
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstNameLower', '==', filter.firstNameLower.toLowerCase()),
+                    where(
+                        'firstNameLower',
+                        '==',
+                        filter.firstName.toLowerCase()
+                    ),
                     where('lastNameLower', '==', filter.lastName.toLowerCase()),
                     where('birthday', '==', filter.birthday)
                 );
