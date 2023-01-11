@@ -114,7 +114,6 @@ export default function ClientInfoForm({
      * but this should never run with an invalid id
      *
      * @param newCheckedInStatus The new isCheckedIn status to save
-     * @param redirectToCheckIn If we should redirect to checkin page instead
      */
     const updateClientData = async (newCheckedInStatus: boolean = false) => {
         // Ensure id's not undefined
