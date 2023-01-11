@@ -31,6 +31,8 @@ export default function Update({ params }: UpdateProps) {
             setOldClientData({
                 firstName: clientDoc.data().firstName,
                 lastName: clientDoc.data().lastName,
+                firstNameLower: clientDoc.data().firstNameLower,
+                lastNameLower: clientDoc.data().lastNameLower,
                 middleInitial: clientDoc.data().middleInitial,
                 birthday: clientDoc.data().birthday,
                 gender: clientDoc.data().gender,
