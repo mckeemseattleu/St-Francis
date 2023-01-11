@@ -103,20 +103,28 @@ export default function ClientList() {
                 // Get only by last name
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('lastNameLower', '==', filter.lastName)
+                    where('lastNameLower', '==', filter.lastName.toLowerCase())
                 );
             } else if (filter.lastName === '') {
                 // Get only by first name
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstNameLower', '==', filter.firstName)
+                    where(
+                        'firstNameLower',
+                        '==',
+                        filter.firstName.toLowerCase()
+                    )
                 );
             } else {
                 // Get by first and last name
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstNameLower', '==', filter.firstName),
-                    where('lastNameLower', '==', filter.lastName)
+                    where(
+                        'firstNameLower',
+                        '==',
+                        filter.firstName.toLowerCase()
+                    ),
+                    where('lastNameLower', '==', filter.lastName.toLowerCase())
                 );
             }
         }
