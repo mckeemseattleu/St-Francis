@@ -37,6 +37,12 @@ export default function ClientInfoForm({
             ? {
                   firstName: initialData.firstName ? initialData.firstName : '',
                   lastName: initialData.lastName ? initialData.lastName : '',
+                  firstNameLower: initialData.firstNameLower
+                      ? initialData.firstNameLower
+                      : '',
+                  lastNameLower: initialData.lastNameLower
+                      ? initialData.lastNameLower
+                      : '',
                   middleInitial: initialData.middleInitial
                       ? initialData.middleInitial
                       : '',
@@ -58,6 +64,8 @@ export default function ClientInfoForm({
             : {
                   firstName: '',
                   lastName: '',
+                  firstNameLower: '',
+                  lastNameLower: '',
                   middleInitial: '',
                   birthday: new Date().toISOString().substring(0, 10), // TODO: Consider saving as timestamp
                   gender: '',
@@ -166,6 +174,8 @@ export default function ClientInfoForm({
                                 setClientData({
                                     ...clientData,
                                     firstName: e.target.value,
+                                    firstNameLower:
+                                        e.target.value.toLowerCase(),
                                 });
                             }}
                         />
@@ -196,6 +206,7 @@ export default function ClientInfoForm({
                                 setClientData({
                                     ...clientData,
                                     lastName: e.target.value,
+                                    lastNameLower: e.target.value.toLowerCase(),
                                 });
                             }}
                         />

@@ -20,6 +20,8 @@ import styles from './profile.module.css';
 export interface ClientDoc {
     firstName: string;
     lastName: string;
+    firstNameLower: string;
+    lastNameLower: string;
     middleInitial: string;
     birthday: string; // TODO: Consider saving as timestamp
     gender: string;
