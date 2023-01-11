@@ -1,21 +1,36 @@
 'use client';
 
+import { doc, getDoc } from 'firebase/firestore';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar/NavBar';
 import { Settings, SettingsContext } from '../contexts/SettingsContext';
 import { SignInContext } from '../contexts/SignInContext';
+import { firestore } from '../firebase/firebase';
 import '../styles/globals.css';
 import styles from '../styles/Home.module.css';
 
 export default function RootLayout({ children }: any) {
     const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
     const [settings, setSettings] = useState<Settings>({
-        daysEarlyThreshold: 25,
-        backpackThreshold: 91,
-        sleepingBagThreshold: 182,
+        daysEarlyThreshold: 0,
+        backpackThreshold: 0,
+        sleepingBagThreshold: 0,
         earlyOverride: false,
     });
+
+    // Get initial settings on app load
+    useEffect(() => {
+        getSettingsDoc();
+    }, []);
+
+    const getSettingsDoc = async () => {
+        const settingsDoc = await getDoc(doc(firestore, 'settings', 'default'));
+
+        if (settingsDoc.exists()) {
+            setSettings(settingsDoc.data() as Settings);
+        }
+    };
 
     return (
         <html lang="en">

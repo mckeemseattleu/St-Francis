@@ -12,11 +12,12 @@ export interface SettingsContext {
     setSettings: Function | null;
 }
 
+// Init values immediately set in layout.tsx
 export const SettingsContext = createContext<SettingsContext>({
     settings: {
-        daysEarlyThreshold: 25,
-        backpackThreshold: 91,
-        sleepingBagThreshold: 182,
+        daysEarlyThreshold: 0,
+        backpackThreshold: 0,
+        sleepingBagThreshold: 0,
         earlyOverride: false,
     },
     setSettings: null,
