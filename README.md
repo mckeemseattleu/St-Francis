@@ -91,3 +91,9 @@ Due to Jest and Vercel the project currently uses both Babel and SWC. Ideally we
 ## Queries with no Filter
 
 Currently if the user searches with no filters (first name, last name, and/or birthday) then the first 50 clients will be returned. We should discuss if this functionality should even be allowed. If it is, ideally we paginate data so the user can eventually click through all users, but a limit should still be in place to prevent having too many document reads as one client returned is one document read
+
+## Default settings behavior
+
+Settings are saved as temporary local state as well as on the database. This allows for behavior where if the site is open on computer A and B, they will both receive the database's values on load. If A modifies their settings without clicking "Save as default", then A and B will have different settings.
+
+Checks and validations for actions are performed against the local set of settings; this is to prevent A from changing settings on the database and B not knowing that validation settings have been changed while in the middle of performing an action
