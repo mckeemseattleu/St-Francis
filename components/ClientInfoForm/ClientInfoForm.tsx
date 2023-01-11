@@ -11,6 +11,7 @@ interface ClientInfoFormProps {
     initialData?: ClientDoc;
     redirect?: string;
     title?: string;
+    showBackButton?: boolean;
 }
 
 /**
@@ -28,6 +29,7 @@ export default function ClientInfoForm({
     initialData = undefined,
     redirect = '/',
     title = 'Client Form',
+    showBackButton = true,
 }: ClientInfoFormProps) {
     // Use default values if no initial data was passed in
     const [clientData, setClientData] = useState<ClientDoc>(
@@ -35,6 +37,12 @@ export default function ClientInfoForm({
             ? {
                   firstName: initialData.firstName ? initialData.firstName : '',
                   lastName: initialData.lastName ? initialData.lastName : '',
+                  firstNameLower: initialData.firstNameLower
+                      ? initialData.firstNameLower
+                      : '',
+                  lastNameLower: initialData.lastNameLower
+                      ? initialData.lastNameLower
+                      : '',
                   middleInitial: initialData.middleInitial
                       ? initialData.middleInitial
                       : '',
@@ -56,6 +64,8 @@ export default function ClientInfoForm({
             : {
                   firstName: '',
                   lastName: '',
+                  firstNameLower: '',
+                  lastNameLower: '',
                   middleInitial: '',
                   birthday: new Date().toISOString().substring(0, 10), // TODO: Consider saving as timestamp
                   gender: '',
@@ -104,7 +114,6 @@ export default function ClientInfoForm({
      * but this should never run with an invalid id
      *
      * @param newCheckedInStatus The new isCheckedIn status to save
-     * @param redirectToCheckIn If we should redirect to checkin page instead
      */
     const updateClientData = async (newCheckedInStatus: boolean = false) => {
         // Ensure id's not undefined
@@ -164,6 +173,8 @@ export default function ClientInfoForm({
                                 setClientData({
                                     ...clientData,
                                     firstName: e.target.value,
+                                    firstNameLower:
+                                        e.target.value.toLowerCase(),
                                 });
                             }}
                         />
@@ -194,6 +205,7 @@ export default function ClientInfoForm({
                                 setClientData({
                                     ...clientData,
                                     lastName: e.target.value,
+                                    lastNameLower: e.target.value.toLowerCase(),
                                 });
                             }}
                         />
@@ -294,13 +306,17 @@ export default function ClientInfoForm({
             </form>
 
             <div className={styles.saveButtons}>
-                <Link href={`/profile/${id}`}>
-                    <button className={styles.backButton}>
-                        Back to Profile
-                    </button>
-                </Link>
+                {showBackButton ? (
+                    <>
+                        <Link href={`/profile/${id}`}>
+                            <button className={styles.backButton}>
+                                Back to Profile
+                            </button>
+                        </Link>
 
-                <span />
+                        <span />
+                    </>
+                ) : null}
 
                 <button
                     className={styles.saveButton}

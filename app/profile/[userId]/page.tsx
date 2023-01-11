@@ -8,6 +8,7 @@ import {
     limit,
     orderBy,
     query,
+    Timestamp,
 } from 'firebase/firestore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -19,6 +20,8 @@ import styles from './profile.module.css';
 export interface ClientDoc {
     firstName: string;
     lastName: string;
+    firstNameLower: string;
+    lastNameLower: string;
     middleInitial: string;
     birthday: string; // TODO: Consider saving as timestamp
     gender: string;
@@ -28,6 +31,9 @@ export interface ClientDoc {
     notes: string;
     isCheckedIn: boolean;
     isBanned: boolean;
+    dateLastVisit?: Timestamp;
+    dateLastBackpack?: Timestamp;
+    dateLastSleepingBag?: Timestamp;
 }
 
 interface ProfileProps {
@@ -53,19 +59,7 @@ export default function Profile({ params }: ProfileProps) {
 
         // Set local state if their doc exists, otherwise go back to homepage
         if (clientDoc.exists()) {
-            setClientData({
-                firstName: clientDoc.data().firstName,
-                lastName: clientDoc.data().lastName,
-                middleInitial: clientDoc.data().middleInitial,
-                birthday: clientDoc.data().birthday,
-                gender: clientDoc.data().gender,
-                race: clientDoc.data().race,
-                postalCode: clientDoc.data().postalCode,
-                numKids: clientDoc.data().numKids,
-                notes: clientDoc.data().notes,
-                isCheckedIn: clientDoc.data().isCheckedIn,
-                isBanned: clientDoc.data().isBanned,
-            });
+            setClientData(clientDoc.data() as ClientDoc);
         } else {
             router.push('/');
         }
@@ -121,62 +115,19 @@ export default function Profile({ params }: ProfileProps) {
                             </h2>
                         </Link>
 
-                        <h3>Clothing</h3>
-                        {visit.clothingBoy ||
-                        visit.clothingWomen ||
-                        visit.clothingBoy ||
-                        visit.clothingGirl ? (
-                            <>
-                                <p>{visit.clothingMen ? 'Men' : null}</p>
-                                <p>{visit.clothingWomen ? 'Women' : null}</p>
-                                <p>{visit.clothingBoy ? 'Kids (boy)' : null}</p>
-                                <p>
-                                    {visit.clothingGirl ? 'Kids (girl)' : null}
-                                </p>
-                            </>
-                        ) : (
-                            <p>None</p>
-                        )}
+                        <div className={styles.rowContainer}>
+                            <Link
+                                href={`/profile/${params.userId}/visit/${visit.id}/printout`}
+                            >
+                                <button>Printout</button>
+                            </Link>
 
-                        <h3>Special Requests</h3>
-                        {visit.backpack ||
-                        visit.sleepingBag ||
-                        visit.busTicket ||
-                        visit.giftCard ||
-                        visit.diaper ||
-                        visit.financialAssistance ? (
-                            <>
-                                <p>{visit.backpack ? 'Backpack' : null}</p>
-                                <p>
-                                    {visit.sleepingBag ? 'Sleeping Bag' : null}
-                                </p>
-                                <p>
-                                    {visit.busTicket
-                                        ? `Bus Tickets: ${visit.busTicket}`
-                                        : null}
-                                </p>
-                                <p>
-                                    {visit.giftCard
-                                        ? `Gift Card: ${visit.giftCard}`
-                                        : null}
-                                </p>
-                                <p>
-                                    {visit.diaper
-                                        ? `Diapers: ${visit.diaper}`
-                                        : null}
-                                </p>
-                                <p>
-                                    {visit.financialAssistance
-                                        ? `Financial Assistance: ${visit.financialAssistance}`
-                                        : null}
-                                </p>
-                            </>
-                        ) : (
-                            <p>None</p>
-                        )}
-
-                        <h3>Notes</h3>
-                        <p>{visit.notes.length === 0 ? 'None' : visit.notes}</p>
+                            <Link
+                                href={`/profile/${params.userId}/visit/${visit.id}`}
+                            >
+                                <button>Details</button>
+                            </Link>
+                        </div>
                     </div>
                 );
             })

@@ -8,12 +8,13 @@ import {
     Timestamp,
     updateDoc,
 } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
-import { Client } from '../../../components/ClientList/ClientList';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './checkin.module.css';
+import { SettingsContext } from '../../../contexts/SettingsContext';
+import { ClientDoc } from '../../profile/[userId]/page';
 
 interface CheckinProps {
     params: { userId: string };
@@ -35,9 +36,17 @@ export interface VisitDoc {
     financialAssistance: number;
 }
 
+interface ValidationData {
+    daysVisit: number;
+    daysBackpack: number;
+    daysSleepingBag: number;
+}
+
 export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
-    const [oldClientData, setOldClientData] = useState<Client>();
+    const [oldClientData, setOldClientData] = useState<
+        ClientDoc & { id: string }
+    >();
     const [visitData, setVisitData] = useState<VisitDoc>({
         clothingMen: false,
         clothingWomen: false,
@@ -53,11 +62,24 @@ export default function Checkin({ params }: CheckinProps) {
         diaper: 0,
         financialAssistance: 0,
     });
+    const [validationData, setValidationData] = useState<ValidationData>({
+        // Set to max to always pass validation if no data available
+        daysVisit: Number.MAX_SAFE_INTEGER,
+        daysBackpack: Number.MAX_SAFE_INTEGER,
+        daysSleepingBag: Number.MAX_SAFE_INTEGER,
+    });
+    const [validates, setValidates] = useState<boolean>(true);
+    const { settings, setSettings } = useContext(SettingsContext);
 
-    // Get client data on component load
     useEffect(() => {
+        // Get client data on component load
         getClientData();
     }, []);
+
+    useEffect(() => {
+        // Calculate validation data (days between last and threshold)
+        getValidationData();
+    }, [oldClientData]);
 
     // Gets the client's data from firestore based on route's userId
     const getClientData = async () => {
@@ -69,20 +91,40 @@ export default function Checkin({ params }: CheckinProps) {
         if (clientDoc.exists()) {
             setOldClientData({
                 id: params.userId,
-                firstName: clientDoc.data().firstName,
-                lastName: clientDoc.data().lastName,
-                birthday: clientDoc.data().birthday,
-                notes: clientDoc.data().notes,
-                isCheckedIn: clientDoc.data().isCheckedIn,
-                isBanned: clientDoc.data().isBanned,
+                ...(clientDoc.data() as ClientDoc),
             });
         } else {
             router.push('/');
         }
     };
 
+    // Updates validation data in client doc based on new check in
+    const updateValidationData = async () => {
+        const updateData: {
+            dateLastVisit: Timestamp;
+            dateLastBackpack?: Timestamp;
+            dateLastSleepingBag?: Timestamp;
+        } = { dateLastVisit: visitData.timestamp };
+
+        if (visitData.backpack) {
+            updateData.dateLastBackpack = visitData.timestamp;
+        }
+
+        if (visitData.sleepingBag) {
+            updateData.dateLastSleepingBag = visitData.timestamp;
+        }
+
+        await updateDoc(doc(firestore, 'clients', params.userId), updateData);
+    };
+
     // Checkin process
-    const checkIn = async () => {
+    const checkIn = async (tempOverride = false) => {
+        // If not past threshold and tempOverride's not set
+        if (!tempOverride && !validatesSuccessfully()) {
+            setValidates(false); // Used to display error message
+            return; // Don't check in
+        }
+
         // Update isCheckedIn status to true
         await updateDoc(doc(firestore, 'clients', params.userId), {
             isCheckedIn: true,
@@ -100,12 +142,72 @@ export default function Checkin({ params }: CheckinProps) {
             visitData
         );
 
-        // Get updated client data
-        getClientData();
+        // Update validation data in client doc
+        await updateValidationData();
 
         // Redirect to user profile page after checking user in
         router.push(`/profile/${params.userId}`);
     };
+
+    // Validates the new check in passes thresholds as specified in settings
+    // page
+    const validatesSuccessfully = () => {
+        if (settings.earlyOverride) return true;
+
+        // TODO: Validate >= vs >
+        return (
+            validationData.daysVisit > settings.daysEarlyThreshold &&
+            (visitData.backpack
+                ? validationData.daysBackpack > settings.backpackThreshold
+                : true) &&
+            (visitData.sleepingBag
+                ? validationData.daysSleepingBag > settings.sleepingBagThreshold
+                : true)
+        );
+    };
+
+    const getValidationData = async () => {
+        setValidationData({
+            ...validationData,
+            daysVisit: daysBetween(
+                oldClientData?.dateLastVisit?.toDate(),
+                new Date()
+            ),
+            daysBackpack: daysBetween(
+                oldClientData?.dateLastBackpack?.toDate(),
+                new Date()
+            ),
+            daysSleepingBag: daysBetween(
+                oldClientData?.dateLastSleepingBag?.toDate(),
+                new Date()
+            ),
+        });
+    };
+
+    // TODO: Validate for edge cases with daylight savings and different timezones
+    const daysBetween = (start: Date | undefined, end: Date) => {
+        if (start == undefined) return Number.MAX_SAFE_INTEGER;
+
+        const msPerDay = 24 * 60 * 60 * 1000;
+
+        return Math.round(
+            Math.abs((start.getTime() - end.getTime()) / msPerDay)
+        );
+    };
+
+    // TODO: Give more details
+    const validationErrorMessage = validates ? null : (
+        <div className={styles.errorMessageContainer}>
+            <p>Trying to check in too early</p>
+            <button
+                onClick={() => {
+                    checkIn(true);
+                }}
+            >
+                Force Check-in
+            </button>
+        </div>
+    );
 
     return (
         <div className={styles.container}>
@@ -113,7 +215,11 @@ export default function Checkin({ params }: CheckinProps) {
                 <h1>Check-in page</h1>
 
                 <div className={styles.headerRow}>
-                    <h2>{`${oldClientData?.firstName} ${oldClientData?.lastName}`}</h2>
+                    <Link href={`/profile/${params.userId}`}>
+                        <h2>{`${oldClientData?.firstName} ${oldClientData?.lastName}`}</h2>
+                    </Link>
+
+                    <span />
 
                     <p>
                         {oldClientData?.isCheckedIn
@@ -340,6 +446,8 @@ export default function Checkin({ params }: CheckinProps) {
                 />
 
                 <button type="submit">Check in</button>
+
+                {validationErrorMessage}
             </form>
         </div>
     );

@@ -10,12 +10,12 @@ import {
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import ClientCard from '../../components/ClientList/ClientCard/ClientCard';
-import { Client } from '../../components/ClientList/ClientList';
+import { ClientCardInfo } from '../../components/ClientList/ClientList';
 import { firestore } from '../../firebase/firebase';
 import styles from './checkedin.module.css';
 
 export default function CheckedIn() {
-    const [clients, setClients] = useState<Array<Client>>();
+    const [clients, setClients] = useState<Array<ClientCardInfo>>();
 
     // Get client data on component load
     useEffect(() => {
@@ -54,7 +54,7 @@ export default function CheckedIn() {
     };
 
     // Create a ClientCard for each Client in clients, if they exist
-    const clientsList = clients?.map((client: Client) => {
+    const clientsList = clients?.map((client: ClientCardInfo) => {
         return (
             <ClientCard
                 id={client.id}
@@ -71,7 +71,11 @@ export default function CheckedIn() {
     return (
         <div className="container">
             <h1>Checked in clients</h1>
-            <div className={styles.cardContainer}>{clientsList}</div>
+            {clients && clients.length > 0 ? (
+                <div className={styles.cardContainer}>{clientsList}</div>
+            ) : (
+                <p>No clients are currently checked in</p>
+            )}
         </div>
     );
 }

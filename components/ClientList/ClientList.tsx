@@ -15,7 +15,7 @@ import { firestore } from '../../firebase/firebase';
 import ClientCard from './ClientCard/ClientCard';
 import styles from './ClientList.module.css';
 
-export interface Client {
+export interface ClientCardInfo {
     id: string;
     firstName: string;
     lastName: string;
@@ -32,7 +32,7 @@ interface Filter {
 }
 
 export default function ClientList() {
-    const [clients, setClients] = useState<Array<Client>>();
+    const [clients, setClients] = useState<Array<ClientCardInfo>>();
     const [filter, setFilter] = useState<Filter>({
         firstName: '',
         lastName: '',
@@ -65,22 +65,30 @@ export default function ClientList() {
                 // Get only by last name and birthday
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('lastName', '==', filter.lastName),
+                    where('lastNameLower', '==', filter.lastName.toLowerCase()),
                     where('birthday', '==', filter.birthday)
                 );
             } else if (filter.lastName === '') {
                 // Get only by first name and birthday
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstName', '==', filter.firstName),
+                    where(
+                        'firstNameLower',
+                        '==',
+                        filter.firstName.toLowerCase()
+                    ),
                     where('birthday', '==', filter.birthday)
                 );
             } else {
                 // Get by first and last name and birthday
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstName', '==', filter.firstName),
-                    where('lastName', '==', filter.lastName),
+                    where(
+                        'firstNameLower',
+                        '==',
+                        filter.firstName.toLowerCase()
+                    ),
+                    where('lastNameLower', '==', filter.lastName.toLowerCase()),
                     where('birthday', '==', filter.birthday)
                 );
             }
@@ -95,20 +103,28 @@ export default function ClientList() {
                 // Get only by last name
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('lastName', '==', filter.lastName)
+                    where('lastNameLower', '==', filter.lastName.toLowerCase())
                 );
             } else if (filter.lastName === '') {
                 // Get only by first name
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstName', '==', filter.firstName)
+                    where(
+                        'firstNameLower',
+                        '==',
+                        filter.firstName.toLowerCase()
+                    )
                 );
             } else {
                 // Get by first and last name
                 clientsQuery = query(
                     collection(firestore, 'clients'),
-                    where('firstName', '==', filter.firstName),
-                    where('lastName', '==', filter.lastName)
+                    where(
+                        'firstNameLower',
+                        '==',
+                        filter.firstName.toLowerCase()
+                    ),
+                    where('lastNameLower', '==', filter.lastName.toLowerCase())
                 );
             }
         }
@@ -139,7 +155,7 @@ export default function ClientList() {
     const clientsList =
         // If clients arr exist and isn't empty
         clients && clients.length > 0 ? (
-            clients?.map((client: Client) => {
+            clients?.map((client: ClientCardInfo) => {
                 return (
                     <ClientCard
                         id={client.id}
@@ -209,7 +225,7 @@ export default function ClientList() {
 
                         <label>
                             Birthday
-                            <div>
+                            <div className={styles.birthdayControlsContainer}>
                                 <input
                                     type="date"
                                     name="birthday"

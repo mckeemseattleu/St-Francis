@@ -12,10 +12,13 @@
     --yellow: #b4975a;
     --white: #ffffff;
 
+    --red: #9d0000;
+
     /* Old */
     /* --gray-1: var(--gray-2);
     --blue: var(--yellow);
     --white: var(--gray-1); */
+    overflow-y: scroll;
 }
 html,
 body {
@@ -85,6 +88,12 @@ textarea {
 textarea:focus {
     outline: none;
     border: solid 1px var(--blue);
+}
+
+input[type='checkbox'] {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
 }
 
 .container {

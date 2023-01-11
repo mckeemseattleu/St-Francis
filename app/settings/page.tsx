@@ -1,10 +1,48 @@
 'use client';
 
-import { useContext } from 'react';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../contexts/SettingsContext';
+import { firestore } from '../../firebase/firebase';
+
+export interface SettingsDoc {
+    daysEarlyThreshold: number;
+    backpackThreshold: number;
+    sleepingBagThreshold: number;
+    earlyOverride: boolean;
+}
 
 export default function Settings() {
+    // Local settings
     const { settings, setSettings } = useContext(SettingsContext);
+    // Default settings saved on database
+    const [settingsDoc, setSettingsDoc] = useState<SettingsDoc>();
+    // "Saved" status message
+    const [justUpdated, setJustUpdated] = useState<boolean>(false);
+
+    // Get default settings on load
+    useEffect(() => {
+        getSettingsDoc();
+    }, []);
+
+    const getSettingsDoc = async () => {
+        const settingsDoc = await getDoc(doc(firestore, 'settings', 'default'));
+
+        if (settingsDoc.exists()) {
+            setSettingsDoc(settingsDoc.data() as SettingsDoc);
+        }
+
+        // TODO: Probably a better way to init Context default values
+        while (!setSettings) {}
+
+        setSettings(settingsDoc.data());
+    };
+
+    const updateSettingsDoc = async () => {
+        await setDoc(doc(firestore, 'settings', 'default'), settings);
+
+        setJustUpdated(true);
+    };
 
     return (
         <div className="container">
@@ -12,8 +50,15 @@ export default function Settings() {
 
             {/* If Context is ready show the form, otherwise show nothing;
             prevents calling of functions or data before it's ready */}
-            {setSettings ? (
-                <>
+            {setSettings && settingsDoc ? (
+                <form
+                    onSubmit={(e) => {
+                        // Prevent redirect
+                        e.preventDefault();
+
+                        updateSettingsDoc();
+                    }}
+                >
                     <h2>Days early threshold</h2>
                     <input
                         type="number"
@@ -23,7 +68,7 @@ export default function Settings() {
                         onChange={(e) => {
                             setSettings((prev: typeof settings) => ({
                                 ...prev,
-                                daysEarlyThreshold: e.target.value,
+                                daysEarlyThreshold: parseInt(e.target.value),
                             }));
                         }}
                     />
@@ -38,7 +83,7 @@ export default function Settings() {
                         onChange={(e) => {
                             setSettings((prev: typeof settings) => ({
                                 ...prev,
-                                backpackThreshold: e.target.value,
+                                backpackThreshold: parseInt(e.target.value),
                             }));
                         }}
                     />
@@ -53,12 +98,33 @@ export default function Settings() {
                         onChange={(e) => {
                             setSettings((prev: typeof settings) => ({
                                 ...prev,
+                                sleepingBagThreshold: parseInt(e.target.value),
+                            }));
+                        }}
+                    />
+                    <br />
+
+                    <h2>Early Check In Override</h2>
+                    <input
+                        type="checkbox"
+                        name="earlyOverride"
+                        id="earlyOverride"
+                        value={settings.earlyOverride ? 'on' : 'off'}
+                        onChange={(e) => {
+                            setSettings((prev: typeof settings) => ({
+                                ...prev,
                                 sleepingBagThreshold: e.target.value,
                             }));
                         }}
                     />
                     <br />
-                </>
+
+                    <br />
+                    <button type="submit">Save as default</button>
+
+                    {/* TODO: Make confirmation prettier */}
+                    {justUpdated ? <p>Saved</p> : null}
+                </form>
             ) : null}
         </div>
     );
