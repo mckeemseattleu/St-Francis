@@ -23,6 +23,8 @@ interface ClientInfoFormProps {
  * given, empty strings will be used for text fields, 0 for number fields, and
  * the current date used for birthday
  * @param redirect Route to redirect to when form is submitted. Defaults to homepage
+ * @param title Heading to show atop form
+ * @param showBackButton Whether to show a "back to profile" button or not
  */
 export default function ClientInfoForm({
     id = undefined,
