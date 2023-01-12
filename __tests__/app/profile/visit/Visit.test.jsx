@@ -97,6 +97,8 @@ describe('Visit details page', () => {
 
         // Assert we've called deleteDoc()
         expect(deleteDoc).toHaveBeenCalled();
+
+        // TODO: Assert correct updating of fields
     });
 
     it('deletes one visit with other visits existing correctly', async () => {
@@ -134,6 +136,8 @@ describe('Visit details page', () => {
 
         // Assert we've called deleteDoc()
         expect(deleteDoc).toHaveBeenCalled();
+
+        // TODO: Assert correct updating of fields
     });
 
     it('renders heading correctly', async () => {
