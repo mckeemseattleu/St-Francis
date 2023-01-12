@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Visit from '../../../../app/profile/[userId]/visit/[visitId]/page';
 
-import { getDoc, getDocs } from 'firebase/firestore';
+import { deleteDoc, getDoc, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 
 jest.mock('next/navigation', () => ({
@@ -45,6 +45,22 @@ jest.mock('firebase/compat/app', () => ({
     },
 }));
 
+const mockVisitDoc = {
+    clothingMen: true,
+    clothingWomen: true,
+    clothingBoy: true,
+    clothingGirl: true,
+    household: 'household item text',
+    notes: 'notes text',
+    timestamp: { seconds: 0, toDate: jest.fn(() => 'Date') },
+    backpack: true,
+    sleepingBag: true,
+    busTicket: 1,
+    giftCard: 2,
+    diaper: 3,
+    financialAssistance: 4,
+};
+
 describe('Visit details page', () => {
     // Mock returning some sample data
     getDoc.mockImplementation(() => ({
@@ -61,23 +77,7 @@ describe('Visit details page', () => {
 
     useRouter.mockReturnValue(mockRouter);
 
-    it('deletes only document correctly', async () => {
-        const mockVisitDoc = {
-            clothingMen: true,
-            clothingWomen: true,
-            clothingBoy: true,
-            clothingGirl: true,
-            household: 'household item text',
-            notes: 'notes text',
-            timestamp: { seconds: 0, toDate: jest.fn(() => 'Date') },
-            backpack: true,
-            sleepingBag: true,
-            busTicket: 1,
-            giftCard: 2,
-            diaper: 3,
-            financialAssistance: 4,
-        };
-
+    it('deletes only visit correctly', async () => {
         // Used for initial load of "this" visit
         getDoc.mockImplementation(() => ({
             exists: () => true,
@@ -105,7 +105,45 @@ describe('Visit details page', () => {
         // Assert that we're back to the profile page
         expect(mockRouter.push).toHaveBeenCalledWith('/profile/1234');
 
-        // TODO: Assert we've got no visits anymore
+        // Assert we've called deleteDoc()
+        expect(deleteDoc).toHaveBeenCalled();
+    });
+
+    it('deletes one visit with other visits existing correctly', async () => {
+        // Used for initial load of "this" visit
+        getDoc.mockImplementation(() => ({
+            exists: () => true,
+            data: () => mockVisitDoc,
+        }));
+
+        // Used after deleteVisit() deletes "this" visit and is requesting most
+        // recent visit other than "this"
+        getDocs.mockImplementation(() => ({
+            docs: [
+                {
+                    exists: () => true,
+                    data: () => mockVisitDoc,
+                },
+            ],
+        }));
+
+        await act(async () => {
+            render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
+        });
+
+        await act(async () => {
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete visit',
+            });
+
+            fireEvent.click(deleteButton);
+        });
+
+        // Assert that we're back to the profile page
+        expect(mockRouter.push).toHaveBeenCalledWith('/profile/1234');
+
+        // Assert we've called deleteDoc()
+        expect(deleteDoc).toHaveBeenCalled();
     });
 
     it('renders heading correctly', async () => {
