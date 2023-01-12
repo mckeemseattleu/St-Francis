@@ -212,7 +212,7 @@ export default function Checkin({ params }: CheckinProps) {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h1>Check-in page</h1>
+                <h1>Check-in Page</h1>
 
                 <div className={styles.headerRow}>
                     <Link href={`/profile/${params.userId}`}>
