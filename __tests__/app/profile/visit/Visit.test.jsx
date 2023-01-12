@@ -33,6 +33,7 @@ jest.mock('firebase/firestore', () => ({
     query: jest.fn(),
     where: jest.fn(),
     updateDoc: jest.fn(),
+    deleteField: jest.fn(),
 }));
 
 jest.mock('firebase/compat/app', () => ({
@@ -77,29 +78,34 @@ describe('Visit details page', () => {
             financialAssistance: 4,
         };
 
+        // Used for initial load of "this" visit
         getDoc.mockImplementation(() => ({
             exists: () => true,
             data: () => mockVisitDoc,
         }));
 
+        // Used after deleteVisit() deletes "this" visit and is requesting most
+        // recent visit other than "this"
         getDocs.mockImplementation(() => ({
-            docs: [
-                {
-                    exists: () => true,
-                    data: () => mockVisitDoc,
-                },
-            ],
+            docs: [],
         }));
 
         await act(async () => {
             render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
         });
 
-        const deleteButton = screen.getByRole('button', {
-            name: 'Delete visit',
+        await act(async () => {
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete visit',
+            });
+
+            fireEvent.click(deleteButton);
         });
 
-        fireEvent.click(deleteButton);
+        // Assert that we're back to the profile page
+        expect(mockRouter.push).toHaveBeenCalledWith('/profile/1234');
+
+        // TODO: Assert we've got no visits anymore
     });
 
     it('renders heading correctly', async () => {
