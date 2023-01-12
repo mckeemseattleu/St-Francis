@@ -1,8 +1,8 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Visit from '../../../../app/profile/[userId]/visit/[visitId]/page';
 
-import { getDoc } from 'firebase/firestore';
+import { getDoc, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 
 jest.mock('next/navigation', () => ({
@@ -20,11 +20,19 @@ jest.mock('firebase/firestore', () => ({
         exists: jest.fn(),
         data: {},
     })),
-    getDocs: jest.fn(() => []),
+    getDocs: jest.fn(() => [
+        {
+            exists: jest.fn(),
+            data: {},
+        },
+    ]),
+    deleteDoc: jest.fn(),
     collection: jest.fn(),
     orderBy: jest.fn(),
     limit: jest.fn(),
     query: jest.fn(),
+    where: jest.fn(),
+    updateDoc: jest.fn(),
 }));
 
 jest.mock('firebase/compat/app', () => ({
@@ -51,6 +59,48 @@ describe('Visit details page', () => {
     const mockRouter = { push: jest.fn() };
 
     useRouter.mockReturnValue(mockRouter);
+
+    it('deletes only document correctly', async () => {
+        const mockVisitDoc = {
+            clothingMen: true,
+            clothingWomen: true,
+            clothingBoy: true,
+            clothingGirl: true,
+            household: 'household item text',
+            notes: 'notes text',
+            timestamp: { seconds: 0, toDate: jest.fn(() => 'Date') },
+            backpack: true,
+            sleepingBag: true,
+            busTicket: 1,
+            giftCard: 2,
+            diaper: 3,
+            financialAssistance: 4,
+        };
+
+        getDoc.mockImplementation(() => ({
+            exists: () => true,
+            data: () => mockVisitDoc,
+        }));
+
+        getDocs.mockImplementation(() => ({
+            docs: [
+                {
+                    exists: () => true,
+                    data: () => mockVisitDoc,
+                },
+            ],
+        }));
+
+        await act(async () => {
+            render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
+        });
+
+        const deleteButton = screen.getByRole('button', {
+            name: 'Delete visit',
+        });
+
+        fireEvent.click(deleteButton);
+    });
 
     it('renders heading correctly', async () => {
         render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
