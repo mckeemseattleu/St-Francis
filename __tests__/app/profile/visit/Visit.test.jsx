@@ -62,16 +62,6 @@ const mockVisitDoc = {
 };
 
 describe('Visit details page', () => {
-    // Mock returning some sample data
-    getDoc.mockImplementation(() => ({
-        // Needed for clientDoc.exists() check
-        exists: () => {
-            return true;
-        },
-        // Needed for .data() calls
-        data: () => ({}),
-    }));
-
     // Mock router for router.push()
     const mockRouter = { push: jest.fn() };
 
