@@ -39,7 +39,7 @@ export default function Settings() {
                         updateSettingsDoc();
                     }}
                 >
-                    <h2>Days early threshold</h2>
+                    <h2>Days Early Threshold</h2>
                     <input
                         type="number"
                         name="daysEarlyThreshold"
@@ -54,7 +54,7 @@ export default function Settings() {
                     />
                     <br />
 
-                    <h2>Backpack threshold</h2>
+                    <h2>Backpack Threshold</h2>
                     <input
                         type="number"
                         name="backpackThreshold"
@@ -69,7 +69,7 @@ export default function Settings() {
                     />
                     <br />
 
-                    <h2>Sleeping bag threshold</h2>
+                    <h2>Sleeping Bag Threshold</h2>
                     <input
                         type="number"
                         name="sleepingBagThreshold"
