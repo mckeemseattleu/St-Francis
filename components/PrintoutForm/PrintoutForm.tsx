@@ -69,7 +69,7 @@ export default function PrintoutForm({
                     {
                         // Uses timestamp, if undefined uses today's date
                         new Date(
-                            visitData
+                            visitData?.timestamp
                                 ? visitData?.timestamp?.seconds * 1000
                                 : new Date()
                         ).toDateString()
