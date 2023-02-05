@@ -14,6 +14,21 @@
         "isolatedModules": true,
         "jsx": "preserve",
         "incremental": true,
+        "baseUrl": ".",
+        "paths": {
+            "@public/*": ["public/*"],
+            "@public": ["public"],
+            "@components/*": ["components/*"],
+            "@components": ["components"],
+            "@hooks/*": ["hooks/*"],
+            "@hooks": ["hooks"],
+            "@providers/*": ["providers/*"],
+            "@providers": ["providers"],
+            "@styles/*": ["styles/*"],
+            "@styles": ["styles"],
+            "@utils/*": ["utils/*"],
+            "@utils": ["utils"]
+        },
         "plugins": [
             {
                 "name": "next"
