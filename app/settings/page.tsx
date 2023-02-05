@@ -1,8 +1,8 @@
 'use client';
 
+import { useSettings } from '@hooks/useSettings';
 import { doc, setDoc } from 'firebase/firestore';
-import { useContext, useState } from 'react';
-import { SettingsContext } from '../../contexts/SettingsContext';
+import { useState } from 'react';
 import { firestore } from '../../firebase/firebase';
 
 export interface SettingsDoc {
@@ -14,7 +14,7 @@ export interface SettingsDoc {
 
 export default function Settings() {
     // Local settings
-    const { settings, setSettings } = useContext(SettingsContext);
+    const { settings, setSettings } = useSettings();
     // "Saved" status message
     const [justUpdated, setJustUpdated] = useState<boolean>(false);
 
