@@ -37,7 +37,7 @@ export default function PrintoutForm({
     visitData,
     data,
 }: PrintoutFormProps) {
-    const bodyItems = data.map((section: any) => {
+    const bodyItems = data.map((section: any, i: number) => {
         const content =
             // TODO: Refactor from tertiary to switch case in case we have more
             // than 2 possible values for section.type in the future
@@ -54,10 +54,10 @@ export default function PrintoutForm({
                       </div>
                   ));
         return (
-            <>
+            <div key={i}>
                 <h1>{section.title}</h1>
                 <div className={styles.section}>{content}</div>
-            </>
+            </div>
         );
     });
 
