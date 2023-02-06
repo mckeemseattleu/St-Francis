@@ -76,9 +76,9 @@ Google's [Firebase Authentication](https://firebase.google.com/products/auth) is
 
 I'm (Kevin) not entirely sure about best practices for various decisions made in this project, and if there are known best practices that conflict with these it may be a good idea to refactor and change these in the future
 
-## Context
+## Provider & Context
 
-There are currently two different Context providers, one for settings and one for Firebase's authentication and sign-in. These are found in the `contexts` folder, and wrap the `<main />` element in `app/layout.tsx`
+There are currently two different contexts, one for settings and one for Firebase's authentication (sign-in, sign-out, etc). These are found in the `providers` folder. The exported combined providers wraps the `<Main />` element in root layout `app/layout.tsx`
 
 ## Type Definitions
 
