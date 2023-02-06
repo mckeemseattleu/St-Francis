@@ -1,8 +1,8 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Visit from '../../../../app/profile/[userId]/visit/[visitId]/page';
 
-import { getDoc } from 'firebase/firestore';
+import { deleteDoc, getDoc, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 
 jest.mock('next/navigation', () => ({
@@ -20,11 +20,20 @@ jest.mock('firebase/firestore', () => ({
         exists: jest.fn(),
         data: {},
     })),
-    getDocs: jest.fn(() => []),
+    getDocs: jest.fn(() => [
+        {
+            exists: jest.fn(),
+            data: {},
+        },
+    ]),
+    deleteDoc: jest.fn(),
     collection: jest.fn(),
     orderBy: jest.fn(),
     limit: jest.fn(),
     query: jest.fn(),
+    where: jest.fn(),
+    updateDoc: jest.fn(),
+    deleteField: jest.fn(),
 }));
 
 jest.mock('firebase/compat/app', () => ({
@@ -36,21 +45,100 @@ jest.mock('firebase/compat/app', () => ({
     },
 }));
 
-describe('Visit details page', () => {
-    // Mock returning some sample data
-    getDoc.mockImplementation(() => ({
-        // Needed for clientDoc.exists() check
-        exists: () => {
-            return true;
-        },
-        // Needed for .data() calls
-        data: () => ({}),
-    }));
+const mockVisitDoc = {
+    clothingMen: true,
+    clothingWomen: true,
+    clothingBoy: true,
+    clothingGirl: true,
+    household: 'household item text',
+    notes: 'notes text',
+    timestamp: { seconds: 0, toDate: jest.fn(() => 'Date') },
+    backpack: true,
+    sleepingBag: true,
+    busTicket: 1,
+    giftCard: 2,
+    diaper: 3,
+    financialAssistance: 4,
+};
 
+describe('Visit details page', () => {
     // Mock router for router.push()
     const mockRouter = { push: jest.fn() };
 
     useRouter.mockReturnValue(mockRouter);
+
+    it('deletes only visit correctly', async () => {
+        // Used for initial load of "this" visit
+        getDoc.mockImplementation(() => ({
+            exists: () => true,
+            data: () => mockVisitDoc,
+        }));
+
+        // Used after deleteVisit() deletes "this" visit and is requesting most
+        // recent visit other than "this"
+        getDocs.mockImplementation(() => ({
+            docs: [],
+        }));
+
+        await act(async () => {
+            render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
+        });
+
+        await act(async () => {
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete visit',
+            });
+
+            fireEvent.click(deleteButton);
+        });
+
+        // Assert that we're back to the profile page
+        expect(mockRouter.push).toHaveBeenCalledWith('/profile/1234');
+
+        // Assert we've called deleteDoc()
+        expect(deleteDoc).toHaveBeenCalled();
+
+        // TODO: Assert correct updating of fields
+    });
+
+    it('deletes one visit with other visits existing correctly', async () => {
+        // Used for initial load of "this" visit
+        getDoc.mockImplementation(() => ({
+            exists: () => true,
+            data: () => mockVisitDoc,
+        }));
+
+        // Used after deleteVisit() deletes "this" visit and is requesting most
+        // recent visit other than "this"
+        getDocs.mockImplementation(() => ({
+            docs: [
+                {
+                    exists: () => true,
+                    data: () => mockVisitDoc,
+                },
+            ],
+        }));
+
+        await act(async () => {
+            render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
+        });
+
+        await act(async () => {
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete visit',
+            });
+
+            fireEvent.click(deleteButton);
+        });
+
+        // Assert that we're back to the profile page
+        expect(mockRouter.push).toHaveBeenCalledWith('/profile/1234');
+
+        // Assert we've called deleteDoc()
+        expect(deleteDoc).toHaveBeenCalled();
+
+        // TODO: Assert correct updating of fields
+    });
 
     it('renders heading correctly', async () => {
         render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
