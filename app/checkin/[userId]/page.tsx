@@ -8,13 +8,13 @@ import {
     Timestamp,
     updateDoc,
 } from 'firebase/firestore';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './checkin.module.css';
-import { SettingsContext } from '../../../contexts/SettingsContext';
 import { ClientDoc } from '../../profile/[userId]/page';
+import { useSettings } from '@hooks';
 
 interface CheckinProps {
     params: { userId: string };
@@ -69,7 +69,7 @@ export default function Checkin({ params }: CheckinProps) {
         daysSleepingBag: Number.MAX_SAFE_INTEGER,
     });
     const [validates, setValidates] = useState<boolean>(true);
-    const { settings, setSettings } = useContext(SettingsContext);
+    const { settings } = useSettings();
 
     useEffect(() => {
         // Get client data on component load
