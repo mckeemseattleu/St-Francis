@@ -1,4 +1,4 @@
-import { useAuth } from "./useAuth";
-import { useSettings } from "./useSettings";
+import { useAuth } from './useAuth';
+import { useSettings } from './useSettings';
 
 export { useAuth, useSettings };

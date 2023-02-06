@@ -3,13 +3,13 @@ import { createContext, useEffect, useState } from 'react';
 import { StyledFirebaseAuth } from 'react-firebaseui';
 import { firebase } from '../firebase/firebase';
 
-interface IAuthContext {
+interface AuthContext {
     isSignedIn: boolean;
     FireBaseAuth: Function;
     signOut: Function;
 }
 
-export const AuthContext = createContext({ } as IAuthContext);
+export const AuthContext = createContext({} as AuthContext);
 
 interface AuthProviderProps {
     children: React.ReactNode;
@@ -48,7 +48,7 @@ export default function AuthProvider(props: AuthProviderProps) {
                 setIsSignedIn(!!user);
             });
         // Make sure we un-register Firebase observers when the component unmounts.
-        return () => unregisterAuthObserver(); 
+        return () => unregisterAuthObserver();
     }, []);
 
     const values = {
