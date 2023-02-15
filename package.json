@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watchAll --coverage",
+    "test-once": "jest --coverage",
     "format": "prettier --write 'app/**/*.tsx' 'components/**/*.tsx'"
   },
   "dependencies": {
