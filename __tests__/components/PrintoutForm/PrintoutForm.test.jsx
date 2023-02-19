@@ -1,6 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import PrintoutForm from '../../../components/PrintoutForm/PrintoutForm';
+import PrintoutForm from '@/components/PrintoutForm/PrintoutForm';
 
 const mockClientData = {
     firstName: 'First',
