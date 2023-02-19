@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import NavBar from '../../../components/NavBar/NavBar';
+import NavBar from '@/components/NavBar/NavBar';
 // Fake Login component
-jest.mock('../../../components/Login/Login');
+jest.mock('@/components/Login/Login');
 
 describe('NavBar', () => {
     it('renders a link to homepage', () => {
