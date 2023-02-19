@@ -1,0 +1,6 @@
+.clientListContainer {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 95vw;
+    justify-content: center;
+}
