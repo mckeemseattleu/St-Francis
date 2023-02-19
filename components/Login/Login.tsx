@@ -1,22 +1,23 @@
 import { useAuth } from '@/hooks/index';
-import 'firebase/compat/auth';
+import Image from 'next/image';
 import styles from './Login.module.css';
+export default function Login() {
+    const { isSignedIn, signIn, signOut } = useAuth();
 
-function Login() {
-    const { isSignedIn, FireBaseAuth, signOut } = useAuth();
-    // Configure FirebaseUI.
-
-    if (!isSignedIn)
-        return (
-            <div className={styles.wrapper}>
-                <FireBaseAuth />
-            </div>
-        );
+    const handleAuth = () => (isSignedIn ? signOut() : signIn());
+    const label = isSignedIn ? (
+        'Sign Out'
+    ) : (
+        <>
+            Sign In With
+            <Image src="/google.svg" alt="google-auth" width="20" height="20" />
+        </>
+    );
     return (
         <div className={styles.wrapper}>
-            <button onClick={() => signOut()}>Sign-out</button>
+            <button onClick={handleAuth} className={styles.signInButton}>
+                {label}
+            </button>
         </div>
     );
 }
-
-export default Login;
