@@ -1,24 +1,9 @@
-'use client';
-
+import type { Client } from 'models';
 import Link from 'next/link';
 import styles from './ClientCard.module.css';
-interface ClientCardProps {
-    id: string;
-    firstName: string;
-    lastName: string;
-    birthday: string;
-    notes: string;
-    isBanned: boolean;
-}
 
-export default function ClientCard({
-    id,
-    firstName,
-    lastName,
-    birthday,
-    notes,
-    isBanned,
-}: ClientCardProps) {
+export default function ClientCard({ client }: { client: Client }) {
+    const { id, firstName, lastName, birthday, notes, isBanned } = client;
     return (
         <div className={styles.card}>
             <Link href={`/profile/${id}`}>
