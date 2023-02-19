@@ -1,4 +1,4 @@
-import { useAuth } from '@hooks';
+import { useAuth } from '@/hooks/index';
 import 'firebase/compat/auth';
 import styles from './Login.module.css';
 

@@ -3,7 +3,7 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
-import { ClientCardInfo } from '../../../components/ClientList/ClientList';
+import type { Client } from '@/models/index';
 import { useRouter } from 'next/navigation';
 import styles from './checkout.module.css';
 import Link from 'next/link';
@@ -14,7 +14,7 @@ interface CheckOutProps {
 
 export default function CheckOut({ params }: CheckOutProps) {
     const router = useRouter();
-    const [oldClientData, setOldClientData] = useState<ClientCardInfo>();
+    const [oldClientData, setOldClientData] = useState<Client>();
 
     // Get client data on component load
     useEffect(() => {

@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './checkin.module.css';
 import { ClientDoc } from '../../profile/[userId]/page';
-import { useSettings } from '@hooks';
+import { useSettings } from '@/hooks/index';
 
 interface CheckinProps {
     params: { userId: string };

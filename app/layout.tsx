@@ -1,7 +1,7 @@
 'use client';
 
-import { useAuth } from '@hooks';
-import Providers from '@providers';
+import { useAuth } from '@/hooks/index';
+import Providers from '@/providers/index';
 import Head from 'next/head';
 import NavBar from '../components/NavBar/NavBar';
 import '../styles/globals.css';

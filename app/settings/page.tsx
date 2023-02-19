@@ -1,6 +1,6 @@
 'use client';
 
-import { useSettings } from '@hooks/useSettings';
+import { useSettings } from '@/hooks/useSettings';
 import { doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { firestore } from '../../firebase/firebase';
