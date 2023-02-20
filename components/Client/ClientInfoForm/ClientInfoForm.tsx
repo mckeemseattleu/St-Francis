@@ -1,9 +1,10 @@
+'use client';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { ClientDoc } from '../../app/profile/[userId]/page';
-import { firestore } from '../../firebase/firebase';
+import { ClientDoc } from '@/app/profile/[userId]/page';
+import { firestore } from '../../../firebase/firebase';
 import styles from './ClientInfoForm.module.css';
 
 interface ClientInfoFormProps {

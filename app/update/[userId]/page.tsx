@@ -4,7 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
 import { useRouter } from 'next/navigation';
-import ClientInfoForm from '../../../components/ClientInfoForm/ClientInfoForm';
+import { ClientInfoForm } from '@/components/Client/index';
 import { ClientDoc } from '../../profile/[userId]/page';
 
 interface UpdateProps {
