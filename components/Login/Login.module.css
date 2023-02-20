@@ -1,3 +1,9 @@
 .wrapper {
     padding: 5px;
 }
+
+.signInButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

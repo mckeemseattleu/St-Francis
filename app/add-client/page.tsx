@@ -1,6 +1,4 @@
-'use client';
-
-import ClientInfoForm from '../../components/ClientInfoForm/ClientInfoForm';
+import { ClientInfoForm } from '@/components/Client/index';
 
 export default function AddClient() {
     return (

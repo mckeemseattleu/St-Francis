@@ -1,10 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import ClientList from '../../../components/ClientList/ClientList';
+import { ClientSearch } from '@/components/Client/index';
 import '@testing-library/jest-dom';
 
-describe('ClientList', () => {
+describe('ClientSearch', () => {
     it('renders a title', () => {
-        render(<ClientList />);
+        render(<ClientSearch />);
 
         const heading = screen.getByRole('heading', {
             name: 'Lookup Client',
@@ -14,7 +14,7 @@ describe('ClientList', () => {
     });
 
     it('sets first name filter correctly', () => {
-        render(<ClientList />);
+        render(<ClientSearch />);
 
         const firstNameFilterInput = screen.getByLabelText('First name');
 
@@ -26,7 +26,7 @@ describe('ClientList', () => {
     });
 
     it('sets last name filter correctly', () => {
-        render(<ClientList />);
+        render(<ClientSearch />);
 
         const firstNameFilterInput = screen.getByLabelText('Last name');
 

@@ -31,13 +31,6 @@
     margin-right: 20px;
 }
 
-.cardContainer {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 95vw;
-    justify-content: center;
-}
-
 .birthdayControlsContainer {
     display: flex;
     align-items: center;

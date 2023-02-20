@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Visit from '../../../../app/profile/[userId]/visit/[visitId]/page';
+import Visit from '@/app/profile/[userId]/visit/[visitId]/page';
 
 import { deleteDoc, getDoc, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
@@ -141,7 +141,9 @@ describe('Visit details page', () => {
     });
 
     it('renders heading correctly', async () => {
-        render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
+        await act(async () => {
+            render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
+        });
 
         const title = screen.queryByRole('heading', { name: 'Visit Details' });
 

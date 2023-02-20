@@ -16,18 +16,13 @@
         "incremental": true,
         "baseUrl": ".",
         "paths": {
-            "@public/*": ["public/*"],
-            "@public": ["public"],
-            "@components/*": ["components/*"],
-            "@components": ["components"],
-            "@hooks/*": ["hooks/*"],
-            "@hooks": ["hooks"],
-            "@providers/*": ["providers/*"],
-            "@providers": ["providers"],
-            "@styles/*": ["styles/*"],
-            "@styles": ["styles"],
-            "@utils/*": ["utils/*"],
-            "@utils": ["utils"]
+            "@/components/*": ["components/*"],
+            "@/app/*": ["app/*"],
+            "@/hooks/*": ["hooks/*"],
+            "@/providers/*": ["providers/*"],
+            "@/styles/*": ["styles/*"],
+            "@/utils/*": ["utils/*"],
+            "@/models/*": ["models/*"]
         },
         "plugins": [
             {
@@ -35,13 +30,6 @@
             }
         ]
     },
-    "include": [
-        "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        "firebase/firebase.js",
-        "__tests__/components/ClientList/ClientList.test.jsx",
-        ".next/types/**/*.ts"
-    ],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
     "exclude": ["node_modules"]
 }
