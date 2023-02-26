@@ -1,5 +1,5 @@
 'use client';
-import type { DocFilter } from '@/utils/fetchData';
+import type { DocFilter } from '@/utils/index';
 import Link from 'next/link';
 import { useState } from 'react';
 import styles from './ClientSearchForm.module.css';
