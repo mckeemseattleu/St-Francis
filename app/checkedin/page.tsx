@@ -2,38 +2,26 @@
 import { ClientList } from '@/components/Client/index';
 import Spinner from '@/components/Spinner/Spinner';
 import type { Client } from '@/models/index';
-import { fetchData } from '@/utils/fetchData';
-import { useEffect, useState } from 'react';
+import { listClients } from '@/utils/index';
+import { useQuery } from 'react-query';
 
 export default function CheckedIn() {
-    const [clients, setClients] = useState<Array<Client>>([]);
-    const [loading, setLoading] = useState(false);
-
-    // Get client data on component load
-    useEffect(() => {
-        getClientsData();
-    }, []);
-
     // Gets all clients whose isCheckedIn status is true
-    const getClientsData = async () => {
-        const fields = { isCheckedIn: true };
-        setLoading(true);
-        const data = await fetchData<Client>(fields);
-        setClients(data);
-        setLoading(false);
-    };
+    const { isLoading, data } = useQuery('checkedin-clients', () =>
+        listClients({ isCheckedIn: true })
+    );
 
     return (
-        <div className="container">
+        <>
             <h1>Checked in clients</h1>
-            {loading ? (
+            {isLoading ? (
                 <Spinner />
             ) : (
                 <ClientList
-                    clients={clients}
+                    clients={data as Client[]}
                     noDataMessage="No clients are currently checked in"
                 />
             )}
-        </div>
+        </>
     );
 }
