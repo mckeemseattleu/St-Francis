@@ -2,9 +2,10 @@ export declare type Client = {
     readonly id: string;
     readonly notes?: string | null;
     readonly gender?: string | null;
-    readonly numKids?: string | null;
+    readonly race?: string | null;
+    readonly numKids?: number | null;
     readonly birthday?: string | null;
-    readonly isBanned?: string | null;
+    readonly isBanned?: boolean | null;
     readonly lastName?: string | null;
     readonly firstName?: string | null;
     readonly lastNameLower?: string | null;
@@ -12,7 +13,7 @@ export declare type Client = {
     readonly createdAt?: string | null;
     readonly lastUpdate?: string | null;
     readonly postalCode?: string | null;
-    readonly isCheckedIn?: string | null;
+    readonly isCheckedIn?: boolean | null;
     readonly numInFamily?: string | null;
     readonly lastBackpack?: string | null;
     readonly lastBusTicket?: string | null;
