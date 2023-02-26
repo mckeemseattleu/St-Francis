@@ -1,34 +1,35 @@
 'use client';
 import { ClientList, ClientSearchForm } from '@/components/Client/index';
 import Spinner from '@/components/Spinner/Spinner';
-import { fetchData } from '@/utils/fetchData';
-import type { DocFilter } from '@/utils/fetchData';
+import type { DocFilter } from '@/utils/index';
 
+import { listClients } from '@/utils/queries';
 import type { Client } from 'models';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 
 export default function ClientsSearch() {
-    const [clients, setClients] = useState<Array<Client>>([]);
-    const [loading, setLoading] = useState(false);
+    const [fields, setFields] = useState<DocFilter>({});
 
+    const { data, isLoading, refetch } = useQuery(
+        'clients',
+        () => listClients(fields),
+        { enabled: false }
+    );
     const handleSearch = async (fields: DocFilter) => {
-        setLoading(true);
-        const data = await fetchData<Client>(fields);
-        setClients(data);
-        setLoading(false);
+        setFields(fields);
+        await refetch();
     };
+
+    if (isLoading) return <Spinner />;
 
     return (
         <>
             <ClientSearchForm onSubmit={handleSearch} />
-            {loading ? (
-                <Spinner />
-            ) : (
-                <ClientList
-                    clients={clients}
-                    noDataMessage="No Matching Clients"
-                />
-            )}
+            <ClientList
+                clients={data || ([] as Array<Client>)}
+                noDataMessage="No Matching Clients"
+            />
         </>
     );
 }
