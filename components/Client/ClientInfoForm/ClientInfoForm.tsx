@@ -49,18 +49,25 @@ export default function ClientInfoForm({
         isCheckedIn: !!initialData.isCheckedIn,
         isBanned: !!initialData.isBanned,
     };
+
     const [clientData, setClientData] = useState(defaultData);
 
     const handleSave = async () => {
-        if (onSave) {
-            onSave(clientData);
-        }
+        onSave && onSave(clientData);
     };
 
     const handleSaveAndCheck = async () => {
-        if (onSaveAndCheck) {
-            onSaveAndCheck(clientData);
-        }
+        onSaveAndCheck && onSaveAndCheck(clientData);
+    };
+
+    const handleChange = (key: any) => (e: any) => {
+        let value = e.target.value;
+        if (key === 'numKids') value = parseInt(value);
+        if (key === 'isBanned') value = e.target.checked;
+        if (key === 'firstName')
+            clientData.firstNameLower = value.toLowerCase();
+        if (key === 'lastName') clientData.lastNameLower = value.toLowerCase();
+        setClientData({ ...clientData, [key]: value });
     };
 
     return (
@@ -76,12 +83,7 @@ export default function ClientInfoForm({
                         id="isBanned"
                         defaultChecked={clientData.isBanned}
                         value={clientData.isBanned ? 'on' : 'off'}
-                        onChange={(e) => {
-                            setClientData({
-                                ...clientData,
-                                isBanned: e.target.checked,
-                            });
-                        }}
+                        onChange={handleChange('isBanned')}
                     />
                 </div>
             </div>
@@ -94,14 +96,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.firstName}
                             id="firstName"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    firstName: e.target.value,
-                                    firstNameLower:
-                                        e.target.value.toLowerCase(),
-                                });
-                            }}
+                            onChange={handleChange('firstName')}
                         />
                     </div>
 
@@ -111,12 +106,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.middleInitial}
                             id="middleInitial"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    middleInitial: e.target.value,
-                                });
-                            }}
+                            onChange={handleChange('middleInitial')}
                         />
                     </div>
 
@@ -126,13 +116,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.lastName}
                             id="lastName"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    lastName: e.target.value,
-                                    lastNameLower: e.target.value.toLowerCase(),
-                                });
-                            }}
+                            onChange={handleChange('lastName')}
                         />
                     </div>
 
@@ -143,12 +127,7 @@ export default function ClientInfoForm({
                             name="birthday"
                             id="birthday"
                             value={clientData.birthday}
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    birthday: e.target.value,
-                                });
-                            }}
+                            onChange={handleChange('birthday')}
                         />
                     </div>
 
@@ -158,12 +137,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.gender}
                             id="gender"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    gender: e.target.value,
-                                });
-                            }}
+                            onChange={handleChange('gender')}
                         />
                         <br />
                     </div>
@@ -174,12 +148,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.race}
                             id="race"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    race: e.target.value,
-                                });
-                            }}
+                            onChange={handleChange('race')}
                         />
                     </div>
 
@@ -189,12 +158,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.postalCode}
                             id="postalCode"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    postalCode: e.target.value,
-                                });
-                            }}
+                            onChange={handleChange('postalCode')}
                         />
                     </div>
 
@@ -204,15 +168,7 @@ export default function ClientInfoForm({
                             type="number"
                             value={clientData.numKids}
                             id="numKids"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    // prevent NaN value when field is empty
-                                    numKids: !!e.target.value
-                                        ? parseInt(e.target.value)
-                                        : 0,
-                                });
-                            }}
+                            onChange={handleChange('numKids')}
                         />
                     </div>
                 </div>
@@ -222,12 +178,7 @@ export default function ClientInfoForm({
                     <textarea
                         value={clientData.notes}
                         id="notes"
-                        onChange={(e) => {
-                            setClientData({
-                                ...clientData,
-                                notes: e.target.value,
-                            });
-                        }}
+                        onChange={handleChange('notes')}
                         rows={5}
                     />
                 </div>
