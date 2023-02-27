@@ -43,3 +43,43 @@
 .button {
     margin: 10px;
 }
+
+
+
+.skeleton {
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: var(--gray-2);
+    }
+    100% {
+        background-color: hsl(--gray-5);
+    }
+}
+
+.skeletonName {
+    width: 60%;
+    height: 25px;
+    margin-bottom: 1.2rem;
+    border-radius: 5px;
+}
+.skeletonHeader {
+    width: 150px;
+    height: 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.skeletonText {
+    width: 90%;
+    height: 14px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.skeletonButton {
+    height: 35px;
+    width: 60px;
+    margin: 0 10px;
+    border-radius: 5px;
+}
