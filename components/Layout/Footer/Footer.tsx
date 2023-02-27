@@ -4,7 +4,7 @@ export default function Footer({ enabled = false }) {
     if (!enabled) return null;
     return (
         <footer className={styles.footer}>
-            <p className={styles.footerHeading}>ST. FRANCIS HOUSE</p>
+            <h1 className={styles.footerHeading}>ST. FRANCIS HOUSE</h1>
             <a
                 className={styles.footerLink}
                 href="https://goo.gl/maps/ifn9pJEydgeCJwGbA"
