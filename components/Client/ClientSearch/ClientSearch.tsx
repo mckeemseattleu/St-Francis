@@ -2,34 +2,45 @@
 import { ClientList, ClientSearchForm } from '@/components/Client/index';
 import Spinner from '@/components/Spinner/Spinner';
 import type { DocFilter } from '@/utils/index';
-
 import { listClients } from '@/utils/queries';
 import type { Client } from 'models';
-import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 
 export default function ClientsSearch() {
-    const [fields, setFields] = useState<DocFilter>({});
+    const [fields, setFields] = useState<DocFilter>();
+    const queryClient = useQueryClient();
 
-    const { data, isLoading, refetch } = useQuery(
-        'clients',
-        () => listClients(fields),
-        { enabled: false }
-    );
-    const handleSearch = async (fields: DocFilter) => {
-        setFields(fields);
-        await refetch();
-    };
+    const { data, isLoading, refetch } = useQuery({
+        queryKey: 'clients',
+        queryFn: async () => {
+            const clients = await listClients(fields);
+            return { clients, fields };
+        },
+        enabled: false,
+    });
 
-    if (isLoading) return <Spinner />;
+    const handleClear = () => queryClient.resetQueries('clients');
+
+    useEffect(() => {
+        if (fields) refetch();
+    }, [fields]);
 
     return (
         <>
-            <ClientSearchForm onSubmit={handleSearch} />
-            <ClientList
-                clients={data || ([] as Array<Client>)}
-                noDataMessage="No Matching Clients"
+            <ClientSearchForm
+                onSubmit={setFields}
+                onClear={handleClear}
+                initialFields={data?.fields}
             />
+            {isLoading ? (
+                <Spinner />
+            ) : (
+                <ClientList
+                    clients={(data?.clients as Client[]) || []}
+                    noDataMessage="No Matching Clients"
+                />
+            )}
         </>
     );
 }
