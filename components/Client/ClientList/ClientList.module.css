@@ -6,3 +6,7 @@
     min-height: 375px;
     margin: auto;
 }
+
+.clientListTitle {
+   text-align: center;
+}

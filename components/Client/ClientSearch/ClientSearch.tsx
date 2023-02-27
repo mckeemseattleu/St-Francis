@@ -1,6 +1,5 @@
 'use client';
 import { ClientList, ClientSearchForm } from '@/components/Client/index';
-import Spinner from '@/components/Spinner/Spinner';
 import type { DocFilter } from '@/utils/index';
 import { listClients } from '@/utils/queries';
 import type { Client } from 'models';
@@ -33,14 +32,11 @@ export default function ClientsSearch() {
                 onClear={handleClear}
                 initialFields={data?.fields}
             />
-            {isLoading ? (
-                <Spinner />
-            ) : (
-                <ClientList
-                    clients={(data?.clients as Client[]) || []}
-                    noDataMessage="No Matching Clients"
-                />
-            )}
+            <ClientList
+                clients={(data?.clients as Client[]) || []}
+                noDataMessage="No Matching Clients"
+                isLoading={isLoading}
+            />
         </>
     );
 }
