@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: row;
     margin: auto;
-    padding: 25px 2rem;
-    justify-content: center;
+    padding: 1rem 2rem;
+    justify-content: space-between;
     align-items: center;
     max-width: 1920px;
 }
@@ -16,12 +16,26 @@
 
 .navbarLink {
     height: 50px;
-    margin-right: 15px;
+    margin-inline: 15px;
     padding: 5px;
     display: flex;
     align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition: all .1s ease;
 }
 
 .spacer {
-    flex-grow: 1;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.navbarLink:hover {
+    border-bottom: 3px solid var(--gray-5);
+}
+
+.active {
+    border-bottom: 3px solid var(--gray-5);
 }
