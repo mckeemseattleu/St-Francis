@@ -1,6 +1,7 @@
 .main {
-    min-height: calc(100vh - 75px);
-    padding: 2rem 0;
+    --min-height: calc(100vh - 121px);
+    min-height: var(--min-height);
+    padding: 1rem 0;
 }
 
 .googleButton {
