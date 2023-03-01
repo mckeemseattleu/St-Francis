@@ -2,6 +2,9 @@
     --min-height: calc(100vh - 121px);
     min-height: var(--min-height);
     padding: 1rem 0;
+    margin: auto;
+    width: 80vw;
+    max-width: 1440px;
 }
 
 .googleButton {
