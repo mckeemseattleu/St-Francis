@@ -19,12 +19,10 @@ export default function AddClient() {
     };
 
     return (
-        <div className="container">
-            <ClientInfoForm
-                title="New Client"
-                onSave={onSave}
-                onSaveAndCheck={onSaveAndCheck}
-            />
-        </div>
+        <ClientInfoForm
+            title="New Client"
+            onSave={onSave}
+            onSaveAndCheck={onSaveAndCheck}
+        />
     );
 }

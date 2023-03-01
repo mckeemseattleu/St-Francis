@@ -63,13 +63,11 @@ export default function Update({ params }: UpdateProps) {
     if (!data) return <>Client Not Found</>;
 
     return (
-        <div className="container">
-            <ClientInfoForm
-                initialData={data}
-                title={'Update Client Form'}
-                onSave={onUpdate}
-                onSaveAndCheck={onSaveAndCheck}
-            />
-        </div>
+        <ClientInfoForm
+            initialData={data}
+            title={'Update Client Form'}
+            onSave={onUpdate}
+            onSaveAndCheck={onSaveAndCheck}
+        />
     );
 }

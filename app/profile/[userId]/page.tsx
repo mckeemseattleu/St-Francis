@@ -134,7 +134,7 @@ export default function Profile({ params }: ProfileProps) {
         );
 
     return (
-        <div className="container">
+        <div>
             <h1>
                 {`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}
             </h1>

@@ -25,7 +25,7 @@ export default function Settings() {
     };
 
     return (
-        <div className="container">
+        <div>
             <h1>Settings</h1>
 
             {/* If Context is ready show the form, otherwise show nothing;

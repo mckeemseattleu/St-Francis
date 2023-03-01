@@ -96,10 +96,3 @@ input[type='checkbox'] {
     cursor: pointer;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    width: 80vw;
-    max-width: 1000px;
-}
