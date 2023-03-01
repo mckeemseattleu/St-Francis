@@ -1,10 +1,8 @@
 .container {
-    display: flex;
-    flex-direction: row;
     margin: auto;
-    padding: 1rem 2rem;
-    justify-content: space-between;
-    align-items: center;
+    --nav-height: 90px;
+    height: var(--nav-height);
+    position: relative;
     max-width: 1920px;
 }
 
@@ -14,12 +12,30 @@
     }
 }
 
+.navLogo {
+    position: absolute;
+    height: var(--nav-height);
+    left: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.navAuth {
+    position: absolute;
+    right: 1rem;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+
+}
+
+
 .navbarLink {
     height: 50px;
     margin-inline: 15px;
     padding: 5px;
-    display: flex;
-    align-items: center;
+    padding-bottom: 20px;
+    overflow: hidden;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 600;
@@ -27,9 +43,11 @@
 }
 
 .spacer {
-    flex: 1;
-    display: flex;
-    justify-content: center;
+    min-width: 360px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .navbarLink:hover {

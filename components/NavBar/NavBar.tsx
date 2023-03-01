@@ -12,7 +12,7 @@ export default function NavBar() {
     const path = usePathname();
     return (
         <div className={styles.container}>
-            <Link href="/">
+            <Link href="/" className={styles.navLogo}>
                 <Image
                     src="/logo.webp"
                     alt="logo"
@@ -42,7 +42,9 @@ export default function NavBar() {
                     </Link>
                 </div>
             )}
-            <Login />
+            <div className={styles.navAuth}>
+                <Login />
+            </div>
         </div>
     );
 }
