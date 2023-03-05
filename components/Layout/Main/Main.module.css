@@ -1,11 +1,11 @@
+/* This file use to control nav elements */
+/* for main container size and positioning check Layout.module.css */
+
 .main {
-    min-height: calc(100vh - 75px);
-    padding: 4rem 0;
-    flex: 1;
+    padding: 3rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
 .googleButton {
@@ -14,4 +14,11 @@
     justify-content: center;
     gap: 15px;
     padding: 10px 25px;
+}
+
+.signInMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 100px 0;
 }

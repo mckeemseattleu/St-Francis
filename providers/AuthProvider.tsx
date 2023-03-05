@@ -1,4 +1,3 @@
-import Spinner from '@/components/Spinner/Spinner';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import 'firebase/compat/auth';
 import { createContext, useEffect, useState } from 'react';
@@ -10,6 +9,7 @@ interface AuthContext {
     isSignedIn: boolean;
     signIn: Function;
     signOut: Function;
+    isLoading: boolean;
 }
 
 export const AuthContext = createContext({} as AuthContext);
@@ -52,14 +52,15 @@ export default function AuthProvider(props: AuthProviderProps) {
     }, []);
 
     const values = {
+        isLoading: loading,
         isSignedIn: isSignedIn,
         signIn: signIn,
         signOut: signOut,
     };
-
+    
     return (
         <AuthContext.Provider value={values}>
-            {loading ? <Spinner /> : children}
+            { children }
         </AuthContext.Provider>
     );
 }

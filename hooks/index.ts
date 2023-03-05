@@ -1,4 +1,4 @@
 import { useAuth } from './useAuth';
 import { useSettings } from './useSettings';
-
-export { useAuth, useSettings };
+import { useWindowSize } from './useWindowSize';
+export { useAuth, useSettings, useWindowSize };

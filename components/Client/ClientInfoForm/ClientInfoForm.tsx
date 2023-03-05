@@ -1,144 +1,73 @@
 'use client';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { Client } from '@/models/index';
+import { DocFilter } from '@/utils/index';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { ClientDoc } from '@/app/profile/[userId]/page';
-import { firestore } from '../../../firebase/firebase';
 import styles from './ClientInfoForm.module.css';
-
 interface ClientInfoFormProps {
     id?: string;
-    initialData?: ClientDoc;
+    initialData?: Client;
     redirect?: string;
     title?: string;
     showBackButton?: boolean;
+    onSave?: (clientData: DocFilter) => void;
+    onSaveAndCheck?: (clientData: DocFilter) => void;
 }
 
 /**
  * A form for creating or editing a client's document in the database.
  *
- * @param id The client's document we want to edit. If none is given, a new
- * client document will be created
  * @param initialData Initial values to have in the input fields. If none are
  * given, empty strings will be used for text fields, 0 for number fields, and
  * the current date used for birthday
- * @param redirect Route to redirect to when form is submitted. Defaults to homepage
  * @param title Heading to show atop form
  * @param showBackButton Whether to show a "back to profile" button or not
  */
 export default function ClientInfoForm({
-    id = undefined,
-    initialData = undefined,
-    redirect = '/',
+    initialData = {} as Client,
     title = 'Client Form',
-    showBackButton = true,
+    onSave,
+    onSaveAndCheck,
 }: ClientInfoFormProps) {
+    //TODO: Add Validation
+
     // Use default values if no initial data was passed in
-    const [clientData, setClientData] = useState<ClientDoc>(
-        initialData
-            ? {
-                  firstName: initialData.firstName ? initialData.firstName : '',
-                  lastName: initialData.lastName ? initialData.lastName : '',
-                  firstNameLower: initialData.firstNameLower
-                      ? initialData.firstNameLower
-                      : '',
-                  lastNameLower: initialData.lastNameLower
-                      ? initialData.lastNameLower
-                      : '',
-                  middleInitial: initialData.middleInitial
-                      ? initialData.middleInitial
-                      : '',
-                  birthday: initialData.birthday
-                      ? initialData.birthday
-                      : new Date().toISOString().substring(0, 10), // TODO: Consider saving as timestamp
-                  gender: initialData.gender ? initialData.gender : '',
-                  race: initialData.race ? initialData.race : '',
-                  postalCode: initialData.postalCode
-                      ? initialData.postalCode
-                      : '',
-                  numKids: initialData.numKids ? initialData.numKids : 0,
-                  notes: initialData.notes ? initialData.notes : '',
-                  isCheckedIn: initialData.isCheckedIn
-                      ? initialData.isCheckedIn
-                      : false,
-                  isBanned: initialData.isBanned ? initialData.isBanned : false,
-              }
-            : {
-                  firstName: '',
-                  lastName: '',
-                  firstNameLower: '',
-                  lastNameLower: '',
-                  middleInitial: '',
-                  birthday: new Date().toISOString().substring(0, 10), // TODO: Consider saving as timestamp
-                  gender: '',
-                  race: '',
-                  postalCode: '',
-                  numKids: 0,
-                  notes: '',
-                  isCheckedIn: false,
-                  isBanned: false,
-              }
-    );
-
-    const router = useRouter();
-
-    /**
-     * Creates a new doc with an automatically generated id for the client
-     *
-     * @param newCheckedInStatus The new isCheckedIn status to save
-     */
-    const addNewClient = async (newCheckedInStatus: boolean = false) => {
-        // Only create if either first or last name is not empty
-        if (clientData.firstName !== '' || clientData.lastName !== '') {
-            await addDoc(collection(firestore, 'clients'), {
-                ...clientData,
-                // If we want to check out we check out, otherwise keep current
-                // status
-                isCheckedIn:
-                    newCheckedInStatus == false
-                        ? false
-                        : clientData.isCheckedIn,
-            });
-        }
-
-        // If client's currently checked out and we want to check them in,
-        // redirect to checkin page, otherwise back to specified redirect route
-        router.push(
-            newCheckedInStatus && clientData.isCheckedIn == false
-                ? `/checkin/${id}`
-                : redirect
-        );
+    const defaultData = {
+        id: initialData.id || '',
+        firstName: initialData.firstName || '',
+        lastName: initialData.lastName || '',
+        firstNameLower: initialData.firstNameLower || '',
+        lastNameLower: initialData.lastNameLower || '',
+        middleInitial: initialData.middleInitial || '',
+        birthday:
+            initialData.birthday || new Date().toLocaleDateString('en-CA'),
+        gender: initialData.gender || '',
+        race: initialData.race || '',
+        postalCode: initialData.postalCode || '',
+        numKids: initialData.numKids || 0,
+        notes: initialData.notes || '',
+        isCheckedIn: !!initialData.isCheckedIn,
+        isBanned: !!initialData.isBanned,
     };
 
-    /**
-     *
-     * Updates an existing client's document. If id is invalid will do nothing,
-     * but this should never run with an invalid id
-     *
-     * @param newCheckedInStatus The new isCheckedIn status to save
-     */
-    const updateClientData = async (newCheckedInStatus: boolean = false) => {
-        // Ensure id's not undefined
-        if (id) {
-            await setDoc(doc(firestore, 'clients', id), {
-                ...clientData,
-                // If we want to check out we check out, otherwise keep current
-                // status
-                isCheckedIn:
-                    newCheckedInStatus == false
-                        ? false
-                        : clientData.isCheckedIn,
-            });
+    const [clientData, setClientData] = useState(defaultData);
 
-            // If client's currently checked out and we want to check them in,
-            // redirect to checkin page, otherwise back to specified redirect route
-            router.push(
-                newCheckedInStatus && clientData.isCheckedIn == false
-                    ? `/checkin/${id}`
-                    : redirect
-            );
-        }
+    const handleSave = async () => {
+        onSave && onSave(clientData);
+    };
+
+    const handleSaveAndCheck = async () => {
+        onSaveAndCheck && onSaveAndCheck(clientData);
+    };
+
+    const handleChange = (key: any) => (e: any) => {
+        let value = e.target.value;
+        if (key === 'numKids') value = parseInt(value);
+        if (key === 'isBanned') value = e.target.checked;
+        if (key === 'firstName')
+            clientData.firstNameLower = value.toLowerCase();
+        if (key === 'lastName') clientData.lastNameLower = value.toLowerCase();
+        setClientData({ ...clientData, [key]: value });
     };
 
     return (
@@ -154,12 +83,7 @@ export default function ClientInfoForm({
                         id="isBanned"
                         defaultChecked={clientData.isBanned}
                         value={clientData.isBanned ? 'on' : 'off'}
-                        onChange={(e) => {
-                            setClientData({
-                                ...clientData,
-                                isBanned: e.target.checked,
-                            });
-                        }}
+                        onChange={handleChange('isBanned')}
                     />
                 </div>
             </div>
@@ -172,14 +96,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.firstName}
                             id="firstName"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    firstName: e.target.value,
-                                    firstNameLower:
-                                        e.target.value.toLowerCase(),
-                                });
-                            }}
+                            onChange={handleChange('firstName')}
                         />
                     </div>
 
@@ -189,12 +106,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.middleInitial}
                             id="middleInitial"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    middleInitial: e.target.value,
-                                });
-                            }}
+                            onChange={handleChange('middleInitial')}
                         />
                     </div>
 
@@ -204,13 +116,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.lastName}
                             id="lastName"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    lastName: e.target.value,
-                                    lastNameLower: e.target.value.toLowerCase(),
-                                });
-                            }}
+                            onChange={handleChange('lastName')}
                         />
                     </div>
 
@@ -221,12 +127,7 @@ export default function ClientInfoForm({
                             name="birthday"
                             id="birthday"
                             value={clientData.birthday}
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    birthday: e.target.value,
-                                });
-                            }}
+                            onChange={handleChange('birthday')}
                         />
                     </div>
 
@@ -236,12 +137,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.gender}
                             id="gender"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    gender: e.target.value,
-                                });
-                            }}
+                            onChange={handleChange('gender')}
                         />
                         <br />
                     </div>
@@ -252,12 +148,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.race}
                             id="race"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    race: e.target.value,
-                                });
-                            }}
+                            onChange={handleChange('race')}
                         />
                     </div>
 
@@ -267,12 +158,7 @@ export default function ClientInfoForm({
                             type="text"
                             value={clientData.postalCode}
                             id="postalCode"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    postalCode: e.target.value,
-                                });
-                            }}
+                            onChange={handleChange('postalCode')}
                         />
                     </div>
 
@@ -282,12 +168,7 @@ export default function ClientInfoForm({
                             type="number"
                             value={clientData.numKids}
                             id="numKids"
-                            onChange={(e) => {
-                                setClientData({
-                                    ...clientData,
-                                    numKids: parseInt(e.target.value),
-                                });
-                            }}
+                            onChange={handleChange('numKids')}
                         />
                     </div>
                 </div>
@@ -297,21 +178,16 @@ export default function ClientInfoForm({
                     <textarea
                         value={clientData.notes}
                         id="notes"
-                        onChange={(e) => {
-                            setClientData({
-                                ...clientData,
-                                notes: e.target.value,
-                            });
-                        }}
+                        onChange={handleChange('notes')}
                         rows={5}
                     />
                 </div>
             </form>
 
             <div className={styles.saveButtons}>
-                {showBackButton ? (
+                {clientData.id && (
                     <>
-                        <Link href={`/profile/${id}`}>
+                        <Link href={`/profile/${clientData.id}`}>
                             <button className={styles.backButton}>
                                 Back to Profile
                             </button>
@@ -319,29 +195,15 @@ export default function ClientInfoForm({
 
                         <span />
                     </>
-                ) : null}
+                )}
 
-                <button
-                    className={styles.saveButton}
-                    onClick={() => {
-                        // If we have an id as a prop, update, else create new; also
-                        // keep current isCheckedIn status
-                        id ? updateClientData() : addNewClient();
-                    }}
-                >
+                <button className={styles.saveButton} onClick={handleSave}>
                     Save
                 </button>
 
                 <button
                     className={styles.saveButton}
-                    onClick={() => {
-                        // If we have an id as a prop, update, else create new;
-                        // also toggle isCheckedIn status. Will redirect to
-                        // checkin page if checking in
-                        id
-                            ? updateClientData(!clientData.isCheckedIn)
-                            : addNewClient(!clientData.isCheckedIn);
-                    }}
+                    onClick={handleSaveAndCheck}
                 >
                     Save and check {clientData.isCheckedIn ? 'out' : 'in'}
                 </button>

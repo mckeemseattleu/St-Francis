@@ -1,10 +1,20 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ClientSearch } from '@/components/Client/index';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import '@testing-library/jest-dom';
 
 describe('ClientSearch', () => {
+    const queryClient = new QueryClient();
+    const ClientSearchTest = () => {
+        return (
+            <QueryClientProvider client={queryClient}>
+                <ClientSearch />
+            </QueryClientProvider>
+        );
+    }
+
     it('renders a title', () => {
-        render(<ClientSearch />);
+        render(<ClientSearchTest />);
 
         const heading = screen.getByRole('heading', {
             name: 'Lookup Client',
@@ -14,7 +24,7 @@ describe('ClientSearch', () => {
     });
 
     it('sets first name filter correctly', () => {
-        render(<ClientSearch />);
+        render(<ClientSearchTest />);
 
         const firstNameFilterInput = screen.getByLabelText('First name');
 
@@ -26,7 +36,7 @@ describe('ClientSearch', () => {
     });
 
     it('sets last name filter correctly', () => {
-        render(<ClientSearch />);
+        render(<ClientSearchTest />);
 
         const firstNameFilterInput = screen.getByLabelText('Last name');
 

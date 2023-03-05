@@ -1,15 +1,12 @@
 .spinner {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 375px;
+    height: 100%;
     width: 100%;
 }
 .spinner div {
     box-sizing: border-box;
-    display: block;
-    position: absolute;
     width: 64px;
     height: 64px;
     margin: 8px;
