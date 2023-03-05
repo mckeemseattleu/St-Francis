@@ -24,6 +24,8 @@ html,
 body {
     padding: 0;
     margin: 0;
+    max-width: 100vw;
+    overflow-x: hidden;
     font-family: 'Open Sans', sans-serif;
     color: var(--gray-5);
     background: var(--gray-1);
@@ -95,4 +97,3 @@ input[type='checkbox'] {
     width: 25px;
     cursor: pointer;
 }
-
