@@ -134,7 +134,7 @@ export default function Profile({ params }: ProfileProps) {
         );
 
     return (
-        <div>
+        <>
             <h1>
                 {`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}
             </h1>
@@ -155,7 +155,7 @@ export default function Profile({ params }: ProfileProps) {
                 ) : null}
 
                 {clientData?.numKids || clientData?.numKids === 0 ? (
-                    <h3>Number of kids</h3>
+                    <h3>'Number of kids'</h3>
                 ) : null}
                 {clientData?.numKids || clientData?.numKids === 0 ? (
                     <p>{clientData?.numKids}</p>
@@ -190,6 +190,6 @@ export default function Profile({ params }: ProfileProps) {
                 <h1>5 Most recent visits</h1>
                 {visits}
             </div>
-        </div>
+        </>
     );
 }
