@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import NavBar from '@/components/NavBar/NavBar';
+import NavBar from '@/components/Layout/NavBar/NavBar';
 import { AuthContext } from '@/providers/AuthProvider';
 
 describe('NavBar', () => {
