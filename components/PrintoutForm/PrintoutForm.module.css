@@ -1,6 +1,6 @@
 /* Deviating from website theme colors for pure black for better printability */
 .title {
-    width: 95vw;
+    /* width: 95vw; */
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid black;

@@ -1,10 +1,15 @@
 import styles from './Footer.module.css';
 
-export default function Footer({ enabled = false }) {
+export type FooterProps = {
+    enabled?: boolean;
+} & React.HTMLAttributes<HTMLDivElement>;
+
+export default function Footer(props: FooterProps) {
+    const { enabled = false, className, ...rest } = props;
     if (!enabled) return null;
     return (
-        <footer className={styles.footer}>
-            <p className={styles.footerHeading}>ST. FRANCIS HOUSE</p>
+        <footer {...rest} className={`${className} ${styles.footer}`}>
+            <h1 className={styles.footerHeading}>ST. FRANCIS HOUSE</h1>
             <a
                 className={styles.footerLink}
                 href="https://goo.gl/maps/ifn9pJEydgeCJwGbA"

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import NavBar from '@/components/NavBar/NavBar';
+import NavBar from '@/components/Layout/NavBar/NavBar';
 import { AuthContext } from '@/providers/AuthProvider';
 
 describe('NavBar', () => {
@@ -23,7 +23,7 @@ describe('NavBar', () => {
     it('renders a button to checked in page', () => {
         render(<NavBarAuth auth/>);
 
-        const homeLink = screen.getByRole('button', {
+        const homeLink = screen.getByRole('link', {
             name: 'Checked in Clients',
         });
         fireEvent.click(homeLink);
@@ -35,7 +35,7 @@ describe('NavBar', () => {
 
         render(<NavBarAuth auth/>);
 
-        const homeLink = screen.getByRole('button', { name: 'Settings' });
+        const homeLink = screen.getByRole('link', { name: 'Settings' });
 
         fireEvent.click(homeLink);
 

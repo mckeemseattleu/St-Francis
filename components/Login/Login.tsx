@@ -14,10 +14,8 @@ export default function Login() {
         </>
     );
     return (
-        <div className={styles.wrapper}>
-            <button onClick={handleAuth} className={styles.signInButton}>
-                {label}
-            </button>
-        </div>
+        <button onClick={handleAuth} className={styles.signInButton}>
+            {label}
+        </button>
     );
 }

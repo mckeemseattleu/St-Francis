@@ -1,63 +1,73 @@
 'use client';
 
-import { doc, getDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { firestore } from '../../../firebase/firebase';
-import { useRouter } from 'next/navigation';
 import { ClientInfoForm } from '@/components/Client/index';
-import { ClientDoc } from '../../profile/[userId]/page';
+import Spinner from '@/components/Spinner/Spinner';
+import { Client } from '@/models/index';
+import { DocFilter, getClient, updateClient } from '@/utils/index';
+import { CLIENTS_PATH } from '@/utils/queries';
+import { useRouter } from 'next/navigation';
+import { useQuery, useQueryClient } from 'react-query';
 
 interface UpdateProps {
     params: { userId: string };
 }
 
 export default function Update({ params }: UpdateProps) {
+    const queryClient = useQueryClient();
+    const { isLoading, data } = useQuery([CLIENTS_PATH, params.userId], () =>
+        getClient(params.userId)
+    );
     const router = useRouter();
-    const [oldClientData, setOldClientData] = useState<ClientDoc>();
 
-    // Get client data on component load
-    useEffect(() => {
-        getClientData();
-    }, []);
+    // TODO: update cached query data instead of removing it, no refetch needed
+    // TODO: move this logic to the updateClient helper function
+    const updateCache = (clientData: DocFilter) => {
+        // Remove cached query data when update is successful, refetch on next page load
+        queryClient.removeQueries([CLIENTS_PATH, params.userId]);
+        // Remove cached query data for checked-in clients query, refetch on next page load
+        queryClient.removeQueries([CLIENTS_PATH, 'checkedin']);
 
-    // Gets the client's document from firestore based on route's userId
-    const getClientData = async () => {
-        const clientDoc = await getDoc(
-            doc(firestore, 'clients', params.userId)
-        );
-
-        // Set local state if their doc exists, otherwise go back to homepage
-        if (clientDoc.exists()) {
-            setOldClientData({
-                firstName: clientDoc.data().firstName,
-                lastName: clientDoc.data().lastName,
-                firstNameLower: clientDoc.data().firstNameLower,
-                lastNameLower: clientDoc.data().lastNameLower,
-                middleInitial: clientDoc.data().middleInitial,
-                birthday: clientDoc.data().birthday,
-                gender: clientDoc.data().gender,
-                race: clientDoc.data().race,
-                postalCode: clientDoc.data().postalCode,
-                numKids: clientDoc.data().numKids,
-                notes: clientDoc.data().notes,
-                isCheckedIn: clientDoc.data().isCheckedIn,
-                isBanned: clientDoc.data().isBanned,
+        // Update cached query data for searched clients query, no refetch needed
+        queryClient.setQueriesData(CLIENTS_PATH, (data: any) => {
+            if (!data) return;
+            data[CLIENTS_PATH].forEach((client: Client, index: number) => {
+                if (client.id === clientData.id)
+                    data[CLIENTS_PATH][index] = { ...client, ...clientData };
             });
-        } else {
-            router.push('/');
-        }
+            return data;
+        });
     };
 
+    const onUpdate = async (clientData: DocFilter) => {
+        // save existing client and redirect to profile page
+        await updateClient(clientData);
+        updateCache(clientData);
+        router.push(`/profile/${clientData.id}`);
+    };
+
+    const onSaveAndCheck = async (clientData: DocFilter) => {
+        // save and check-out, redirect to profile page
+        if (clientData.isCheckedIn) {
+            clientData.isCheckedIn = false;
+            await onUpdate(clientData);
+            return;
+        }
+
+        // save and redirect to check-in page
+        await updateClient(clientData);
+        updateCache(clientData);
+        router.push(`/checkin/${clientData.id}`);
+    };
+
+    if (isLoading) return <Spinner />;
+    if (!data) return <>Client Not Found</>;
+
     return (
-        <div className="container">
-            {oldClientData ? (
-                <ClientInfoForm
-                    id={params.userId}
-                    initialData={oldClientData}
-                    redirect={`/profile/${params.userId}`}
-                    title={'Update Client Form'}
-                />
-            ) : null}
-        </div>
+        <ClientInfoForm
+            initialData={data}
+            title={'Update Client Form'}
+            onSave={onUpdate}
+            onSaveAndCheck={onSaveAndCheck}
+        />
     );
 }

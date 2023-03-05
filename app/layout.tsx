@@ -1,9 +1,7 @@
 'use client';
-
-import { Footer, Main } from '@/components/Layout';
+import Layout from '@/components/Layout/index';
 import Providers from '@/providers/index';
 import Head from 'next/head';
-import NavBar from '../components/NavBar/NavBar';
 import '../styles/globals.css';
 
 export default function RootLayout({ children }: any) {
@@ -17,9 +15,7 @@ export default function RootLayout({ children }: any) {
 
             <body>
                 <Providers>
-                    <NavBar />
-                    <Main>{children}</Main>
-                    <Footer enabled />
+                    <Layout>{children}</Layout>
                 </Providers>
             </body>
         </html>
