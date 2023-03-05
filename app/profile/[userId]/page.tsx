@@ -155,7 +155,7 @@ export default function Profile({ params }: ProfileProps) {
                 ) : null}
 
                 {clientData?.numKids || clientData?.numKids === 0 ? (
-                    <h3>'Number of kids'</h3>
+                    <h3>Number of kids</h3>
                 ) : null}
                 {clientData?.numKids || clientData?.numKids === 0 ? (
                     <p>{clientData?.numKids}</p>

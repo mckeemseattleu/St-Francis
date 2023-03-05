@@ -19,7 +19,7 @@ export default function NavMenu(props: NavMenuProps) {
             {isSignedIn &&
                 items.map(({ title, href }, i) => (
                     <Link href={href} key={i}>
-                        <button children={title} />
+                        <button>{title}</button>
                     </Link>
                 ))}
             <Login />
