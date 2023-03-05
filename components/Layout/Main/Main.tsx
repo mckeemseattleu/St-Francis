@@ -5,7 +5,9 @@ import { useAuth } from '@/hooks/index';
 import Image from 'next/image';
 import styles from './Main.module.css';
 
-export default function Main({ children }: { children: React.ReactNode }) {
+export type MainProps = React.HTMLAttributes<HTMLDivElement>;
+export default function Main(props: MainProps) {
+    const { children, className, ...rest } = props;
     const { isSignedIn, signIn, isLoading } = useAuth();
     const display = (
         <div className={styles.signInMain}>
@@ -22,7 +24,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
         </div>
     );
     return (
-        <main className={styles.main}>
+        <main {...rest} className={`${className} ${styles.main}`}>
             {isLoading ? <Spinner /> : isSignedIn ? children : display}
         </main>
     );
