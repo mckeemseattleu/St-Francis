@@ -170,6 +170,14 @@ export default function Profile({ params }: ProfileProps) {
                 <h3>{clientData?.isBanned ? 'Banned' : 'Not banned'}</h3>
             </div>
 
+            {clientData?.notes ? (
+                <div>
+                    <h1>Notes</h1>
+
+                    <p>{clientData.notes}</p>
+                </div>
+            ) : null}
+
             <h1>Options</h1>
 
             <div className={styles.rowContainer}>

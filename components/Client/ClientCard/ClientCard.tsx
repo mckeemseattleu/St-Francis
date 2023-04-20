@@ -17,7 +17,11 @@ export default function ClientCard({ client }: { client: Client }) {
                 <p>{birthday}</p>
 
                 <h2>Notes:</h2>
-                <p>{notes}</p>
+                <p>
+                    {notes && notes.length > 128
+                        ? notes?.slice(0, 128) + '...'
+                        : notes}
+                </p>
             </div>
 
             <div className={styles.buttonContainer}>
