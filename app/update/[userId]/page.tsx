@@ -2,69 +2,74 @@
 
 import { ClientInfoForm } from '@/components/Client/index';
 import Spinner from '@/components/Spinner/Spinner';
-import { Client } from '@/models/index';
+import { useAlert, useQueryCache } from '@/hooks/index';
+import { toUTCDateString } from '@/utils/formatDate';
 import { DocFilter, getClient, updateClient } from '@/utils/index';
 import { CLIENTS_PATH } from '@/utils/queries';
 import { useRouter } from 'next/navigation';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 
 interface UpdateProps {
     params: { userId: string };
 }
 
 export default function Update({ params }: UpdateProps) {
-    const queryClient = useQueryClient();
+    const { updateClientCache } = useQueryCache();
+    const [, setAlert] = useAlert();
     const { isLoading, data } = useQuery([CLIENTS_PATH, params.userId], () =>
         getClient(params.userId)
     );
     const router = useRouter();
-
-    // TODO: update cached query data instead of removing it, no refetch needed
-    // TODO: move this logic to the updateClient helper function
-    const updateCache = (clientData: DocFilter) => {
-        // Remove cached query data when update is successful, refetch on next page load
-        queryClient.removeQueries([CLIENTS_PATH, params.userId]);
-        // Remove cached query data for checked-in clients query, refetch on next page load
-        queryClient.removeQueries([CLIENTS_PATH, 'checkedin']);
-
-        // Update cached query data for searched clients query, no refetch needed
-        queryClient.setQueriesData(CLIENTS_PATH, (data: any) => {
-            if (!data) return;
-            data[CLIENTS_PATH].forEach((client: Client, index: number) => {
-                if (client.id === clientData.id)
-                    data[CLIENTS_PATH][index] = { ...client, ...clientData };
-            });
-            return data;
-        });
-    };
+    // Transform Client data with birthday converted to UTC
+    const transformData = (clientData: DocFilter) => ({
+        ...clientData,
+        birthday: new Date(clientData.birthday as string),
+    });
 
     const onUpdate = async (clientData: DocFilter) => {
         // save existing client and redirect to profile page
-        await updateClient(clientData);
-        updateCache(clientData);
-        router.push(`/profile/${clientData.id}`);
+        // console.log('ON SAVE',clientData.birthday)
+        try {
+            clientData = transformData(clientData);
+            await updateClient(clientData);
+            updateClientCache(clientData);
+
+            setAlert({
+                message: 'Client Successfully Updated.',
+                type: 'success',
+            });
+            router.push(`/profile/${clientData.id}`);
+        } catch (error: any) {
+            setAlert({ message: error.message, type: 'error' });
+        }
     };
 
     const onSaveAndCheck = async (clientData: DocFilter) => {
         // save and check-out, redirect to profile page
         if (clientData.isCheckedIn) {
             clientData.isCheckedIn = false;
-            await onUpdate(clientData);
-            return;
+            return await onUpdate(clientData);
         }
-
         // save and redirect to check-in page
+        clientData = transformData(clientData);
         await updateClient(clientData);
-        updateCache(clientData);
+        updateClientCache(clientData);
+        setAlert({
+            message: 'Client Saved, Check-In Now',
+            type: 'success',
+        });
         router.push(`/checkin/${clientData.id}`);
     };
 
     if (isLoading) return <Spinner />;
     if (!data) return <>Client Not Found</>;
-
+    // console.log('ON INITIATE',toUTCDateString(data.birthday))
     return (
         <ClientInfoForm
-            initialData={data}
+            initialData={{
+                ...data,
+                birthday: toUTCDateString(data.birthday),
+            }}
             title={'Update Client Form'}
             onSave={onUpdate}
             onSaveAndCheck={onSaveAndCheck}
