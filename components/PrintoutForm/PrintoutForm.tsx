@@ -1,14 +1,13 @@
-import { VisitDoc } from '../../app/checkin/[userId]/page';
-import { ClientDoc } from '../../app/profile/[userId]/page';
+import { Client, Visit } from '@/models/index';
 import styles from './PrintoutForm.module.css';
 
 interface PrintoutFormProps {
     // TODO: We can ask for form title instead of clientData and update
     // component doc
-    clientData: ClientDoc;
+    clientData: Client;
     // TODO: We can ask for date instead of visitData and update component
     // comment
-    visitData: VisitDoc;
+    visitData: Visit;
     data: Array<FormItem>;
 }
 
@@ -56,6 +55,7 @@ export default function PrintoutForm({
         return (
             <div key={i}>
                 <h1>{section.title}</h1>
+                <hr />
                 <div className={styles.section}>{content}</div>
             </div>
         );
@@ -68,15 +68,14 @@ export default function PrintoutForm({
                 <h1>
                     {
                         // Uses timestamp, if undefined uses today's date
-                        new Date(
-                            visitData?.timestamp
-                                ? visitData?.timestamp?.seconds * 1000
-                                : new Date()
-                        ).toDateString()
+                        visitData?.createdAt?.toDate()?.toDateString() ||
+                            new Date().toDateString()
                     }
                 </h1>
             </div>
-
+            <button className="noprint" onClick={window.print}>
+                PRINT
+            </button>
             {bodyItems}
         </>
     );
