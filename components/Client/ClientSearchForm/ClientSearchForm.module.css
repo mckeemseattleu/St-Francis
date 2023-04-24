@@ -24,11 +24,18 @@
 .formControls {
     display: flex;
     margin-top: 25px;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
 }
 
 .formControls button {
     margin-right: 20px;
+    height: 45px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
 .birthdayControlsContainer {
