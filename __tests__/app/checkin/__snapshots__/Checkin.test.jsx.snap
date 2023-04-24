@@ -1,0 +1,271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CheckedIn shoudld match snapshot when client data is fetching 1`] = `
+<div>
+  <div
+    className="spinner"
+  >
+    <div />
+  </div>
+</div>
+`;
+
+exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="header"
+  >
+    <h1>
+      Check-in Page
+    </h1>
+    <div
+      className="headerRow"
+    >
+      <a
+        href="/profile/abcd"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onTouchStart={[Function]}
+      >
+        <h2>
+          First Last
+        </h2>
+      </a>
+      <span />
+      <p>
+        Checked in
+      </p>
+      <a
+        href="/update/abcd"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onTouchStart={[Function]}
+      >
+        <button>
+          Edit profile
+        </button>
+      </a>
+    </div>
+    <p>
+      Notes:
+    </p>
+    <p>
+      Notes
+    </p>
+  </div>
+  <form
+    className="form"
+    onSubmit={[Function]}
+  >
+    <h2>
+      Clothing
+    </h2>
+    <div
+      className="formRows"
+    >
+      <div
+        className="formRowItem"
+      >
+        <label
+          htmlFor="clothingMen"
+        >
+          Men
+        </label>
+        <input
+          id="clothingMen"
+          name="clothingMen"
+          onChange={[Function]}
+          type="checkbox"
+          value="off"
+        />
+      </div>
+      <div
+        className="formRowItem"
+      >
+        <label
+          htmlFor="clothingWomen"
+        >
+          Women
+        </label>
+        <input
+          id="clothingWomen"
+          name="clothingWomen"
+          onChange={[Function]}
+          type="checkbox"
+          value="off"
+        />
+      </div>
+      <div
+        className="formRowItem"
+      >
+        <label
+          htmlFor="clothingBoy"
+        >
+          Kids (Boy)
+        </label>
+        <input
+          id="clothingBoy"
+          name="clothingBoy"
+          onChange={[Function]}
+          type="checkbox"
+          value="off"
+        />
+      </div>
+      <div
+        className="formRowItem"
+      >
+        <label
+          htmlFor="clothingGirl"
+        >
+          Kids (Girl)
+        </label>
+        <input
+          id="clothingGirl"
+          name="clothingGirl"
+          onChange={[Function]}
+          type="checkbox"
+          value="off"
+        />
+      </div>
+    </div>
+    <h2>
+      Special Requests
+    </h2>
+    <div
+      className="formRows"
+    >
+      <div
+        className="formRowItem"
+      >
+        <label
+          htmlFor="backpack"
+        >
+          Backpack
+        </label>
+        <input
+          id="backpack"
+          name="backpack"
+          onChange={[Function]}
+          type="checkbox"
+          value="off"
+        />
+      </div>
+      <div
+        className="formRowItem"
+      >
+        <label
+          htmlFor="sleepingBag"
+        >
+          Sleeping Bag
+        </label>
+        <input
+          id="sleepingBag"
+          name="sleepingBag"
+          onChange={[Function]}
+          type="checkbox"
+          value="off"
+        />
+      </div>
+      <div
+        className="formRowItem"
+      >
+        <label
+          htmlFor="busTicket"
+        >
+          Bus Ticket
+        </label>
+        <input
+          id="busTicket"
+          name="busTicket"
+          onChange={[Function]}
+          type="number"
+          value=""
+        />
+      </div>
+      <div
+        className="formRowItem"
+      >
+        <label
+          htmlFor="giftCard"
+        >
+          Gift Card
+        </label>
+        <input
+          id="giftCard"
+          name="giftCard"
+          onChange={[Function]}
+          type="number"
+          value=""
+        />
+      </div>
+      <div
+        className="formRowItem"
+      >
+        <label
+          htmlFor="diaper"
+        >
+          Diaper
+        </label>
+        <input
+          id="diaper"
+          name="diaper"
+          onChange={[Function]}
+          type="number"
+          value=""
+        />
+      </div>
+      <div
+        className="formRowItem"
+      >
+        <label
+          htmlFor="financialAssistance"
+        >
+          Financial Assistance
+        </label>
+        <input
+          id="financialAssistance"
+          name="financialAssistance"
+          onChange={[Function]}
+          type="number"
+          value=""
+        />
+      </div>
+    </div>
+    <label
+      htmlFor="household"
+    >
+      <h2>
+        Household items
+      </h2>
+    </label>
+    <input
+      id="household"
+      name="household"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <label
+      htmlFor="notes"
+    >
+      <h2>
+        Notes
+      </h2>
+    </label>
+    <input
+      id="notes"
+      name="notes"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <button
+      type="submit"
+    >
+      Check in
+    </button>
+  </form>
+</div>
+`;

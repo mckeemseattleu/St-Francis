@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Visit from '@/app/profile/[userId]/visit/[visitId]/page';
-
+import { useQuery } from 'react-query';
 import { deleteDoc, getDoc, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 
@@ -45,6 +45,26 @@ jest.mock('firebase/compat/app', () => ({
     },
 }));
 
+jest.mock('@/hooks/index', () => ({
+    __esModule: true,
+    useQueryCache: jest.fn(() => ({
+        updateClientCache: jest.fn(),
+        updateVisitCache: jest.fn(),
+    })),
+    useAlert: jest.fn(() => [{}, jest.fn()]),
+    useSettings: jest.fn(() => ({ settings: {} })),
+}));
+
+jest.mock('react-query', () => ({
+    __esModule: true,
+    useQuery: jest.fn(),
+}));
+
+jest.mock('next/navigation', () => ({
+    __esModule: true,
+    useRouter: jest.fn(() => ({ push: jest.fn() })),
+}));
+
 const mockVisitDoc = {
     clothingMen: true,
     clothingWomen: true,
@@ -52,7 +72,7 @@ const mockVisitDoc = {
     clothingGirl: true,
     household: 'household item text',
     notes: 'notes text',
-    timestamp: { seconds: 0, toDate: jest.fn(() => 'Date') },
+    createdAt: { seconds: 0, toDate: jest.fn(() => 'Date') },
     backpack: true,
     sleepingBag: true,
     busTicket: 1,
@@ -64,8 +84,11 @@ const mockVisitDoc = {
 describe('Visit details page', () => {
     // Mock router for router.push()
     const mockRouter = { push: jest.fn() };
-
     useRouter.mockReturnValue(mockRouter);
+    useQuery.mockReturnValue({
+        isLoading: false,
+        data: mockVisitDoc,
+    });
 
     it('deletes only visit correctly', async () => {
         // Used for initial load of "this" visit
@@ -166,32 +189,10 @@ describe('Visit details page', () => {
     });
 
     it('displays all requests correctly when requests are true', async () => {
-        getDoc.mockImplementation(() => ({
-            exists: () => true,
-            data: () => ({
-                clothingMen: true,
-                clothingWomen: true,
-                clothingBoy: true,
-                clothingGirl: true,
-                household: 'household item text',
-                notes: 'notes text',
-                timestamp: { seconds: 0 },
-                backpack: true,
-                sleepingBag: true,
-                busTicket: 1,
-                giftCard: 2,
-                diaper: 3,
-                financialAssistance: 4,
-            }),
-        }));
-
         await act(async () => {
             render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
         });
 
-        screen.getByText(
-            `${new Date(0).toDateString()} - ${new Date(0).toTimeString()}`
-        );
         screen.getByText('Men');
         screen.getByText('Women');
         screen.getByText('Kids (boy)');
@@ -207,32 +208,29 @@ describe('Visit details page', () => {
     });
 
     it('displays no requests when all requests are false', async () => {
-        getDoc.mockImplementation(() => ({
-            exists: () => true,
-            data: () => ({
+        useQuery.mockReturnValue({
+            isLoading: false,
+            data: {
+                ...mockVisitDoc,
                 clothingMen: false,
                 clothingWomen: false,
                 clothingBoy: false,
                 clothingGirl: false,
                 household: '',
                 notes: '',
-                timestamp: { seconds: 0 },
                 backpack: false,
                 sleepingBag: false,
                 busTicket: 0,
                 giftCard: 0,
                 diaper: 0,
                 financialAssistance: 0,
-            }),
-        }));
+            },
+        });
 
         await act(async () => {
             render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
         });
 
-        screen.getByText(
-            `${new Date(0).toDateString()} - ${new Date(0).toTimeString()}`
-        );
         expect(screen.queryByText('Men')).not.toBeInTheDocument();
         expect(screen.queryByText('Women')).not.toBeInTheDocument();
         expect(screen.queryByText('Kids (boy)')).not.toBeInTheDocument();

@@ -1,11 +1,12 @@
 'use client';
 
+import Spinner from '@/components/Spinner/Spinner';
+import { CLIENTS_PATH, VISITS_PATH, getVisit } from '@/utils/queries';
 import {
     collection,
     deleteDoc,
     deleteField,
     doc,
-    getDoc,
     getDocs,
     limit,
     orderBy,
@@ -15,9 +16,8 @@ import {
 } from 'firebase/firestore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { firestore } from '../../../../../firebase/firebase';
-import { VisitDoc } from '../../../../checkin/[userId]/page';
 import styles from './visit.module.css';
 
 interface VisitProps {
@@ -26,55 +26,47 @@ interface VisitProps {
 
 export default function Visit({ params }: VisitProps) {
     const router = useRouter();
-    const [visitData, setVisitData] = useState<VisitDoc>();
 
-    // Get visit data on component load
-    useEffect(() => {
-        getVisitData();
-    }, []);
-
-    // Gets the visit's document from firestore based on route's visitId
-    const getVisitData = async () => {
-        const visitDoc = await getDoc(
-            doc(firestore, 'clients', params.userId, 'visits', params.visitId)
-        );
-
-        if (visitDoc.exists()) {
-            setVisitData(visitDoc.data() as VisitDoc);
-        } else {
-            router.push(`/profile/${params.userId}`);
-        }
-    };
+    const { isLoading, data: visitData } = useQuery(
+        [CLIENTS_PATH, params.userId, VISITS_PATH, params.visitId],
+        () => getVisit(params.userId, params.visitId)
+    );
 
     const deleteVisit = async () => {
         // Delete this visit
         await deleteDoc(
-            doc(firestore, 'clients', params.userId, 'visits', params.visitId)
+            doc(
+                firestore,
+                CLIENTS_PATH,
+                params.userId,
+                VISITS_PATH,
+                params.visitId
+            )
         );
 
         // Find updated most recent visit after we delete this visit
         const visitRef = collection(
             firestore,
-            'clients',
+            CLIENTS_PATH,
             params.userId,
-            'visits'
+            VISITS_PATH
         );
 
         // Get most recent visit
         const mostRecentVisit = await getDocs(
-            query(visitRef, orderBy('timestamp', 'desc'), limit(1))
+            query(visitRef, orderBy('createdAt', 'desc'), limit(1))
         );
 
         // Get timestamp of most recent visit if it exists
         const newDateLastVisit = mostRecentVisit.docs[0]
             ?.data()
-            .timestamp.toDate();
+            .createdAt.toDate();
 
         // If newDateLastVisit is undefined, we just deleted the only visit, so
         // we can delete all validation fields
         if (newDateLastVisit == null) {
             // Delete validation data fields
-            await updateDoc(doc(firestore, 'clients', params.userId), {
+            await updateDoc(doc(firestore, CLIENTS_PATH, params.userId), {
                 dateLastVisit: deleteField(),
                 dateLastBackpack: deleteField(),
                 dateLastSleepingBag: deleteField(),
@@ -87,7 +79,7 @@ export default function Visit({ params }: VisitProps) {
                 query(
                     visitRef,
                     where('backpack', '==', true),
-                    orderBy('timestamp', 'desc'),
+                    orderBy('createdAt', 'desc'),
                     limit(1)
                 )
             );
@@ -97,26 +89,26 @@ export default function Visit({ params }: VisitProps) {
                 query(
                     visitRef,
                     where('sleepingBag', '==', true),
-                    orderBy('timestamp', 'desc'),
+                    orderBy('createdAt', 'desc'),
                     limit(1)
                 )
             );
 
             // Update client doc with new validation data
-            await updateDoc(doc(firestore, 'clients', params.userId), {
+            await updateDoc(doc(firestore, CLIENTS_PATH, params.userId), {
                 dateLastVisit: newDateLastVisit,
                 dateLastBackpack:
-                    mostRecentBackpack.docs[0]?.data().timestamp.toDate() ==
+                    mostRecentBackpack.docs[0]?.data().createdAt.toDate() ==
                     null
                         ? deleteField()
-                        : mostRecentBackpack.docs[0].data().timestamp.toDate(),
+                        : mostRecentBackpack.docs[0].data().createdAt.toDate(),
                 dateLastSleepingBag:
-                    mostRecentSleepingBag.docs[0]?.data().timestamp.toDate() ==
+                    mostRecentSleepingBag.docs[0]?.data().createdAt.toDate() ==
                     null
                         ? deleteField()
                         : mostRecentSleepingBag.docs[0]
                               .data()
-                              .timestamp.toDate(),
+                              .createdAt.toDate(),
             });
         }
 
@@ -124,20 +116,14 @@ export default function Visit({ params }: VisitProps) {
         router.push(`/profile/${params.userId}`);
     };
 
+    if (isLoading) return <Spinner />;
+
     return (
         <>
             <h1>Visit Details</h1>
             <div>
-                {visitData?.timestamp ? (
-                    <h3>
-                        {`${new Date(
-                            visitData?.timestamp?.seconds * 1000
-                        ).toDateString()}
-                            -
-                            ${new Date(
-                                visitData?.timestamp?.seconds * 1000
-                            ).toTimeString()}`}
-                    </h3>
+                {visitData?.createdAt ? (
+                    <h3>{visitData?.createdAt?.toDate()?.toLocaleString()}</h3>
                 ) : null}
 
                 <h3>Clothing</h3>
@@ -192,14 +178,14 @@ export default function Visit({ params }: VisitProps) {
 
                 <h3>Household items</h3>
                 <p>
-                    {visitData?.household.length === 0
+                    {visitData?.household?.length === 0
                         ? 'None'
                         : visitData?.household}
                 </p>
 
                 <h3>Notes</h3>
                 <p>
-                    {visitData?.notes.length === 0 ? 'None' : visitData?.notes}
+                    {visitData?.notes?.length === 0 ? 'None' : visitData?.notes}
                 </p>
             </div>
 

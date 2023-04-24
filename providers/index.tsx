@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
+import AlertProvider from './AlertProvider';
 import AuthProvider from './AuthProvider';
 import SettingsProvider from './SettingsProvider';
 
@@ -6,7 +7,7 @@ interface ProvidersProps {
     children: React.ReactNode;
 }
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 export default function Providers(props: ProvidersProps) {
     const { children } = props;
@@ -14,7 +15,7 @@ export default function Providers(props: ProvidersProps) {
         <AuthProvider>
             <SettingsProvider>
                 <QueryClientProvider client={queryClient}>
-                    {children}
+                    <AlertProvider>{children}</AlertProvider>
                 </QueryClientProvider>
             </SettingsProvider>
         </AuthProvider>

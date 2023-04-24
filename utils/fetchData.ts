@@ -7,6 +7,7 @@ import {
     query as fquery,
     setDoc,
     where,
+    Timestamp,
 } from 'firebase/firestore';
 import { firestore } from '../firebase/firebase';
 
@@ -14,7 +15,7 @@ const DEFAULT_PATH = 'clients';
 const LIMIT = 50;
 
 export type DocFilter = {
-    [key: string]: string | number | boolean;
+    [key: string]: string | number | boolean | Timestamp | Date | null;
 };
 
 /**
@@ -40,6 +41,7 @@ export async function fetchData<DocType>(
     if (fields.id && typeof fields.id == 'string') {
         const docRef = doc(firestore, path[0], ...path.slice(1), fields.id);
         const docSnapshot = await getDoc(docRef);
+        if (!docSnapshot.exists()) return null as DocType;
         return { ...docSnapshot.data(), id: docSnapshot.id } as DocType;
     }
 

@@ -5,15 +5,28 @@ import { CLIENTS_PATH, listClients } from '@/utils/queries';
 import type { Client } from 'models';
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-
+import { useAlert } from '@/hooks/index';
 export default function ClientsSearch() {
     const [fields, setFields] = useState<DocFilter>();
     const queryClient = useQueryClient();
-
+    const [, setAlert] = useAlert();
     const { data, isLoading, refetch } = useQuery({
         queryKey: [CLIENTS_PATH, 'searched'],
         queryFn: async () => {
-            const clients = await listClients(fields);
+            let clients: Array<Client> = [];
+            const filter = { ...fields };
+            if (filter?.filterByBirthday && !filter.birthday) {
+                setAlert({
+                    message: 'invalid date of birth',
+                    type: 'error',
+                });
+                return { clients, fields };
+            }
+            if (filter?.filterByBirthday && filter?.birthday) {
+                filter.birthday = new Date(filter.birthday as string);
+                delete filter.filterByBirthday;
+            }
+            clients = await listClients(filter);
             return { clients, fields };
         },
         enabled: false,
@@ -24,6 +37,8 @@ export default function ClientsSearch() {
 
     useEffect(() => {
         if (fields) refetch();
+        // TODO: remove useEffect approach
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fields]);
 
     return (

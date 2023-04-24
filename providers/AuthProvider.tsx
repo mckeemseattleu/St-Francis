@@ -57,10 +57,8 @@ export default function AuthProvider(props: AuthProviderProps) {
         signIn: signIn,
         signOut: signOut,
     };
-    
+
     return (
-        <AuthContext.Provider value={values}>
-            { children }
-        </AuthContext.Provider>
+        <AuthContext.Provider value={values}>{children}</AuthContext.Provider>
     );
 }
