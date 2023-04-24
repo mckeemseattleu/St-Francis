@@ -1,0 +1,42 @@
+.alert {
+    position: fixed;
+    bottom: 50px;
+    left: 25px;
+    z-index: 1000;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    background-color: whitesmoke;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.alert.error {
+    border: 1px solid salmon;
+    color: salmon;
+}
+
+.alert.success {
+    border: 1px solid darkgreen;
+    color: darkgreen;
+}
+.alert.success:hover {
+    background-color: darkseagreen;
+    color: whitesmoke;
+    transition: all 0.3s ease;
+}
+
+.alert.error:hover {
+    background-color: salmon;
+    color: whitesmoke;
+    transition: all 0.3s ease;
+}
+
+.alert::after {
+    content: '\00d7';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    cursor: pointer;
+}

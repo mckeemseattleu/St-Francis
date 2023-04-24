@@ -15,7 +15,7 @@ const menuItems: MenuItems = [
 export default function NavBar(props: React.HTMLAttributes<HTMLDivElement>) {
     const { isMobile } = useWindowSize();
     return (
-        <nav {...props} className={`${props.className} ${styles.nav}`}>
+        <nav {...props} className={`${props.className} ${styles.nav} noprint`}>
             <NavLogo />
             {isMobile && <NavMenuMobile items={menuItems} />}
             {!isMobile && <NavMenu items={menuItems} />}

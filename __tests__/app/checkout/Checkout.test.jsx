@@ -1,61 +1,64 @@
-import CheckOut from '../../../app/checkout/[userId]/page';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
-import { getDoc } from 'firebase/firestore';
+import { useQuery } from 'react-query';
+import CheckOut from '../../../app/checkout/[userId]/page';
 
 jest.mock('next/navigation', () => ({
     __esModule: true,
     useRouter: jest.fn(() => ({ push: jest.fn() })),
 }));
 
-jest.mock('firebase/firestore', () => ({
+jest.mock('@/hooks/index', () => ({
     __esModule: true,
-    getFirestore: jest.fn(),
-    doc: jest.fn(),
-    getDoc: jest.fn(),
+    useQueryCache: jest.fn(() => ({
+        updateClientCache: jest.fn(),
+        updateVisitCache: jest.fn(),
+    })),
+    useAlert: jest.fn(() => [{}, jest.fn()]),
+    useSettings: jest.fn(() => ({ settings: {} })),
 }));
 
-const mockClientDoc = {
-    id: 'abcd',
-    firstName: 'First',
-    lastName: 'Last',
-    birthday: 'Birthday',
-    notes: 'Notes',
-    isCheckedIn: true,
-    isBanned: false,
-};
+jest.mock('react-query', () => ({
+    __esModule: true,
+    useQuery: jest.fn(),
+}));
 
 describe('Checkout page', () => {
     // Mock router for router.push()
     const mockRouter = { push: jest.fn() };
-
     useRouter.mockReturnValue(mockRouter);
+    const mockClient = {
+        id: 'abcd',
+        firstName: 'First',
+        lastName: 'Last',
+        birthday: 'Birthday',
+        notes: 'Notes',
+        isCheckedIn: true,
+        isBanned: false,
+    };
 
-    it('renders correctly with valid client', async () => {
-        getDoc.mockImplementation(() => ({
-            exists: () => true,
-            data: () => mockClientDoc,
-        }));
-
-        await act(async () => {
-            render(<CheckOut params={{ userId: 'abcd' }} />);
-        });
-
-        expect(mockRouter.push).not.toHaveBeenCalled();
+    it('renders correctly with checked in client', async () => {
+        const queryResult = {
+            isLoading: false,
+            data: { ...mockClient, isCheckedIn: true },
+        };
+        useQuery.mockReturnValue(queryResult);
+        const { container } = render(
+            <CheckOut params={{ userId: mockClient.id }} />
+        );
+        expect(container.innerHTML).toContain('Checked in');
     });
 
-    it('redirects with invalid client', async () => {
-        getDoc.mockImplementation(() => ({
-            exists: () => false,
-            data: () => {
-                return null;
-            },
-        }));
+    it('renders correctly with not checked in client', async () => {
+        const queryResult = {
+            isLoading: false,
+            data: { ...mockClient, isCheckedIn: false },
+        };
+        useQuery.mockReturnValue(queryResult);
 
-        await act(async () => {
-            render(<CheckOut params={{ userId: 'abcd' }} />);
-        });
-
-        expect(mockRouter.push).toHaveBeenCalled();
+        const { container } = render(
+            <CheckOut params={{ userId: mockClient.id }} />
+        );
+        expect(container.innerHTML).toContain('Not checked in');
     });
 });

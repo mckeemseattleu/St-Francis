@@ -1,5 +1,6 @@
 'use client';
 import type { DocFilter } from '@/utils/index';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import styles from './ClientSearchForm.module.css';
@@ -95,6 +96,7 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                             />
                             <input
                                 type="checkbox"
+                                title="Check to search with birthday"
                                 name="filterByBirthday"
                                 id="filterByBirthday"
                                 checked={clientData.filterByBirthday}
@@ -105,13 +107,21 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                 </div>
 
                 <div className={styles.formControls}>
-                    <button type="submit">Filter</button>
+                    <button type="submit">
+                        Search
+                        <Image
+                            src="/search.svg"
+                            alt="client-search-icon"
+                            width="20"
+                            height="20"
+                        />
+                    </button>
+                    <Link href="/add-client">
+                        <button>New Client</button>
+                    </Link>
                     <button type="button" onClick={handleClear}>
                         Clear
                     </button>
-                    <Link href="/add-client">
-                        <button>New client</button>
-                    </Link>
                 </div>
             </form>
         </div>

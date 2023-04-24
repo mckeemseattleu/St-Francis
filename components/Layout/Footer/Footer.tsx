@@ -8,7 +8,7 @@ export default function Footer(props: FooterProps) {
     const { enabled = false, className, ...rest } = props;
     if (!enabled) return null;
     return (
-        <footer {...rest} className={`${className} ${styles.footer}`}>
+        <footer {...rest} className={`${className} ${styles.footer} noprint`}>
             <h1 className={styles.footerHeading}>ST. FRANCIS HOUSE</h1>
             <a
                 className={styles.footerLink}

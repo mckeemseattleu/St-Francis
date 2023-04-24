@@ -45,8 +45,6 @@
     margin: 10px;
 }
 
-
-
 .skeleton {
     animation: skeleton-loading 1s linear infinite alternate;
 }

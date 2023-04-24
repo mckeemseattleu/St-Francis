@@ -1,6 +1,7 @@
 import type { Client } from 'models';
 import Link from 'next/link';
 import styles from './ClientCard.module.css';
+import { formatDate } from '@/utils/formatDate';
 
 export default function ClientCard({ client }: { client: Client }) {
     const { id, firstName, lastName, birthday, notes, isBanned } = client;
@@ -14,7 +15,7 @@ export default function ClientCard({ client }: { client: Client }) {
                 {isBanned ? <h2>Banned</h2> : null}
 
                 <h2>Birthday:</h2>
-                <p>{birthday}</p>
+                <p>{birthday && formatDate(birthday, true)}</p>
 
                 <h2>Notes:</h2>
                 <p>
@@ -33,13 +34,15 @@ export default function ClientCard({ client }: { client: Client }) {
                     <button className={styles.button}>Edit</button>
                 </Link>
 
-                <Link href={`/checkin/${id}`}>
-                    <button className={styles.button}>Check in</button>
-                </Link>
-
-                <Link href={`/checkout/${id}`}>
-                    <button className={styles.button}>Check out</button>
-                </Link>
+                {!client.isCheckedIn ? (
+                    <Link href={`/checkin/${id}`}>
+                        <button className={styles.button}>Check in</button>
+                    </Link>
+                ) : (
+                    <Link href={`/checkout/${id}`}>
+                        <button className={styles.button}>Check out</button>
+                    </Link>
+                )}
             </div>
         </div>
     );
