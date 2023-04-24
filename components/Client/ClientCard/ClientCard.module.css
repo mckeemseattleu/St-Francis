@@ -22,7 +22,7 @@
 }
 
 .card h2 {
-    margin: 0 0 1rem 0;
+    margin: 1rem 0 0 0;
 }
 
 .card p {
@@ -36,6 +36,7 @@
 }
 
 .buttonContainer {
+    margin-top: 1rem;
     display: flex;
     flex-direction: row;
 }

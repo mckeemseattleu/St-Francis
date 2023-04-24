@@ -126,6 +126,7 @@ export default function Profile({ params }: ProfileProps) {
                         </Link>
                     )}
                 </div>
+
                 <div className={styles.rowContainer}>
                     <div className={styles.rowContainer}>
                         {clientData?.birthday ? <h3>Birthday</h3> : null}
@@ -164,6 +165,12 @@ export default function Profile({ params }: ProfileProps) {
                         ) : null}
                     </div>
                 </div>
+                {clientData?.notes ? (
+                    <div>
+                        <h2>Notes</h2>
+                        <p>{clientData.notes}</p>
+                    </div>
+                ) : null}
             </div>
 
             <div>
