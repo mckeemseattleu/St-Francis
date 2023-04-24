@@ -6,7 +6,7 @@ import { useState } from 'react';
 import styles from './ClientInfoForm.module.css';
 interface ClientInfoFormProps {
     id?: string;
-    initialData?: Client;
+    initialData?: Omit<Client, 'birthday'> & { birthday?: string };
     redirect?: string;
     title?: string;
     showBackButton?: boolean;
@@ -24,7 +24,7 @@ interface ClientInfoFormProps {
  * @param showBackButton Whether to show a "back to profile" button or not
  */
 export default function ClientInfoForm({
-    initialData = {} as Client,
+    initialData = {} as Omit<Client, 'birthday'> & { birthday?: string },
     title = 'Client Form',
     onSave,
     onSaveAndCheck,
@@ -44,36 +44,50 @@ export default function ClientInfoForm({
         gender: initialData.gender || '',
         race: initialData.race || '',
         postalCode: initialData.postalCode || '',
-        numKids: initialData.numKids || 0,
+        numKids: initialData.numKids?.toString() || '',
         notes: initialData.notes || '',
         isCheckedIn: !!initialData.isCheckedIn,
         isBanned: !!initialData.isBanned,
     };
 
     const [clientData, setClientData] = useState(defaultData);
-
     const handleSave = async () => {
-        onSave && onSave(clientData);
+        const data = {
+            ...clientData,
+            numKids: parseInt(clientData.numKids) || 0,
+        };
+        onSave && onSave(data);
     };
 
     const handleSaveAndCheck = async () => {
-        onSaveAndCheck && onSaveAndCheck(clientData);
+        const data = {
+            ...clientData,
+            numKids: parseInt(clientData.numKids) || 0,
+        };
+        onSaveAndCheck && onSaveAndCheck(data);
     };
 
     const handleChange = (key: any) => (e: any) => {
         let value = e.target.value;
-        if (key === 'numKids') value = parseInt(value);
         if (key === 'isBanned') value = e.target.checked;
         if (key === 'firstName')
             clientData.firstNameLower = value.toLowerCase();
         if (key === 'lastName') clientData.lastNameLower = value.toLowerCase();
         setClientData({ ...clientData, [key]: value });
     };
+    const getFullName = () =>
+        `${clientData.firstName} ${clientData.middleInitial} ${clientData.lastName}`;
 
     return (
         <div className={styles.container}>
             <div className={styles.titleContainer}>
-                <h1>{title}</h1>
+                <h1>
+                    {(!clientData.firstName &&
+                        !clientData.middleInitial &&
+                        !clientData.lastName &&
+                        title) ||
+                        getFullName()}
+                </h1>
 
                 <div>
                     <label htmlFor="isBanned">Ban</label>
