@@ -2,7 +2,7 @@ import { Client, Visit } from '@/models/index';
 import { Timestamp } from 'firebase/firestore';
 import { DocFilter, fetchData } from './fetchData';
 
-export const CLIENTS_PATH = 'clients-dev';
+export const CLIENTS_PATH = 'clients';
 export const VISITS_PATH = 'visits';
 
 // TODO: consider moving these to user settings
