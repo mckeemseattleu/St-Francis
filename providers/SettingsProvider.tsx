@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { firestore } from '../firebase/firebase';
-
 export interface Settings {
     daysEarlyThreshold: number;
     backpackThreshold: number;
@@ -11,17 +10,10 @@ export interface Settings {
 
 export interface SettingsContext {
     settings: Settings;
-    setSettings: Function;
+    updateSettings: Function;
 }
 
-export const SettingsContext = createContext({
-    settings: {
-        daysEarlyThreshold: 0,
-        backpackThreshold: 0,
-        sleepingBagThreshold: 0,
-        earlyOverride: false,
-    },
-} as SettingsContext);
+export const SettingsContext = createContext({} as SettingsContext);
 
 interface SettingsProviderProps {
     children: React.ReactNode;
@@ -37,7 +29,7 @@ export default function SettingsProvider(props: SettingsProviderProps) {
         earlyOverride: false,
     });
 
-    const getSettingsDoc = async () => {
+    const getSettings = async () => {
         const settingsDoc = await getDoc(doc(firestore, 'settings', 'default'));
 
         if (settingsDoc.exists()) {
@@ -45,13 +37,21 @@ export default function SettingsProvider(props: SettingsProviderProps) {
         }
     };
 
+    const updateSettings = async (settingsData: Settings) => {
+        await setDoc(doc(firestore, 'settings', 'default'), {
+            ...settings,
+            ...settingsData,
+        });
+        await getSettings();
+    };
+
     useEffect(() => {
-        getSettingsDoc();
+        getSettings();
     }, []);
 
     const values = {
         settings: settings,
-        setSettings: setSettings,
+        updateSettings: updateSettings,
     };
 
     return (
