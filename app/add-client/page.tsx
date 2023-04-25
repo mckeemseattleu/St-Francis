@@ -16,22 +16,36 @@ export default function AddClient() {
 
     // save new client and redirect to profile page
     const onSave = async (clientData: DocFilter) => {
-        const client = await createClient(transformData(clientData));
-        setAlert({
-            message: 'Client Successfully Created.',
-            type: 'success',
-        });
-        router.push(`/profile/${client.id}`);
+        try {
+            const client = await createClient(transformData(clientData));
+            setAlert({
+                message: 'Client Successfully Created.',
+                type: 'success',
+            });
+            router.push(`/profile/${client.id}`);
+        } catch (err: any) {
+            setAlert({
+                message: err.message,
+                type: 'error',
+            });
+        }
     };
 
     // save new client and redirect to check-in page
     const onSaveAndCheck = async (clientData: DocFilter) => {
-        const client = await createClient(transformData(clientData));
-        setAlert({
-            message: 'Client Created, Check-In Now',
-            type: 'success',
-        });
-        router.push(`/checkin/${client.id}`);
+        try {
+            const client = await createClient(transformData(clientData));
+            setAlert({
+                message: 'Client Created, Check-In Now',
+                type: 'success',
+            });
+            router.push(`/checkin/${client.id}`);
+        } catch (err: any) {
+            setAlert({
+                message: err.message,
+                type: 'error',
+            });
+        }
     };
 
     return (

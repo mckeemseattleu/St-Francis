@@ -51,14 +51,18 @@ export default function Update({ params }: UpdateProps) {
             return await onUpdate(clientData);
         }
         // save and redirect to check-in page
-        clientData = transformData(clientData);
-        await updateClient(clientData);
-        updateClientCache(clientData);
-        setAlert({
-            message: 'Client Saved, Check-In Now',
-            type: 'success',
-        });
-        router.push(`/checkin/${clientData.id}`);
+        try {
+            clientData = transformData(clientData);
+            await updateClient(clientData);
+            updateClientCache(clientData);
+            setAlert({
+                message: 'Client Saved, Check-In Now',
+                type: 'success',
+            });
+            router.push(`/checkin/${clientData.id}`);
+        } catch (error: any) {
+            setAlert({ message: error.message, type: 'error' });
+        }
     };
 
     if (isLoading) return <Spinner />;
