@@ -39,8 +39,7 @@ export default function ClientInfoForm({
         firstNameLower: initialData.firstNameLower || '',
         lastNameLower: initialData.lastNameLower || '',
         middleInitial: initialData.middleInitial || '',
-        birthday:
-            initialData.birthday || new Date().toLocaleDateString('en-CA'),
+        birthday: initialData.birthday || '',
         gender: initialData.gender || '',
         race: initialData.race || '',
         postalCode: initialData.postalCode || '',
@@ -153,7 +152,8 @@ export default function ClientInfoForm({
                             type="date"
                             name="birthday"
                             id="birthday"
-                            title="Enter client's birthday MM/DD/YYYY"
+                            title="Enter client's birthday MM/DD/YYYY. 
+                                    Select today's date if unknown"
                             value={clientData.birthday}
                             onChange={handleChange('birthday')}
                         />

@@ -108,7 +108,7 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
           id="birthday"
           name="birthday"
           onChange={[Function]}
-          title="Enter client's birthday MM/DD/YYYY"
+          title="Enter client's birthday MM/DD/YYYY.  Select today's date if unknown"
           type="date"
           value=""
         />
