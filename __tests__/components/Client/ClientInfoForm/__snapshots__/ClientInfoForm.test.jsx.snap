@@ -110,7 +110,7 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
           onChange={[Function]}
           title="Enter client's birthday MM/DD/YYYY"
           type="date"
-          value="4/24/2023"
+          value=""
         />
       </div>
       <div
