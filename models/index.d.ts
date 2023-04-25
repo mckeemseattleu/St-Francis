@@ -25,6 +25,7 @@ export declare type Client = {
     readonly lastFinancialAssistanceDate?: Timestamp | null;
     readonly lastFinancialAssistanceValue?: string | null;
     readonly lastVisit?: Timestamp | null;
+    readonly unhoused?: boolean | null;
 };
 
 export declare type Visit = {
