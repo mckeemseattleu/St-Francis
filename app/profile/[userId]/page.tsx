@@ -100,12 +100,15 @@ export default function Profile({ params }: ProfileProps) {
                         }
                     >
                         {clientData?.isCheckedIn
-                            ? 'Checked in'
+                            ? 'Checked In'
                             : 'Not Checked In'}
                     </span>
-                    <span className={clientData?.isBanned ? styles.error : ''}>
-                        {clientData?.isBanned ? 'Banned' : 'Not Banned'}
-                    </span>
+                    {clientData?.unhoused && (
+                        <span className={styles.warning}>Unhoused</span>
+                    )}
+                    {clientData?.isBanned && (
+                        <span className={styles.error}>Banned</span>
+                    )}
                 </div>
                 <hr />
                 <div className={styles.rowContainer}>

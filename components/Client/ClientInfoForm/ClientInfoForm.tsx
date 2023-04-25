@@ -39,8 +39,7 @@ export default function ClientInfoForm({
         firstNameLower: initialData.firstNameLower || '',
         lastNameLower: initialData.lastNameLower || '',
         middleInitial: initialData.middleInitial || '',
-        birthday:
-            initialData.birthday || new Date().toLocaleDateString('en-CA'),
+        birthday: initialData.birthday || '',
         gender: initialData.gender || '',
         race: initialData.race || '',
         postalCode: initialData.postalCode || '',
@@ -48,6 +47,7 @@ export default function ClientInfoForm({
         notes: initialData.notes || '',
         isCheckedIn: !!initialData.isCheckedIn,
         isBanned: !!initialData.isBanned,
+        unhoused: !!initialData.unhoused,
     };
 
     const [clientData, setClientData] = useState(defaultData);
@@ -88,13 +88,25 @@ export default function ClientInfoForm({
                         title) ||
                         getFullName()}
                 </h1>
-
-                <div>
+                <div className={styles.titleItem}>
+                    <label htmlFor="unhoused">Unhoused</label>
+                    <input
+                        type="checkbox"
+                        name="unhoused"
+                        id="unhoused"
+                        title="Check if client is unhoused"
+                        defaultChecked={clientData.unhoused}
+                        value={clientData.unhoused ? 'on' : 'off'}
+                        onChange={handleChange('unhoused')}
+                    />
+                </div>
+                <div className={styles.titleItem}>
                     <label htmlFor="isBanned">Ban</label>
                     <input
                         type="checkbox"
                         name="isBanned"
                         id="isBanned"
+                        title="Check if client is banned"
                         defaultChecked={clientData.isBanned}
                         value={clientData.isBanned ? 'on' : 'off'}
                         onChange={handleChange('isBanned')}
@@ -140,6 +152,8 @@ export default function ClientInfoForm({
                             type="date"
                             name="birthday"
                             id="birthday"
+                            title="Enter client's birthday MM/DD/YYYY. 
+                                    Select today's date if unknown"
                             value={clientData.birthday}
                             onChange={handleChange('birthday')}
                         />
