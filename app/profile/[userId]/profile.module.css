@@ -29,13 +29,16 @@
 }
 
 .rowContainer span.error {
-    margin-left: 10px;
-    color: red;
+    color: var(--red);
+}
+
+.rowContainer span.warning {
+    color: var(--yellow);
 }
 
 .rowContainer span.success {
     margin-left: 10px;
-    color: green;
+    color: var(--green);
 }
 
 .rowContainer p {

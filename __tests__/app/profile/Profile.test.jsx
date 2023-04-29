@@ -108,7 +108,7 @@ describe('Profile page', () => {
         await act(async () => {
             render(<Profile params={{ userId: '1234' }} />);
         });
-        const checkedInStatus = screen.getByText('Checked in');
+        const checkedInStatus = screen.getByText('Checked In');
         expect(checkedInStatus).toBeInTheDocument();
     });
 
@@ -140,18 +140,27 @@ describe('Profile page', () => {
         expect(checkedInStatus).toBeInTheDocument();
     });
 
-    it('displays banned status correctly with valid, not banned client', async () => {
-        // Mock returning some sample data
+    it('displays not checked in status correctly', async () => {
         mockUseQueryData({
             ...mockClient,
             isCheckedIn: false,
-            isBanned: false,
         });
-        // TODO: Gives warning because of async useEffect()
+        render(<Profile params={{ userId: '1234' }} />);
+        expect(screen.getByText('Not Checked In')).toBeInTheDocument();
+    });
+
+    it('displays clients statuses correctly', async () => {
+        mockUseQueryData({
+            ...mockClient,
+            isCheckedIn: true,
+            isBanned: true,
+            unhoused: true,
+        });
         await act(async () => {
             render(<Profile params={{ userId: '1234' }} />);
         });
-        const checkedInStatus = screen.getByText('Not Banned');
-        expect(checkedInStatus).toBeInTheDocument();
+        expect(screen.getByText('Banned')).toBeInTheDocument();
+        expect(screen.getByText('Checked In')).toBeInTheDocument();
+        expect(screen.getByText('Unhoused')).toBeInTheDocument();
     });
 });
