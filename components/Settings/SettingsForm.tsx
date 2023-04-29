@@ -1,4 +1,4 @@
-import { Settings } from '@/providers/SettingsProvider';
+import { Settings } from '@/models/index';
 import { useState } from 'react';
 
 type SettingsFormProps = {
@@ -6,47 +6,53 @@ type SettingsFormProps = {
     onSubmit?: (settings: Settings) => void;
 };
 
-type SettingsFormState = {
+type SettingsForm = {
+    id: string;
     daysEarlyThreshold: string;
     backpackThreshold: string;
     sleepingBagThreshold: string;
-    earlyOverride: string;
+    earlyOverride: boolean;
 };
 
 function SettingsForm(props: SettingsFormProps) {
     const { initialSettings, onSubmit } = props;
-    const [settings, setSettings] = useState<SettingsFormState>({
+
+    const defaultSettings = {
+        id: initialSettings?.id || 'default',
         daysEarlyThreshold:
             initialSettings?.daysEarlyThreshold?.toString() || '0',
         backpackThreshold:
             initialSettings?.backpackThreshold?.toString() || '0',
         sleepingBagThreshold:
             initialSettings?.sleepingBagThreshold?.toString() || '0',
-        earlyOverride: !!initialSettings?.earlyOverride ? 'on' : 'off',
-    });
-    console.log({settings, initialSettings})
+        earlyOverride: !!initialSettings?.earlyOverride,
+    } as SettingsForm;
+    const [settings, setSettings] = useState(defaultSettings);
 
+    // Update form settings state on change
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSettings((prev: SettingsFormState) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }));
+        let value: string | boolean = e.target.value;
+        if (e.target.type === 'checkbox') value = e.target.checked;
+        setSettings({ ...settings, [e.target.name]: value });
     };
 
+    // Transform to correct data types before execute injected submitting action
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const settingsData: Settings = {
+            ...settings,
             daysEarlyThreshold: parseInt(settings.daysEarlyThreshold),
             backpackThreshold: parseInt(settings.backpackThreshold),
             sleepingBagThreshold: parseInt(settings.sleepingBagThreshold),
-            earlyOverride: settings.earlyOverride === 'on',
         };
         onSubmit && onSubmit(settingsData);
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>Days Early Threshold</h2>
+            <label htmlFor="daysEarlyThreshold">
+                <h2>Days Early Threshold</h2>
+            </label>
             <input
                 type="number"
                 name="daysEarlyThreshold"
@@ -56,7 +62,9 @@ function SettingsForm(props: SettingsFormProps) {
             />
             <br />
 
-            <h2>Backpack Threshold</h2>
+            <label htmlFor="backpackThreshold">
+                <h2>Backpack Threshold</h2>
+            </label>
             <input
                 type="number"
                 name="backpackThreshold"
@@ -66,7 +74,9 @@ function SettingsForm(props: SettingsFormProps) {
             />
             <br />
 
-            <h2>Sleeping Bag Threshold</h2>
+            <label htmlFor="sleepingBagThreshold">
+                <h2>Sleeping Bag Threshold</h2>
+            </label>
             <input
                 type="number"
                 name="sleepingBagThreshold"
@@ -76,12 +86,15 @@ function SettingsForm(props: SettingsFormProps) {
             />
             <br />
 
-            <h2>Early Check In Override</h2>
+            <label htmlFor="earlyOverride">
+                <h2>Early Check In Override</h2>
+            </label>
             <input
                 type="checkbox"
                 name="earlyOverride"
                 id="earlyOverride"
-                value={settings.earlyOverride ? 'on' : 'off'}
+                title="enable to bypass early check in"
+                checked={settings.earlyOverride}
                 onChange={handleChange}
             />
             <br />
