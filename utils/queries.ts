@@ -1,18 +1,22 @@
-import { Client, Visit } from '@/models/index';
+import { Client, Settings, Visit } from '@/models/index';
 import { Timestamp } from 'firebase/firestore';
 import { DocFilter, fetchData } from './fetchData';
 
 export const CLIENTS_PATH = 'clients';
 export const VISITS_PATH = 'visits';
+export const SETTINGS_PATH = 'settings';
 
 // TODO: consider moving these to user settings
+// TODO: add pagination
 export const CLIENTS_LIMIT = 50;
 export const VISITS_LIMIT = 5;
+export const SETTINGS_ID = 'default';
 
 /**
  * List clients documents from firestore based on the provided filter fields.
  *
  * @param fields Filtering object where the key is the field name and the value is the value to filter by.
+ *              Support: the filter supports equality ('==') only for key-value pair.
  * @param limit Maximum number of documents to fetch. If not provided, the default limit is used.
  * @returns Array of documents fetched from firestore.
  * @author ducmvo
@@ -77,6 +81,7 @@ export async function getClient(id: string) {
  *
  * @param clientID Id of the client to fetch visits for.
  * @param fields Filtering object where the key is the field name and the value is the value to filter by.
+ *              Support: the filter supports equality ('==') only for key-value pair.
  * @param limit Maximum number of documents to fetch. If not provided, the default limit is used.
  * @returns Array of documents fetched from firestore.
  * @author ducmvo
@@ -120,4 +125,25 @@ export async function getVisit(clientID: string, visitID: string) {
               ),
           }
         : visitDoc;
+}
+
+/**
+ * Get settings document from firestore based on the provided settings id.
+ * @param settingsID  Id of the settings document to fetch, if null use 'default'.
+ * @returns requested settings document fetched from firestore.
+ */
+export async function getSettings(settingsID: string = SETTINGS_ID) {
+    const settingsDoc = (await fetchData<Settings>(
+        { id: settingsID },
+        SETTINGS_PATH
+    )) as Settings;
+    return settingsDoc?.updatedAt
+        ? {
+              ...settingsDoc,
+              updatedAt: new Timestamp(
+                  settingsDoc.updatedAt.seconds,
+                  settingsDoc.updatedAt.nanoseconds
+              ),
+          }
+        : settingsDoc;
 }
