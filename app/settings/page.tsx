@@ -3,28 +3,32 @@
 import SettingsForm from '@/components/Settings/SettingsForm';
 import useAlert from '@/hooks/useAlert';
 import { useSettings } from '@/hooks/useSettings';
-import { Settings } from '@/providers/SettingsProvider';
-
-export interface SettingsDoc {
-    daysEarlyThreshold: number;
-    backpackThreshold: number;
-    sleepingBagThreshold: number;
-    earlyOverride: boolean;
-}
+import { Settings } from '@/models/index';
 
 export default function SettingsPage() {
-    const { settings, updateSettings } = useSettings();
+    const { settings, saveSettings } = useSettings();
     const [, setAlert] = useAlert();
 
     const handleSubmit = async (settingsData: Settings) => {
-        await updateSettings(settingsData);
-        setAlert({ type: 'success', message: 'Settings saved' });
+        try {
+            await saveSettings(settingsData);
+            setAlert({
+                type: 'success',
+                message: `Settings saved at ${new Date().toLocaleTimeString()}`,
+            });
+        } catch (err) {
+            setAlert({ type: 'error', message: 'Error saving settings' });
+        }
     };
 
     return (
         <div>
             <h1>Settings</h1>
-            <SettingsForm onSubmit={handleSubmit} initialSettings={settings} />
+            <SettingsForm
+                onSubmit={handleSubmit}
+                initialSettings={settings}
+                key={settings?.backpackThreshold}
+            />
         </div>
     );
 }
