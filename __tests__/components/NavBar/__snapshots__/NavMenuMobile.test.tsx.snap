@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavMenuMobile matches snapshot without any props 1`] = `
+<button
+  className="navMenuButton"
+  onClick={[Function]}
+>
+  <img
+    alt="menu"
+    data-nimg="1"
+    decoding="async"
+    height={20}
+    loading="lazy"
+    onError={[Function]}
+    onLoad={[Function]}
+    src="/menu.svg"
+    style={
+      {
+        "color": "transparent",
+      }
+    }
+    width={20}
+  />
+</button>
+`;
