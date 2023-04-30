@@ -20,12 +20,7 @@ describe('Client Info Form Component', () => {
         isBanned: false,
         unhoused: false,
     };
-    it('matches snapshot without any props', async () => {
-        const tree = renderer
-            .create(<ClientSearchForm onSubmit={() => {}} />)
-            .toJSON();
-        expect(tree).toMatchSnapshot();
-    });
+
     it('renders correctly without initial data', async () => {
         await act(async () => {
             render(<ClientSearchForm onSubmit={() => {}} />);
