@@ -103,19 +103,15 @@ export default function VisitInfoForm({
                 return;
             }
 
-            try {
-                const transformedVisitData = {
-                    ...visitData,
-                    busTicket: parseInt(visitData.busTicket) || 0,
-                    giftCard: parseInt(visitData.giftCard) || 0,
-                    diaper: parseInt(visitData.diaper) || 0,
-                    financialAssistance:
-                        parseInt(visitData.financialAssistance) || 0,
-                };
-                onSubmit && onSubmit(transformedVisitData);
-            } catch (err) {
-                console.error('error parsing visit data to int');
-            }
+            const transformedVisitData = {
+                ...visitData,
+                busTicket: parseInt(visitData.busTicket) || 0,
+                giftCard: parseInt(visitData.giftCard) || 0,
+                diaper: parseInt(visitData.diaper) || 0,
+                financialAssistance:
+                    parseInt(visitData.financialAssistance) || 0,
+            };
+            onSubmit && onSubmit(transformedVisitData);
         };
 
     // TODO: Give more details
@@ -131,8 +127,6 @@ export default function VisitInfoForm({
         (e: any) => {
             setVisitData({ ...visitData, [key]: e.target[type] });
         };
-
-    if (!clientData) return null;
 
     return (
         <form onSubmit={handleSubmit()} className={styles.form}>

@@ -1,5 +1,4 @@
 import { CLIENTS_PATH, VISITS_PATH } from '@/utils/queries';
-import { useQueryClient } from 'react-query';
 import { Client } from '../models';
 import { DocFilter } from '../utils';
 import { queryClient } from '@/providers/index';

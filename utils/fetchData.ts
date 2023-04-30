@@ -9,7 +9,7 @@ import {
     where,
     Timestamp,
 } from 'firebase/firestore';
-import { firestore } from '../firebase/firebase';
+import { firestore } from '@/firebase/firebase';
 
 const DEFAULT_PATH = 'clients';
 const LIMIT = 50;

@@ -1,6 +1,10 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Settings from '../../../app/settings/page';
+
+jest.mock('@/hooks/useAlert', () => {
+    return () => [{}, jest.fn()];
+})
 
 describe('Settings page', () => {
     it('should display Settings heading', () => {
@@ -29,5 +33,14 @@ describe('Settings page', () => {
         expect(backpack).toBeInTheDocument();
         expect(sleepingBag).toBeInTheDocument();
         expect(override).toBeInTheDocument();
+    });
+
+    it('renders with default form when settings context is not ready', async () => {
+        render(<Settings />);
+
+        const saveButton = screen.queryByRole('button', {
+            name: 'Save as default',
+        }) as HTMLButtonElement;
+        fireEvent.click(saveButton);
     });
 });
