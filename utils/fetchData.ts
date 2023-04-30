@@ -14,6 +14,11 @@ import { firestore } from '../firebase/firebase';
 const DEFAULT_PATH = 'clients';
 const LIMIT = 50;
 
+/**
+ * Interface for filtering documents in firestore.
+ * The key is the field name and the value is the value to filter by.
+ * Could be used with QueryFieldFilterConstraint from firebase/firestore.
+ */
 export type DocFilter = {
     [key: string]: string | number | boolean | Timestamp | Date | null;
 };
@@ -22,6 +27,7 @@ export type DocFilter = {
  * Fetches documents from firestore based on the provided fields and path parameters.
  *
  * @param fields Filtering object where the key is the field name and the value is the value to filter by.
+ *               Support: the filter supports equality ('==') only for key-value pair.
  * @param limit Maximum number of documents to fetch. If not provided, the default limit is used.
  * @param path  Path to the collection to fetch from. If not provided, the default collection is used.
  *              Path can be an array of path segments

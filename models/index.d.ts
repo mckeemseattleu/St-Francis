@@ -61,3 +61,13 @@ export declare type Visit = {
     readonly financialAssistance?: number | null;
     readonly lastFinancialAssistance?: string | null;
 };
+
+export declare type Settings = {
+    readonly id: string;
+    readonly daysEarlyThreshold?: number;
+    readonly backpackThreshold?: number;
+    readonly sleepingBagThreshold?: number;
+    readonly earlyOverride?: boolean;
+    readonly createdAt?: Timestamp | null;
+    readonly updatedAt?: Timestamp | null;
+};

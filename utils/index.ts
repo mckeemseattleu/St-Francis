@@ -1,7 +1,7 @@
 import type { DocFilter } from './fetchData';
 import { fetchData, mutateData } from './fetchData';
-import { createClient, updateClient } from './mutations';
-import { getClient, listClients } from './queries';
+import { createClient, updateClient, updateSettings } from './mutations';
+import { getClient, listClients, getSettings } from './queries';
 
 export type { DocFilter };
 export {
@@ -11,4 +11,6 @@ export {
     getClient,
     createClient,
     updateClient,
+    getSettings,
+    updateSettings,
 };

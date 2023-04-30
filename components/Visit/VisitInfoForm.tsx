@@ -76,16 +76,19 @@ export default function VisitInfoForm({
     // Validates the new check in passes thresholds as specified in settings
     // page
     const validatesSuccessfully = () => {
-        if (settings.earlyOverride) return true;
+        if (settings?.earlyOverride) return true;
+        const daysEarlyThreshold = settings?.daysEarlyThreshold || 0;
+        const backpackThreshold = settings?.backpackThreshold || 0;
+        const sleepingBagThreshold = settings?.sleepingBagThreshold || 0;
 
         // TODO: Validate >= vs >
         return (
-            validationData.daysVisit > settings.daysEarlyThreshold &&
+            validationData.daysVisit > daysEarlyThreshold &&
             (visitData.backpack
-                ? validationData.daysBackpack > settings.backpackThreshold
+                ? validationData.daysBackpack > backpackThreshold
                 : true) &&
             (visitData.sleepingBag
-                ? validationData.daysSleepingBag > settings.sleepingBagThreshold
+                ? validationData.daysSleepingBag > sleepingBagThreshold
                 : true)
         );
     };
