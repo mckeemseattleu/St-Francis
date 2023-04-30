@@ -17,11 +17,11 @@ export declare type Client = {
     readonly postalCode?: string | null;
     readonly isCheckedIn?: boolean | null;
     readonly middleInitial?: string | null;
-    readonly numInFamily?: string | null;
+    readonly numInFamily?: number | null;
     readonly lastBackpack?: Timestamp | null;
     readonly lastBusTicket?: Timestamp | null;
     readonly lastSleepingbag?: Timestamp | null;
-    readonly BerthaPittsCampbellResident?: string | null;
+    readonly BerthaPittsCampbellResident?: boolean | null;
     readonly lastFinancialAssistanceDate?: Timestamp | null;
     readonly lastFinancialAssistanceValue?: string | null;
     readonly lastVisit?: Timestamp | null;
