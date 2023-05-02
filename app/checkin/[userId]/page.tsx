@@ -1,6 +1,8 @@
 'use client';
 
+import { ClientStatus } from '@/components/Client';
 import Spinner from '@/components/Spinner/Spinner';
+import { Button } from '@/components/UI';
 import VisitInfoForm from '@/components/Visit/VisitInfoForm';
 import { useAlert, useQueryCache } from '@/hooks/index';
 import { Client, Visit } from '@/models/index';
@@ -25,21 +27,14 @@ export default function Checkin({ params }: CheckinProps) {
     );
 
     // Checkin process
-    const checkIn = async (visitData: Visit) => {
+    const handleSubmit = async (visitData: Visit) => {
         if (!clientData) return;
         try {
             const visit = await createVisit(visitData, params.userId);
             updateVisitCache(clientData.id, visit);
-            // Updates validation data in client doc based on new check in
+            // Updates client checkin status
             const client = await updateClient({
                 ...clientData,
-                lastVisit: visit.createdAt,
-                lastBackpack: visit.backpack
-                    ? visit.createdAt
-                    : clientData?.lastBackpack || null,
-                lastSleepingbag: visit.sleepingBag
-                    ? visit.createdAt
-                    : clientData?.lastSleepingbag || null,
                 isCheckedIn: true,
             } as Client);
             updateClientCache(client);
@@ -61,32 +56,34 @@ export default function Checkin({ params }: CheckinProps) {
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <h1>Check-in Page</h1>
-
-                <div className={styles.headerRow}>
-                    <Link href={`/profile/${params.userId}`}>
-                        <h2>{`${clientData?.firstName} ${clientData?.lastName}`}</h2>
-                    </Link>
-
-                    <span />
-
-                    <p>
-                        {clientData?.isCheckedIn
-                            ? 'Checked in'
-                            : 'Not checked in'}
-                    </p>
-
-                    <Link href={`/update/${params.userId}`}>
-                        <button>Edit profile</button>
-                    </Link>
-                </div>
-
-                <p>Notes:</p>
-                <p>{clientData ? clientData.notes : null}</p>
+            <h1>Check-in Page</h1>
+            <div className={styles.rowContainer}>
+                <h1>
+                    {`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}
+                </h1>
+                <ClientStatus
+                    isBanned={!!clientData?.isBanned}
+                    isCheckedIn={!!clientData?.isCheckedIn}
+                    unhoused={!!clientData?.unhoused}
+                />
             </div>
+            <hr />
+            <div className={styles.rowContainer}>
+                <Link href={`/update/${params.userId}`}>
+                    <Button>Edit</Button>
+                </Link>
+                <Link href={`/profile/${params.userId}`}>
+                    <Button>Profile</Button>
+                </Link>
+            </div>
+            {clientData?.notes ? (
+                <div>
+                    <h2>Notes</h2>
+                    <p>{clientData.notes}</p>
+                </div>
+            ) : null}
 
-            <VisitInfoForm clientData={clientData} onSubmit={checkIn} />
+            <VisitInfoForm clientData={clientData} onSubmit={handleSubmit} />
         </div>
     );
 }
