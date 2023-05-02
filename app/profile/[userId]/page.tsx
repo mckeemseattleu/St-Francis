@@ -14,6 +14,8 @@ import { useQuery } from 'react-query';
 import styles from './profile.module.css';
 import ErrorPage from 'next/error';
 import { useEffect } from 'react';
+import { ClientStatus } from '@/components/Client';
+import { Button } from '@/components/UI';
 interface ProfileProps {
     params: { userId: string };
 }
@@ -88,44 +90,29 @@ export default function Profile({ params }: ProfileProps) {
     return (
         <>
             <div>
+                <h1>Profile Page</h1>
                 <div className={styles.rowContainer}>
                     <h1>
                         {`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}
                     </h1>
-                    <span
-                        className={
-                            clientData?.isCheckedIn
-                                ? styles.success
-                                : styles.error
-                        }
-                    >
-                        {clientData?.isCheckedIn
-                            ? 'Checked In'
-                            : 'Not Checked In'}
-                    </span>
-                    {clientData?.unhoused && (
-                        <span className={styles.warning}>Unhoused</span>
-                    )}
-                    {clientData?.isBanned && (
-                        <span className={styles.error}>Banned</span>
-                    )}
+                    <ClientStatus
+                        isBanned={!!clientData.isBanned}
+                        isCheckedIn={!!clientData.isCheckedIn}
+                        unhoused={!!clientData.unhoused}
+                    />
                 </div>
                 <hr />
                 <div className={styles.rowContainer}>
                     <Link href={`/update/${params.userId}`}>
-                        <button className={styles.visitBtn}>Edit</button>
+                        <Button>Edit</Button>
                     </Link>
                     {clientData.isCheckedIn ? (
                         <Link href={`/checkout/${params.userId}`}>
-                            <button className={styles.visitBtn}>
-                                Check out
-                            </button>
+                            <Button>Check out</Button>
                         </Link>
                     ) : (
                         <Link href={`/checkin/${params.userId}`}>
-                            <button className={styles.visitBtn}>
-                                Check in
-                            </button>
+                            <Button>Check in</Button>
                         </Link>
                     )}
                 </div>
