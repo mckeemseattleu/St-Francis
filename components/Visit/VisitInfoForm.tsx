@@ -3,10 +3,12 @@
 import { useSettings } from '@/hooks/index';
 import { Client, Visit } from '@/models/index';
 import { useEffect, useState } from 'react';
+import { FormRow, FormItem, Form, Button } from '@/components/UI';
 import styles from './VisitInfoForm.module.css';
 
 interface VisitInfoFormProps {
     clientData?: Client;
+    initialVisitData?: Visit;
     onSubmit?: (visitData: Visit) => void;
 }
 
@@ -26,17 +28,22 @@ const defaultVisitData = {
     notes: '',
     backpack: false,
     sleepingBag: false,
-    busTicket: '',
-    giftCard: '',
-    diaper: '',
-    financialAssistance: '',
 };
 
 export default function VisitInfoForm({
     clientData,
     onSubmit,
+    initialVisitData,
 }: VisitInfoFormProps) {
-    const [visitData, setVisitData] = useState(defaultVisitData);
+    const [visitData, setVisitData] = useState({
+        ...defaultVisitData,
+        ...initialVisitData,
+        busTicket: initialVisitData?.busTicket?.toString() || '',
+        giftCard: initialVisitData?.giftCard?.toString() || '',
+        diaper: initialVisitData?.diaper?.toString() || '',
+        financialAssistance:
+            initialVisitData?.financialAssistance?.toString() || '',
+    });
     const [validationData, setValidationData] = useState<ValidationData>({
         // Set to max to always pass validation if no data available
         daysVisit: Number.MAX_SAFE_INTEGER,
@@ -122,129 +129,119 @@ export default function VisitInfoForm({
         </div>
     );
 
-    const handleChange =
-        (key: any, type: string = 'value') =>
-        (e: any) => {
-            setVisitData({ ...visitData, [key]: e.target[type] });
-        };
+    const handleChange = (key: string) => (e: any) => {
+        let value = '';
+        if (e.target.type === 'checkbox') {
+            value = e.target.checked;
+        } else value = e.target.value;
+        setVisitData({ ...visitData, [key]: value });
+    };
 
     return (
-        <form onSubmit={handleSubmit()} className={styles.form}>
+        <Form onSubmit={handleSubmit()}>
             <h2>Clothing</h2>
 
-            <div className={styles.formRows}>
-                <FormField
+            <FormRow>
+                <FormItem
+                    label="Men"
                     type="checkbox"
                     id="clothingMen"
-                    label="Men"
-                    value={visitData.clothingMen ? 'on' : 'off'}
-                    onChange={handleChange('clothingMen', 'checked')}
+                    checked={!!visitData.clothingMen}
+                    onChange={handleChange('clothingMen')}
                 />
-                <FormField
+                <FormItem
                     type="checkbox"
                     id="clothingWomen"
                     label="Women"
-                    value={visitData.clothingWomen ? 'on' : 'off'}
-                    onChange={handleChange('clothingWomen', 'checked')}
+                    checked={!!visitData.clothingWomen}
+                    onChange={handleChange('clothingWomen')}
                 />
-                <FormField
+                <FormItem
                     type="checkbox"
                     id="clothingBoy"
                     label="Kids (Boy)"
-                    value={visitData.clothingBoy ? 'on' : 'off'}
-                    onChange={handleChange('clothingBoy', 'checked')}
+                    checked={!!visitData.clothingBoy}
+                    onChange={handleChange('clothingBoy')}
                 />
-                <FormField
+                <FormItem
                     type="checkbox"
                     id="clothingGirl"
                     label="Kids (Girl)"
-                    value={visitData.clothingGirl ? 'on' : 'off'}
-                    onChange={handleChange('clothingGirl', 'checked')}
+                    checked={!!visitData.clothingGirl}
+                    onChange={handleChange('clothingGirl')}
                 />
-            </div>
+            </FormRow>
 
             <h2>Special Requests</h2>
 
-            <div className={styles.formRows}>
-                <FormField
-                    type="checkbox"
-                    id="backpack"
-                    label="Backpack"
-                    value={visitData.backpack ? 'on' : 'off'}
-                    onChange={handleChange('backpack', 'checked')}
-                />
-                <FormField
-                    type="checkbox"
-                    id="sleepingBag"
-                    label="Sleeping Bag"
-                    value={visitData.sleepingBag ? 'on' : 'off'}
-                    onChange={handleChange('sleepingBag', 'checked')}
-                />
-                <FormField
+            <FormRow>
+                <FormItem
                     type="number"
                     id="busTicket"
                     label="Bus Ticket"
                     value={visitData.busTicket}
                     onChange={handleChange('busTicket')}
                 />
-                <FormField
+                <FormItem
                     type="number"
                     id="giftCard"
                     label="Gift Card"
                     value={visitData.giftCard}
                     onChange={handleChange('giftCard')}
                 />
-                <FormField
+                <FormItem
                     type="number"
                     id="diaper"
                     label="Diaper"
                     value={visitData.diaper}
                     onChange={handleChange('diaper')}
                 />
-                <FormField
+                <FormItem
                     type="number"
                     id="financialAssistance"
                     label="Financial Assistance"
                     value={visitData.financialAssistance}
                     onChange={handleChange('financialAssistance')}
                 />
-            </div>
+                <FormItem
+                    type="checkbox"
+                    id="backpack"
+                    label="Backpack"
+                    checked={!!visitData.backpack}
+                    onChange={handleChange('backpack')}
+                />
+                <FormItem
+                    type="checkbox"
+                    id="sleepingBag"
+                    label="Sleeping Bag"
+                    checked={!!visitData.sleepingBag}
+                    onChange={handleChange('sleepingBag')}
+                />
+            </FormRow>
 
-            <FormField
-                type="text"
+            <h2>Household items</h2>
+
+            <FormItem
+                type="textarea"
                 id="household"
-                label="Household items"
+                rows={3}
                 value={visitData.household || ''}
                 onChange={handleChange('household')}
-                isHeader
             />
-            <FormField
-                type="text"
-                label="Notes"
+
+            <h2>Notes</h2>
+
+            <FormItem
+                type="textarea"
                 id="notes"
+                rows={3}
                 value={visitData.notes || ''}
                 onChange={handleChange('notes')}
-                isHeader
             />
-            <button type="submit">Check in</button>
+            <Button type="submit">
+                {initialVisitData ? 'Save Visit' : 'New Visit'}
+            </Button>
             {validationErrorMessage}
-        </form>
+        </Form>
     );
 }
-
-const FormField = (props: any) => {
-    const { label, type, value, onChange, id, isHeader = false } = props;
-    const field = (
-        <>
-            <label htmlFor={id}>{isHeader ? <h2>{label}</h2> : label}</label>
-            <input
-                type={type}
-                name={id}
-                id={id}
-                value={value}
-                onChange={onChange}
-            />
-        </>
-    );
-    return isHeader ? field : <div className={styles.formRowItem}>{field}</div>;
-};
