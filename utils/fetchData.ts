@@ -8,6 +8,8 @@ import {
     setDoc,
     where,
     Timestamp,
+    orderBy,
+    deleteDoc,
 } from 'firebase/firestore';
 import { firestore } from '@/firebase/firebase';
 
@@ -70,12 +72,14 @@ export async function fetchData<DocType>(
  * @param data  Data to be stored in the document.
  * @param path  Path to the collection to mutate. If not provided, the default collection is used.
  *              Path can be an array of path segments
+ * @param isDelete  If true, the document will be deleted instead of updated.
  * @returns id of the updated or newly created document.
  * @author ducmvo
  */
 export async function mutateData(
     data: DocFilter,
-    path: string | Array<string> = DEFAULT_PATH
+    path: string | Array<string> = DEFAULT_PATH,
+    isDelete: boolean = false
 ) {
     if (!path) return null;
     if (typeof path == 'string') path = [path];
@@ -85,7 +89,46 @@ export async function mutateData(
     if (id) docRef = doc(firestore, path[0], ...path.slice(1), id);
     else docRef = doc(collection(firestore, path[0], ...path.slice(1)));
 
-    await setDoc(docRef, data);
+    if (isDelete) await deleteDoc(docRef);
+    else await setDoc(docRef, data);
 
     return docRef.id;
+}
+
+/**
+ *  Fetches the latest document (latest creation) from firestore based on the provided fields and path parameters.
+ * @param fields  Filtering object where the key is the field name
+ * and the value is the value to filter by.
+ * Support: the filter supports equality ('==') only for key-value pair.
+ * @param path  Path to the collection to fetch from.
+ *  If not provided, the default collection is used.
+ * @returns  The latest document fetched from firestore by createdAt.
+ * TODO: refactor fetchData to add this functionality
+ */
+export async function fetchLatestData<DocType>(
+    fields: DocFilter,
+    path: string | Array<string> = DEFAULT_PATH
+): Promise<DocType | null> {
+    // Todo: Add support for other comparison constraints
+    if (!path) return null;
+    if (typeof path == 'string') path = [path];
+
+    const collectionRef = collection(firestore, path[0], ...path.slice(1));
+    const constraints = Object.entries(fields).map(([key, val]) =>
+        where(key, '==', val)
+    );
+    const orderContraints = [orderBy('createdAt', 'desc')];
+
+    const preparedQuery = fquery(
+        collectionRef,
+        flimit(1),
+        ...orderContraints,
+        ...constraints
+    );
+    const snapshot = await getDocs(preparedQuery);
+
+    return snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+    }))[0] as DocType;
 }
