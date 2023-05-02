@@ -1,5 +1,6 @@
 import { Timestamp } from 'firebase/firestore';
-import { DocFilter, mutateData } from './fetchData';
+import { Visit } from '@/models/index';
+import { DocFilter, fetchLatestData, mutateData } from './fetchData';
 import { CLIENTS_PATH, SETTINGS_PATH, VISITS_PATH } from './queries';
 
 /**
@@ -27,6 +28,26 @@ export async function updateClient(clientData: DocFilter) {
 }
 
 /**
+ *  Revise client data after any visit data mutation.
+ * This function will update lastBackpack and lastSleepingBag of client
+ * @param clientID - id of client to be revised
+ */
+const reviseClient = async (clientID: string) => {
+    const path = [CLIENTS_PATH, clientID, VISITS_PATH];
+    const lastBackpack =
+        (await fetchLatestData<Visit>({ backpack: true }, path))?.createdAt ||
+        null;
+    const lastSleepingBag =
+        (await fetchLatestData<Visit>({ sleepingBag: true }, path))
+            ?.createdAt || null;
+    return await updateClient({
+        id: clientID,
+        lastBackpack,
+        lastSleepingBag,
+    });
+};
+
+/**
  *  Creates visit data, id will be generated
  * @param visitData  - visit data to be created
  * @param clientID  - id of visit's client
@@ -40,6 +61,7 @@ export async function createVisit(visitData: DocFilter, clientID: string) {
         clientID,
         VISITS_PATH,
     ]);
+    await reviseClient(clientID);
     return visitData;
 }
 
@@ -53,9 +75,22 @@ export async function createVisit(visitData: DocFilter, clientID: string) {
 export async function updateVisit(visitData: DocFilter, clientID: string) {
     visitData.updatedAt = Timestamp.now();
     await mutateData(visitData, [CLIENTS_PATH, clientID, VISITS_PATH]);
+    await reviseClient(clientID);
     return visitData;
 }
 
+/**
+ *  Deletes visit data
+ * @param visitID  - id of visit to be deleted
+ * @param clientID  - id of visit's client to be updated
+ */
+export async function deleteVisit(visitID: string, clientID: string) {
+    await mutateData(
+        { id: visitID },
+        [CLIENTS_PATH, clientID, VISITS_PATH],
+        true
+    );
+}
 /**
  * Updates settings data
  * @param settingsData - settings data to be updated, must contain id
