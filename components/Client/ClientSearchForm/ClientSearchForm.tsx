@@ -21,7 +21,7 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
     const defaultData = {
         firstName: '',
         lastName: '',
-        birthday: new Date().toLocaleDateString('en-CA'),
+        birthday: '',
         filterByBirthday: false,
     };
 
@@ -93,6 +93,7 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                                 id="birthday"
                                 value={clientData.birthday}
                                 onChange={handleChange}
+                                required={!!clientData.filterByBirthday}
                             />
                             <input
                                 type="checkbox"
