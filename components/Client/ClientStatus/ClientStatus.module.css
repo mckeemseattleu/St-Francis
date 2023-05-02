@@ -1,0 +1,12 @@
+.error {
+    color: var(--red);
+}
+
+.warning {
+    color: var(--yellow);
+}
+
+.success {
+    margin-left: 10px;
+    color: var(--green);
+}
