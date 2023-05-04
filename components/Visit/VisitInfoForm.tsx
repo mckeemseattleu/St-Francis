@@ -1,21 +1,12 @@
 'use client';
 
-import { useSettings } from '@/hooks/index';
-import { Client, Visit } from '@/models/index';
-import { useEffect, useState } from 'react';
-import { FormRow, FormItem, Form, Button } from '@/components/UI';
-import styles from './VisitInfoForm.module.css';
+import { Button, Form, FormItem, FormRow } from '@/components/UI';
+import { Visit } from '@/models/index';
+import { useState } from 'react';
 
 interface VisitInfoFormProps {
-    clientData?: Client;
     initialVisitData?: Visit;
     onSubmit?: (visitData: Visit) => void;
-}
-
-interface ValidationData {
-    daysVisit: number;
-    daysBackpack: number;
-    daysSleepingBag: number;
 }
 
 const defaultVisitData = {
@@ -31,7 +22,6 @@ const defaultVisitData = {
 };
 
 export default function VisitInfoForm({
-    clientData,
     onSubmit,
     initialVisitData,
 }: VisitInfoFormProps) {
@@ -44,90 +34,19 @@ export default function VisitInfoForm({
         financialAssistance:
             initialVisitData?.financialAssistance?.toString() || '',
     });
-    const [validationData, setValidationData] = useState<ValidationData>({
-        // Set to max to always pass validation if no data available
-        daysVisit: Number.MAX_SAFE_INTEGER,
-        daysBackpack: Number.MAX_SAFE_INTEGER,
-        daysSleepingBag: Number.MAX_SAFE_INTEGER,
-    });
-    const [validates, setValidates] = useState<boolean>(true);
-    const { settings } = useSettings();
 
-    useEffect(() => {
-        // Calculate validation data (days between last and threshold)
-        // TODO: Validate for edge cases with daylight savings and different timezones
-        const daysBetween = (start: Date | undefined, end: Date) => {
-            if (start == undefined) return Number.MAX_SAFE_INTEGER;
+    const handleSubmit = async (e: any) => {
+        e.preventDefault(); // Prevent redirect
 
-            const msPerDay = 24 * 60 * 60 * 1000;
-
-            return Math.round(
-                Math.abs((start.getTime() - end.getTime()) / msPerDay)
-            );
+        const transformedVisitData = {
+            ...visitData,
+            busTicket: parseInt(visitData.busTicket) || 0,
+            giftCard: parseInt(visitData.giftCard) || 0,
+            diaper: parseInt(visitData.diaper) || 0,
+            financialAssistance: parseInt(visitData.financialAssistance) || 0,
         };
-
-        setValidationData((prevData) => ({
-            ...prevData,
-            daysVisit: daysBetween(clientData?.lastVisit?.toDate(), new Date()),
-            daysBackpack: daysBetween(
-                clientData?.lastBackpack?.toDate(),
-                new Date()
-            ),
-            daysSleepingBag: daysBetween(
-                clientData?.lastSleepingbag?.toDate(),
-                new Date()
-            ),
-        }));
-    }, [clientData]);
-
-    // Validates the new check in passes thresholds as specified in settings
-    // page
-    const validatesSuccessfully = () => {
-        if (settings?.earlyOverride) return true;
-        const daysEarlyThreshold = settings?.daysEarlyThreshold || 0;
-        const backpackThreshold = settings?.backpackThreshold || 0;
-        const sleepingBagThreshold = settings?.sleepingBagThreshold || 0;
-
-        // TODO: Validate >= vs >
-        return (
-            validationData.daysVisit > daysEarlyThreshold &&
-            (visitData.backpack
-                ? validationData.daysBackpack > backpackThreshold
-                : true) &&
-            (visitData.sleepingBag
-                ? validationData.daysSleepingBag > sleepingBagThreshold
-                : true)
-        );
+        onSubmit && onSubmit(transformedVisitData);
     };
-
-    const handleSubmit =
-        (tempOverride = false) =>
-        (e: any) => {
-            e.preventDefault(); // Prevent redirect
-
-            if (!tempOverride && !validatesSuccessfully()) {
-                setValidates(false);
-                return;
-            }
-
-            const transformedVisitData = {
-                ...visitData,
-                busTicket: parseInt(visitData.busTicket) || 0,
-                giftCard: parseInt(visitData.giftCard) || 0,
-                diaper: parseInt(visitData.diaper) || 0,
-                financialAssistance:
-                    parseInt(visitData.financialAssistance) || 0,
-            };
-            onSubmit && onSubmit(transformedVisitData);
-        };
-
-    // TODO: Give more details
-    const validationErrorMessage = validates ? null : (
-        <div className={styles.errorMessageContainer}>
-            <p>Trying to check in too early</p>
-            <button onClick={handleSubmit(true)}>Force Check-in</button>
-        </div>
-    );
 
     const handleChange = (key: string) => (e: any) => {
         let value = '';
@@ -138,7 +57,7 @@ export default function VisitInfoForm({
     };
 
     return (
-        <Form onSubmit={handleSubmit()}>
+        <Form onSubmit={handleSubmit}>
             <h2>Clothing</h2>
 
             <FormRow>
@@ -239,9 +158,8 @@ export default function VisitInfoForm({
                 onChange={handleChange('notes')}
             />
             <Button type="submit">
-                {initialVisitData ? 'Save Visit' : 'New Visit'}
+                {initialVisitData ? 'Save Visit' : 'New Visit / Check-in'}
             </Button>
-            {validationErrorMessage}
         </Form>
     );
 }
