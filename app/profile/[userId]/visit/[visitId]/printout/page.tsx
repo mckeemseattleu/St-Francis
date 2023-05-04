@@ -2,15 +2,10 @@
 
 import PrintoutForm, { FormItem } from '@/components/PrintoutForm/PrintoutForm';
 import Spinner from '@/components/Spinner/Spinner';
-import {
-    CLIENTS_PATH,
-    VISITS_PATH,
-    getClient,
-    getVisit,
-} from '@/utils/queries';
+import { CLIENTS_PATH, getClient, getVisit, VISITS_PATH } from '@/utils/index';
+import ErrorPage from 'next/error';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import ErrorPage from 'next/error';
 
 interface PrintoutProps {
     params: { visitId: string; userId: string };
