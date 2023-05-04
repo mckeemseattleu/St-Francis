@@ -3,9 +3,13 @@
 import { ClientInfoForm } from '@/components/Client/index';
 import Spinner from '@/components/Spinner/Spinner';
 import { useAlert, useQueryCache } from '@/hooks/index';
-import { toUTCDateString } from '@/utils/formatDate';
-import { DocFilter, getClient, updateClient } from '@/utils/index';
-import { CLIENTS_PATH } from '@/utils/queries';
+import {
+    CLIENTS_PATH,
+    DocFilter,
+    getClient,
+    toUTCDateString,
+    updateClient,
+} from '@/utils/index';
 import { useRouter } from 'next/navigation';
 import { useQuery } from 'react-query';
 
@@ -28,7 +32,6 @@ export default function Update({ params }: UpdateProps) {
 
     const onUpdate = async (clientData: DocFilter) => {
         // save existing client and redirect to profile page
-        // console.log('ON SAVE',clientData.birthday)
         try {
             clientData = transformData(clientData);
             await updateClient(clientData);
@@ -67,7 +70,7 @@ export default function Update({ params }: UpdateProps) {
 
     if (isLoading) return <Spinner />;
     if (!data) return <>Client Not Found</>;
-    // console.log('ON INITIATE',toUTCDateString(data.birthday))
+    const key = data.isCheckedIn ? 'Save and Check-out' : 'save and Check-in';
     return (
         <ClientInfoForm
             initialData={{
@@ -75,8 +78,10 @@ export default function Update({ params }: UpdateProps) {
                 birthday: toUTCDateString(data.birthday),
             }}
             title={'Update Client Form'}
-            onSave={onUpdate}
-            onSaveAndCheck={onSaveAndCheck}
+            actions={{
+                Save: onUpdate,
+                [key]: onSaveAndCheck,
+            }}
         />
     );
 }

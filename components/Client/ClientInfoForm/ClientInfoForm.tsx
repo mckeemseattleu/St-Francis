@@ -11,8 +11,7 @@ interface ClientInfoFormProps {
     redirect?: string;
     title?: string;
     showBackButton?: boolean;
-    onSave?: (clientData: DocFilter) => void;
-    onSaveAndCheck?: (clientData: DocFilter) => void;
+    actions?: { [actionType: string]: (clientData: DocFilter) => void };
 }
 
 /**
@@ -27,8 +26,7 @@ interface ClientInfoFormProps {
 export default function ClientInfoForm({
     initialData = {} as Omit<Client, 'birthday'> & { birthday?: string },
     title = 'Client Form',
-    onSave,
-    onSaveAndCheck,
+    actions,
 }: ClientInfoFormProps) {
     //TODO: Add Validation
 
@@ -52,26 +50,16 @@ export default function ClientInfoForm({
     };
 
     const [clientData, setClientData] = useState(defaultData);
-    const [submitted, setSubmitted] = useState(false);
+    const [required, setRequired] = useState(false);
+    const [actionType, setActionType] = useState('');
 
-    const handleSave = async () => {
-        if (!clientData.birthday) return;
-        setSubmitted(true);
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
         const data = {
             ...clientData,
             numKids: parseInt(clientData.numKids) || 0,
         };
-        onSave && onSave(data);
-    };
-
-    const handleSaveAndCheck = async () => {
-        if (!clientData.birthday) return;
-        setSubmitted(true);
-        const data = {
-            ...clientData,
-            numKids: parseInt(clientData.numKids) || 0,
-        };
-        onSaveAndCheck && onSaveAndCheck(data);
+        actions?.[actionType]?.(data);
     };
 
     const handleChange = (key: any) => (e: any) => {
@@ -87,7 +75,7 @@ export default function ClientInfoForm({
 
     return (
         <div className={styles.container}>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <FormRow>
                     <FormTitle>
                         {(!clientData.firstName &&
@@ -126,6 +114,7 @@ export default function ClientInfoForm({
                         value={clientData.firstName}
                         id="firstName"
                         onChange={handleChange('firstName')}
+                        required={required}
                     />
 
                     <FormItem
@@ -147,15 +136,11 @@ export default function ClientInfoForm({
                         type="date"
                         id="birthday"
                         name="birthday"
-                        title="Enter client's birthday MM/DD/YYYY. 
-                                    Select today's date if unknown"
+                        title="Client's birthday, use today's date if unknown"
                         value={clientData.birthday}
                         onChange={handleChange('birthday')}
                         max={new Date().toISOString().split('T')[0]}
-                        required
-                        className={`${styles.birthday} ${
-                            submitted && styles.submitted
-                        }`}
+                        required={required}
                     />
 
                     <FormItem
@@ -210,17 +195,20 @@ export default function ClientInfoForm({
                             <span />
                         </>
                     )}
-
-                    <Button className={styles.saveButton} onClick={handleSave}>
-                        Save
-                    </Button>
-
-                    <Button
-                        className={styles.saveButton}
-                        onClick={handleSaveAndCheck}
-                    >
-                        Save and check {clientData.isCheckedIn ? 'out' : 'in'}
-                    </Button>
+                    {actions &&
+                        Object.keys(actions).map((label) => (
+                            <Button
+                                key={label}
+                                className={styles.saveButton}
+                                onClick={() => {
+                                    setActionType(label);
+                                    setRequired(true);
+                                }}
+                                type="submit"
+                            >
+                                {label}
+                            </Button>
+                        ))}
                 </div>
             </Form>
         </div>

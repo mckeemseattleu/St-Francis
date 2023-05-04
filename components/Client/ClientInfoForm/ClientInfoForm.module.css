@@ -37,9 +37,9 @@
 }
 
 .saveButtons .saveButton {
-    width: 200px;
+    width: 150px;
     margin-left: 25px;
-    height: 50px;
+    height: 45px;
 }
 
 .saveButtons span {
@@ -48,7 +48,6 @@
 
 .birthday {
     flex-grow: 1;
-    /* flex-shrink: 0; */
     flex-basis: calc(25% - 10px);
     margin: 5px;
     justify-content: center;
@@ -56,13 +55,4 @@
     flex-direction: column;
     gap: 5px;
     padding-block: 5px;
-}
-
-.birthday input {
-    margin: 0;
-    border: 1px solid var(--gray-4);
-}
-.birthday.submitted input:invalid {
-    outline: none;
-    border: 1px solid red;
 }
