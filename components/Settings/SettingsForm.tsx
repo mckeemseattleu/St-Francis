@@ -1,5 +1,6 @@
 import { Settings } from '@/models/index';
 import { useState } from 'react';
+import { Button } from '@/components/UI';
 
 type SettingsFormProps = {
     initialSettings?: Settings;
@@ -100,7 +101,7 @@ function SettingsForm(props: SettingsFormProps) {
             <br />
 
             <br />
-            <button type="submit">Save as default</button>
+            <Button type="submit">Save as default</Button>
         </form>
     );
 }
