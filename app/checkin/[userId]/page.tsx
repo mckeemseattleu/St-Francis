@@ -2,14 +2,20 @@
 
 import { ClientStatus } from '@/components/Client';
 import Spinner from '@/components/Spinner/Spinner';
-import { Button } from '@/components/UI';
+import { Button, Modal } from '@/components/UI';
 import VisitInfoForm from '@/components/Visit/VisitInfoForm';
-import { useAlert, useQueryCache } from '@/hooks/index';
+import { useAlert, useQueryCache, useSettings } from '@/hooks/index';
 import { Client, Visit } from '@/models/index';
-import { createVisit, updateClient } from '@/utils/mutations';
-import { CLIENTS_PATH, getClient } from '@/utils/queries';
+import {
+    CLIENTS_PATH,
+    createVisit,
+    getClient,
+    updateClient,
+    validateClient,
+} from '@/utils/index';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import styles from './checkin.module.css';
 
@@ -20,21 +26,40 @@ interface CheckinProps {
 export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
     const [, setAlert] = useAlert();
+    const [show, setShow] = useState(false);
+    const [visitData, setVisitData] = useState<Visit>();
+    const [validatedData, setValidatedData] = useState<
+        | {
+              daysBackpackLeft: number;
+              daysSleepingBagLeft: number;
+              daysVisitLeft: number;
+          }
+        | undefined
+    >();
+    const { settings } = useSettings();
     const { updateClientCache, updateVisitCache } = useQueryCache();
     const { isLoading, data: clientData } = useQuery(
         [CLIENTS_PATH, params.userId],
         () => getClient(params.userId)
     );
 
-    // Checkin process
+    // Checkin process, handles validate eligibility
     const handleSubmit = async (visitData: Visit) => {
-        if (!clientData) return;
+        if (!clientData || !visitData) return;
+        const { validated, data } = await validateClient(clientData, settings);
+        if (!show && !validated) {
+            setShow(true);
+            setVisitData(visitData);
+            setValidatedData(data);
+            return;
+        }
+
         try {
             const visit = await createVisit(visitData, params.userId);
             updateVisitCache(clientData.id, visit);
             // Updates client checkin status
             const client = await updateClient({
-                ...clientData,
+                id: clientData.id,
                 isCheckedIn: true,
             } as Client);
             updateClientCache(client);
@@ -82,8 +107,40 @@ export default function Checkin({ params }: CheckinProps) {
                     <p>{clientData.notes}</p>
                 </div>
             ) : null}
-
-            <VisitInfoForm clientData={clientData} onSubmit={handleSubmit} />
+            <VisitInfoForm onSubmit={handleSubmit} />
+            <Modal show={show} setShow={setShow}>
+                <h3>Early Visit For {clientData?.firstName}</h3>
+                <hr />
+                <h4>
+                    Last Visit:{' '}
+                    {clientData?.lastVisit?.toDate()?.toLocaleString()}
+                    <span> | {validatedData?.daysVisitLeft} day(s) left</span>
+                </h4>
+                <h4>
+                    Last Backpack:{' '}
+                    {clientData?.lastBackpack?.toDate()?.toLocaleString()}
+                    <span>
+                        {' '}
+                        | {validatedData?.daysBackpackLeft} day(s) left
+                    </span>
+                </h4>
+                <h4>
+                    Last Sleeping Bag:{' '}
+                    {clientData?.lastSleepingbag?.toDate()?.toLocaleString()}
+                    <span>
+                        {' '}
+                        | {validatedData?.daysSleepingBagLeft} day(s) left
+                    </span>
+                </h4>
+                <div className={styles.rowContainer}>
+                    <Button onClick={() => setShow(false)}>Cancel</Button>
+                    <Button
+                        onClick={() => visitData && handleSubmit(visitData)}
+                    >
+                        Force Check-in
+                    </Button>
+                </div>
+            </Modal>
         </div>
     );
 }
