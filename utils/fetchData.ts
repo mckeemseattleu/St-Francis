@@ -37,9 +37,10 @@ export type DocFilter = {
  * @author ducmvo
  */
 export async function fetchData<DocType>(
-    fields: DocFilter,
+    fields: DocFilter = {},
     path: string | Array<string> = DEFAULT_PATH,
-    limit = LIMIT
+    limit = LIMIT,
+    order: { by: string; desc: boolean } | null = null
 ): Promise<Array<DocType> | DocType> {
     // Todo: Add support for other comparison constraints
     if (!path) return [];
@@ -57,7 +58,17 @@ export async function fetchData<DocType>(
     const constraints = Object.entries(fields).map(([key, val]) =>
         where(key, '==', val)
     );
-    const preparedQuery = fquery(collectionRef, flimit(limit), ...constraints);
+
+    const orderContraints = [];
+    if (order)
+        orderContraints.push(orderBy(order.by, order.desc ? 'desc' : 'asc'));
+
+    const preparedQuery = fquery(
+        collectionRef,
+        flimit(limit),
+        ...orderContraints,
+        ...constraints
+    );
     const snapshot = await getDocs(preparedQuery);
 
     return snapshot.docs.map((doc) => ({
@@ -90,45 +101,7 @@ export async function mutateData(
     else docRef = doc(collection(firestore, path[0], ...path.slice(1)));
 
     if (isDelete) await deleteDoc(docRef);
-    else await setDoc(docRef, data);
+    else await setDoc(docRef, data, { merge: true });
 
     return docRef.id;
-}
-
-/**
- *  Fetches the latest document (latest creation) from firestore based on the provided fields and path parameters.
- * @param fields  Filtering object where the key is the field name
- * and the value is the value to filter by.
- * Support: the filter supports equality ('==') only for key-value pair.
- * @param path  Path to the collection to fetch from.
- *  If not provided, the default collection is used.
- * @returns  The latest document fetched from firestore by createdAt.
- * TODO: refactor fetchData to add this functionality
- */
-export async function fetchLatestData<DocType>(
-    fields: DocFilter,
-    path: string | Array<string> = DEFAULT_PATH
-): Promise<DocType | null> {
-    // Todo: Add support for other comparison constraints
-    if (!path) return null;
-    if (typeof path == 'string') path = [path];
-
-    const collectionRef = collection(firestore, path[0], ...path.slice(1));
-    const constraints = Object.entries(fields).map(([key, val]) =>
-        where(key, '==', val)
-    );
-    const orderContraints = [orderBy('createdAt', 'desc')];
-
-    const preparedQuery = fquery(
-        collectionRef,
-        flimit(1),
-        ...orderContraints,
-        ...constraints
-    );
-    const snapshot = await getDocs(preparedQuery);
-
-    return snapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-    }))[0] as DocType;
 }
