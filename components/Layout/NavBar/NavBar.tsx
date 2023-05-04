@@ -15,10 +15,12 @@ const menuItems: MenuItems = [
 export default function NavBar(props: React.HTMLAttributes<HTMLDivElement>) {
     const { isMobile } = useWindowSize();
     return (
-        <nav {...props} className={`${props.className} ${styles.nav} noprint`}>
+        <nav {...props} className={`${props.className} ${styles.nav}`}>
             <NavLogo />
-            {isMobile && <NavMenuMobile items={menuItems} />}
-            {!isMobile && <NavMenu items={menuItems} />}
+            <div className="noprint">
+                {isMobile && <NavMenuMobile items={menuItems} />}
+                {!isMobile && <NavMenu items={menuItems} />}
+            </div>
         </nav>
     );
 }
