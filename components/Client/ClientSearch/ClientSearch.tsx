@@ -1,7 +1,7 @@
 'use client';
 import { ClientList, ClientSearchForm } from '@/components/Client/index';
 import type { DocFilter } from '@/utils/index';
-import { CLIENTS_PATH, listClients } from '@/utils/queries';
+import { CLIENTS_PATH, listClients } from '@/utils/index';
 import type { Client } from 'models';
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
