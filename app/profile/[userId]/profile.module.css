@@ -24,6 +24,10 @@
     flex: 1;
 }
 
+.rowContainer h2 {
+    flex: 1;
+}
+
 .rowContainer span {
     margin-left: 10px;
 }
