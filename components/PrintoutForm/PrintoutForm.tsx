@@ -1,6 +1,7 @@
 import { Client, Visit } from '@/models/index';
+import { Button } from '@/components/UI';
 import styles from './PrintoutForm.module.css';
-
+import { useRouter } from 'next/navigation';
 interface PrintoutFormProps {
     // TODO: We can ask for form title instead of clientData and update
     // component doc
@@ -36,17 +37,20 @@ export default function PrintoutForm({
     visitData,
     data,
 }: PrintoutFormProps) {
+    const router = useRouter();
     const bodyItems = data.map((section: any, i: number) => {
         const content =
             // TODO: Refactor from tertiary to switch case in case we have more
             // than 2 possible values for section.type in the future
             section.type === 'checkbox'
-                ? section.items.map((item: any, i: number) => (
-                      <div key={i} className={styles.item}>
-                          <label>{item}</label>
-                          <span />
-                      </div>
-                  ))
+                ? section.items
+                      .sort((a: any, b: any) => a.length - b.length)
+                      .map((item: any, i: number) => (
+                          <div key={i} className={styles.item}>
+                              <label>{item}</label>
+                              <span />
+                          </div>
+                      ))
                 : section.items.map((item: any, i: number) => (
                       <div key={i} className={styles.item}>
                           <p>{item}</p>
@@ -62,7 +66,7 @@ export default function PrintoutForm({
     });
 
     return (
-        <>
+        <div className={styles.container}>
             <div className={styles.title}>
                 <h1>{`${clientData?.firstName} ${clientData?.lastName}'s Shopping List`}</h1>
                 <h1>
@@ -73,10 +77,23 @@ export default function PrintoutForm({
                     }
                 </h1>
             </div>
-            <button className="noprint" onClick={window.print}>
-                PRINT
-            </button>
-            {bodyItems}
-        </>
+            <div className={styles.buttons}>
+                <Button
+                    className={`noprint ${styles.printBtn}`}
+                    onClick={() => {
+                        router.back();
+                    }}
+                >
+                    Go Back
+                </Button>
+                <Button
+                    className={`noprint ${styles.printBtn}`}
+                    onClick={window.print}
+                >
+                    Print 🖨️
+                </Button>
+            </div>
+            <div className={styles.items}>{bodyItems}</div>
+        </div>
     );
 }
