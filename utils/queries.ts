@@ -1,15 +1,14 @@
 import { Client, Settings, Visit } from '@/models/index';
-import { DocFilter, fetchData } from './fetchData';
-
-export const CLIENTS_PATH = 'clients';
-export const VISITS_PATH = 'visits';
-export const SETTINGS_PATH = 'settings';
-
-// TODO: consider moving these to user settings
-// TODO: add pagination
-export const CLIENTS_LIMIT = 50;
-export const VISITS_LIMIT = 5;
-export const SETTINGS_ID = 'default';
+import {
+    DocFilter,
+    fetchData,
+    CLIENTS_LIMIT,
+    CLIENTS_PATH,
+    SETTINGS_ID,
+    SETTINGS_PATH,
+    VISITS_LIMIT,
+    VISITS_PATH,
+} from '@/utils/index';
 
 /**
  * List clients documents from firestore based on the provided filter fields.
@@ -22,12 +21,14 @@ export const SETTINGS_ID = 'default';
  */
 export async function listClients(
     fields: DocFilter = {},
-    limit = CLIENTS_LIMIT
+    limit = CLIENTS_LIMIT,
+    order: { by: string; desc: boolean } | null = null
 ) {
     return (await fetchData<Client>(
         fields,
         CLIENTS_PATH,
-        limit
+        limit,
+        order
     )) as Array<Client>;
 }
 
@@ -55,12 +56,17 @@ export async function getClient(id: string) {
 export async function listVisits(
     clientID: string,
     fields: DocFilter = {},
-    limit = VISITS_LIMIT
+    limit = VISITS_LIMIT,
+    order: { by: string; desc: boolean } | null = {
+        by: 'createdAt',
+        desc: true,
+    }
 ) {
     return (await fetchData(
         fields,
         [CLIENTS_PATH, clientID, VISITS_PATH],
-        limit
+        limit,
+        order
     )) as Array<Visit>;
 }
 
