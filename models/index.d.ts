@@ -56,7 +56,7 @@ export declare type Visit = {
     readonly clothingGirl?: boolean | null;
     readonly lastBackpack?: string | null;
     readonly clothingWomen?: boolean | null;
-    readonly lastSleepingBag?: string | null;
+    readonly lastSleepingBag?: Timestamp | null; // Warning: lastSleepingbag on Client
     readonly shampooConditioner?: string | null;
     readonly financialAssistance?: number | null;
     readonly lastFinancialAssistance?: string | null;
