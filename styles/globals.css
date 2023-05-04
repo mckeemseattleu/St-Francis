@@ -40,6 +40,12 @@ h6 {
     font-family: 'Spectral SC', serif;
 }
 
+hr {
+    height: 1px;
+    background: var(--gray-3);
+    margin: 10px 0;
+}
+
 a {
     color: inherit;
     text-decoration: none;
