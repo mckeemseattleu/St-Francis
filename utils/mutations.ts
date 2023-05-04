@@ -1,7 +1,11 @@
 import { Timestamp } from 'firebase/firestore';
-import { Visit } from '@/models/index';
-import { DocFilter, fetchLatestData, mutateData } from './fetchData';
-import { CLIENTS_PATH, SETTINGS_PATH, VISITS_PATH } from './queries';
+import { DocFilter, mutateData } from '@/utils/index';
+import {
+    CLIENTS_PATH,
+    listVisits,
+    SETTINGS_PATH,
+    VISITS_PATH,
+} from '@/utils/index';
 
 /**
  * Creates client data, id will be generated
@@ -29,21 +33,23 @@ export async function updateClient(clientData: DocFilter) {
 
 /**
  *  Revise client data after any visit data mutation.
- * This function will update lastBackpack and lastSleepingBag of client
+ * This function will update client lastVisit, lastBackpack, and lastSleepingbag
  * @param clientID - id of client to be revised
  */
-const reviseClient = async (clientID: string) => {
-    const path = [CLIENTS_PATH, clientID, VISITS_PATH];
+export const reviseClient = async (clientID: string) => {
+    const lastVisit = (await listVisits(clientID, {}, 1))[0]?.createdAt || null;
     const lastBackpack =
-        (await fetchLatestData<Visit>({ backpack: true }, path))?.createdAt ||
+        (await listVisits(clientID, { backpack: true }, 1))[0]?.createdAt ||
         null;
-    const lastSleepingBag =
-        (await fetchLatestData<Visit>({ sleepingBag: true }, path))
-            ?.createdAt || null;
+    const lastSleepingbag =
+        (await listVisits(clientID, { sleepingBag: true }, 1))[0]?.createdAt ||
+        null;
+
     return await updateClient({
         id: clientID,
         lastBackpack,
-        lastSleepingBag,
+        lastSleepingbag,
+        lastVisit,
     });
 };
 
@@ -80,7 +86,7 @@ export async function updateVisit(visitData: DocFilter, clientID: string) {
 }
 
 /**
- *  Deletes visit data
+ * Deletes visit data
  * @param visitID  - id of visit to be deleted
  * @param clientID  - id of visit's client to be updated
  */
@@ -90,7 +96,17 @@ export async function deleteVisit(visitID: string, clientID: string) {
         [CLIENTS_PATH, clientID, VISITS_PATH],
         true
     );
+    await reviseClient(clientID);
 }
+
+/**
+ * Deletes client data
+ * @param clientID - id of client to be deleted
+ */
+export async function deleteClient(clientID: string) {
+    return await mutateData({ id: clientID }, CLIENTS_PATH, true);
+}
+
 /**
  * Updates settings data
  * @param settingsData - settings data to be updated, must contain id
