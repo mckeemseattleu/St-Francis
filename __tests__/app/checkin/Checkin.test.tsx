@@ -40,7 +40,7 @@ describe('CheckedIn', () => {
             isLoading: true,
             data: undefined,
         };
-        useQuery.mockReturnValue(queryResult);
+        (useQuery as jest.Mock).mockReturnValue(queryResult);
         const { container } = render(<Checkin params={{ userId: 'abcd' }} />);
         expect(container.innerHTML).toContain('spinner');
     });
@@ -50,7 +50,7 @@ describe('CheckedIn', () => {
             isLoading: false,
             data: mockClient,
         };
-        useQuery.mockReturnValue(queryResult);
+        (useQuery as jest.Mock).mockReturnValue(queryResult);
         render(<Checkin params={{ userId: mockClient.id }} />);
         const title = screen.getByRole('heading', {
             name: 'Check-in Page',
@@ -63,7 +63,7 @@ describe('CheckedIn', () => {
             isLoading: true,
             data: undefined,
         };
-        useQuery.mockReturnValue(queryResult);
+        (useQuery as jest.Mock).mockReturnValue(queryResult);
         const tree = renderer
             .create(<Checkin params={{ userId: 'abcd' }} />)
             .toJSON();
@@ -76,7 +76,7 @@ describe('CheckedIn', () => {
             data: mockClient,
         };
 
-        useQuery.mockReturnValue(queryResult);
+        (useQuery as jest.Mock).mockReturnValue(queryResult);
         const tree = renderer
             .create(<Checkin params={{ userId: mockClient.id }} />)
             .toJSON();

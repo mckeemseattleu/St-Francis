@@ -126,7 +126,7 @@ export default function Checkin({ params }: CheckinProps) {
                 </h4>
                 <h4>
                     Last Sleeping Bag:{' '}
-                    {clientData?.lastSleepingbag?.toDate()?.toLocaleString()}
+                    {clientData?.lastSleepingBag?.toDate()?.toLocaleString()}
                     <span>
                         {' '}
                         | {validatedData?.daysSleepingBagLeft} day(s) left

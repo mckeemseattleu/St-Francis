@@ -66,8 +66,8 @@ describe('Profile page', () => {
         isCheckedIn: false,
         isBanned: false,
     };
-    const mockUseQueryData = (data) => {
-        useQuery.mockImplementation((params) => ({
+    const mockUseQueryData = (data: any) => {
+        (useQuery as jest.Mock).mockImplementation((params) => ({
             isLoading: false,
             data: params.length === 2 ? data : [],
         }));
