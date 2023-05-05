@@ -70,7 +70,7 @@ export default function Update({ params }: UpdateProps) {
 
     if (isLoading) return <Spinner />;
     if (!data) return <>Client Not Found</>;
-    const key = data.isCheckedIn ? 'Save and Check-out' : 'save and Check-in';
+    const key = data.isCheckedIn ? 'Save and Check-out' : 'Save and Check-in';
     return (
         <ClientInfoForm
             initialData={{
