@@ -22,11 +22,11 @@ export const validateClient = async (
     } = settings;
     // Bypass validation if earlyOverride is true
     if (earlyOverride) return { validated: true };
-    const { lastVisit, lastBackpack, lastSleepingbag } = client;
+    const { lastVisit, lastBackpack, lastSleepingBag } = client;
     // Calculate days duration
     const daysVisit = daysBetween(lastVisit?.toDate());
     const daysBackpack = daysBetween(lastBackpack?.toDate());
-    const daysSleepingBag = daysBetween(lastSleepingbag?.toDate());
+    const daysSleepingBag = daysBetween(lastSleepingBag?.toDate());
     // Calculate days left for eligibility (if negative, default to 0)
     const daysVisitLeft = toUint(daysEarlyThreshold - daysVisit);
     const daysBackpackLeft = toUint(backpackThreshold - daysBackpack);

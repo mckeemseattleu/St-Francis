@@ -210,14 +210,14 @@ export default function Profile({ params }: ProfileProps) {
                     </div>
 
                     <div className={styles.rowContainer}>
-                        {clientData?.lastSleepingbag ? (
+                        {clientData?.lastSleepingBag ? (
                             <h3>Last sleeping bag</h3>
                         ) : null}
-                        {clientData?.lastSleepingbag ? (
+                        {clientData?.lastSleepingBag ? (
                             <p>
-                                {clientData?.lastSleepingbag &&
+                                {clientData?.lastSleepingBag &&
                                     formatDate(
-                                        clientData.lastSleepingbag,
+                                        clientData.lastSleepingBag,
                                         true
                                     )}
                             </p>
