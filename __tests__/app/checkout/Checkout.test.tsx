@@ -26,7 +26,7 @@ jest.mock('react-query', () => ({
 describe('Checkout page', () => {
     // Mock router for router.push()
     const mockRouter = { push: jest.fn() };
-    useRouter.mockReturnValue(mockRouter);
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
     const mockClient = {
         id: 'abcd',
         firstName: 'First',
@@ -42,7 +42,7 @@ describe('Checkout page', () => {
             isLoading: false,
             data: { ...mockClient, isCheckedIn: true },
         };
-        useQuery.mockReturnValue(queryResult);
+        (useQuery as jest.Mock).mockReturnValue(queryResult);
         const { container } = render(
             <CheckOut params={{ userId: mockClient.id }} />
         );
@@ -54,7 +54,7 @@ describe('Checkout page', () => {
             isLoading: false,
             data: { ...mockClient, isCheckedIn: false },
         };
-        useQuery.mockReturnValue(queryResult);
+        (useQuery as jest.Mock).mockReturnValue(queryResult);
 
         const { container } = render(
             <CheckOut params={{ userId: mockClient.id }} />
