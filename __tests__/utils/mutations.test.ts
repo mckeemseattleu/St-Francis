@@ -1,18 +1,22 @@
 import '@testing-library/jest-dom';
 import { act } from '@testing-library/react';
-import { mutateData } from '@/utils/fetchData';
 import {
     createClient,
-    updateClient,
     createVisit,
-    updateVisit,
+    updateClient,
     updateSettings,
-} from '@/utils/index';
+    updateVisit,
+} from '@/utils/mutations';
 import { Timestamp } from 'firebase/firestore';
+import { mutateData } from '@/utils/fetchData';
 
 jest.mock('@/utils/fetchData', () => ({
     __esModule: true,
     mutateData: jest.fn(),
+}));
+jest.mock('@/utils/queries', () => ({
+    __esModule: true,
+    listVisits: jest.fn(()=>[]),
 }));
 
 describe('queries utilities', () => {
