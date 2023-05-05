@@ -12,7 +12,7 @@ jest.mock('@/hooks/index', () => ({
         settings: {
             visitThreshold: 30,
             backpackThreshold: 180,
-            sleepingbagThreshold: 180,
+            sleepingBagThreshold: 180,
         },
     })),
 }));

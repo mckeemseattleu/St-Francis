@@ -14,7 +14,7 @@ describe('validateClient', () => {
         id: 'ID',
         lastVisit: new Timestamp(0, 0),
         lastBackpack: new Timestamp(0, 0),
-        lastSleepingbag: new Timestamp(0, 0),
+        lastSleepingBag: new Timestamp(0, 0),
     };
     const mockSettings = {
         id: 'default',
@@ -37,7 +37,7 @@ describe('validateClient', () => {
                 ...mockClient,
                 lastVisit: Timestamp.fromDate(new Date()),
                 lastBackpack: Timestamp.fromDate(new Date()),
-                lastSleepingbag: Timestamp.fromDate(new Date()),
+                lastSleepingBag: Timestamp.fromDate(new Date()),
             },
             {
                 ...mockSettings,

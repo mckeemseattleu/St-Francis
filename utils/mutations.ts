@@ -28,7 +28,7 @@ export async function updateClient(clientData: DocFilter) {
 
 /**
  *  Revise client data after any visit data mutation.
- * This function will update client lastVisit, lastBackpack, and lastSleepingbag
+ * This function will update client lastVisit, lastBackpack, and lastSleepingBag
  * @param clientID - id of client to be revised
  */
 export const reviseClient = async (clientID: string) => {
@@ -36,14 +36,14 @@ export const reviseClient = async (clientID: string) => {
     const lastBackpack =
         (await listVisits(clientID, { backpack: true }, 1))[0]?.createdAt ||
         null;
-    const lastSleepingbag =
+    const lastSleepingBag =
         (await listVisits(clientID, { sleepingBag: true }, 1))[0]?.createdAt ||
         null;
 
     return await updateClient({
         id: clientID,
         lastBackpack,
-        lastSleepingbag,
+        lastSleepingBag,
         lastVisit,
     });
 };
