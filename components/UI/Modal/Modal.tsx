@@ -15,8 +15,8 @@ function Modal(props: ModalProps) {
 
     useEffect(() => {
         show && !ref?.current?.open
-            ? ref?.current?.showModal()
-            : ref?.current?.close();
+            ? ref?.current?.showModal?.()
+            : ref?.current?.close?.();
         shown.current = show;
     }, [show]);
 
