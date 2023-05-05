@@ -1,4 +1,5 @@
 'use client';
+import { Button } from '@/components/UI';
 import Image from 'next/image';
 import { useState } from 'react';
 import styles from './NavBar.module.css';
@@ -25,8 +26,8 @@ export default function NavMenuMobile(props: NavMenuMobileProps) {
             <NavMenu className={styles.navItemsMobile} items={items} />
         </div>
     ) : (
-        <button className={styles.navMenuButton} onClick={handleShow}>
+        <Button className={styles.navMenuButton} onClick={handleShow}>
             <Image src={icon} alt="menu" width="20" height="20" />
-        </button>
+        </Button>
     );
 }

@@ -18,36 +18,23 @@ jest.mock('@/hooks/index', () => ({
 }));
 
 describe('Visit Info Form Component', () => {
-    const epochTimestamp = Timestamp.fromDate(new Date(0));
-    const mockClient: Client = {
-        id: '47636',
-        firstName: 'First',
-        lastName: 'Last',
-        race: 'Race',
-        notes: 'Notes',
-        gender: 'Gender',
-        isCheckedIn: false,
-        isBanned: false,
-        numKids: 0,
-        numInFamily: 0,
-        postalCode: '0',
-        lastBusTicket: epochTimestamp,
-        lastSleepingbag: epochTimestamp,
-        birthday: epochTimestamp,
-        createdAt: epochTimestamp,
-        updatedAt: epochTimestamp,
-        lastBackpack: epochTimestamp,
-    };
-    const earlyClient = {
-        ...mockClient,
-        lastBusTicket: Timestamp.fromDate(new Date()),
-        lastSleepingbag: Timestamp.fromDate(new Date()),
-        lastBackpack: Timestamp.fromDate(new Date()),
-        lastVisit: Timestamp.fromDate(new Date()),
-    };
-
     const getInputField = (label: string) => {
-        return (screen.getByLabelText(label) as HTMLInputElement).value;
+        const input = screen.getByLabelText(label) as HTMLInputElement;
+        if (input.type === 'checkbox') return input.checked;
+        return input.value;
+    };
+    const mockVisitData = {
+        id: 'mockVisitId',
+        clothingMen: true,
+        clothingWomen: true,
+        clothingBoy: true,
+        clothingGirl: true,
+        backpack: true,
+        sleepingBag: true,
+        busTicket: 1,
+        giftCard: 2,
+        diaper: 3,
+        financialAssistance: 4,
     };
 
     it('matches snapshot without any props', async () => {
@@ -70,78 +57,46 @@ describe('Visit Info Form Component', () => {
     });
 
     it('renders correctly with initial Visit Data', async () => {
-        render(<VisitInfoForm clientData={mockClient} />);
-        expect(getInputField('Men')).toBe('off');
-        expect(getInputField('Women')).toBe('off');
-        expect(getInputField('Kids (Boy)')).toBe('off');
-        expect(getInputField('Kids (Girl)')).toBe('off');
-        expect(getInputField('Backpack')).toBe('off');
-        expect(getInputField('Sleeping Bag')).toBe('off');
-        expect(getInputField('Bus Ticket')).toBe('');
-        expect(getInputField('Gift Card')).toBe('');
-        expect(getInputField('Diaper')).toBe('');
-        expect(getInputField('Financial Assistance')).toBe('');
+        render(<VisitInfoForm initialVisitData={mockVisitData} />);
+        expect(getInputField('Men')).toBe(true);
+        expect(getInputField('Women')).toBe(true);
+        expect(getInputField('Kids (Boy)')).toBe(true);
+        expect(getInputField('Kids (Girl)')).toBe(true);
+        expect(getInputField('Backpack')).toBe(true);
+        expect(getInputField('Sleeping Bag')).toBe(true);
+        expect(getInputField('Bus Ticket')).toBe('1');
+        expect(getInputField('Gift Card')).toBe('2');
+        expect(getInputField('Diaper')).toBe('3');
+        expect(getInputField('Financial Assistance')).toBe('4');
     });
 
     it('saves correct output with mock onSubmit callback', async () => {
         const mockOnSave = jest.fn((VisitData) => VisitData);
-        render(<VisitInfoForm clientData={mockClient} onSubmit={mockOnSave} />);
-        const saveButton = screen.getByRole('button', { name: 'Check in' });
-        fireEvent.click(saveButton);
-        expect(mockOnSave).toHaveBeenCalledTimes(1);
-    });
-
-    it('saves forcely if validates failed with mock onSubmit callback', async () => {
-        const clientData = {
-            ...mockClient,
-            lastBusTicket: Timestamp.fromDate(new Date()),
-            lastSleepingbag: Timestamp.fromDate(new Date()),
-            lastBackpack: Timestamp.fromDate(new Date()),
-            lastVisit: Timestamp.fromDate(new Date()),
-        };
-        const mockOnSave = jest.fn((VisitData) => VisitData);
-        render(<VisitInfoForm clientData={clientData} onSubmit={mockOnSave} />);
-        const saveButton = screen.getByRole('button', { name: 'Check in' });
-        fireEvent.click(saveButton);
-        expect(mockOnSave).toHaveBeenCalledTimes(0);
-        const forceSaveButton = screen.getByRole('button', {
-            name: 'Force Check-in',
+        render(<VisitInfoForm onSubmit={mockOnSave} />);
+        const saveButton = screen.getByRole('button', {
+            name: 'New Visit / Check-in',
         });
-        fireEvent.click(forceSaveButton);
-        expect(mockOnSave).toHaveBeenCalledTimes(1);
-    });
-
-    it('saves forcely if validates failed with mock onSubmit callback', async () => {
-        const mockOnSave = jest.fn((VisitData) => VisitData);
-        render(
-            <VisitInfoForm clientData={earlyClient} onSubmit={mockOnSave} />
-        );
-        const saveButton = screen.getByRole('button', { name: 'Check in' });
         fireEvent.click(saveButton);
-        expect(mockOnSave).toHaveBeenCalledTimes(0);
-        const forceSaveButton = screen.getByRole('button', {
-            name: 'Force Check-in',
-        });
-        fireEvent.click(forceSaveButton);
         expect(mockOnSave).toHaveBeenCalledTimes(1);
     });
 
     it('changes input value correctly', async () => {
-        render(<VisitInfoForm clientData={mockClient} />);
-        const input = screen.getByRole('textbox', {
-            name: /household items/i,
-        }) as HTMLInputElement;
+        render(<VisitInfoForm />);
+        const textboxes = screen.getAllByRole('textbox');
+        const input = textboxes[0] as HTMLInputElement;
         await userEvent.type(input, '123');
         expect(input.value).toBe('123');
     });
 
     it('changes input value correctly', async () => {
-        render(<VisitInfoForm clientData={mockClient} />);
+        render(<VisitInfoForm />);
         const input = screen.getByRole('spinbutton', {
             name: /bus ticket/i,
         }) as HTMLInputElement;
         await userEvent.clear(input);
-        const saveButton = screen.getByRole('button', { name: 'Check in' });
+        const saveButton = screen.getByRole('button', {
+            name: 'New Visit / Check-in',
+        });
         fireEvent.click(saveButton);
     });
 
@@ -149,18 +104,11 @@ describe('Visit Info Form Component', () => {
         (useSettings as jest.Mock).mockReturnValue({
             settings: { earlyOverride: true },
         });
-        const clientData = {
-            ...mockClient,
-            lastBusTicket: Timestamp.fromDate(new Date()),
-            lastSleepingbag: Timestamp.fromDate(new Date()),
-            lastBackpack: Timestamp.fromDate(new Date()),
-            lastVisit: Timestamp.fromDate(new Date()),
-        };
         const mockOnSave = jest.fn((VisitData) => VisitData);
-        render(
-            <VisitInfoForm clientData={earlyClient} onSubmit={mockOnSave} />
-        );
-        const saveButton = screen.getByRole('button', { name: 'Check in' });
+        render(<VisitInfoForm onSubmit={mockOnSave} />);
+        const saveButton = screen.getByRole('button', {
+            name: 'New Visit / Check-in',
+        });
         fireEvent.click(saveButton);
         expect(mockOnSave).toHaveBeenCalledTimes(1);
     });

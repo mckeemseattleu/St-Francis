@@ -1,52 +1,3 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    width: 80vw;
-    max-width: 1000px;
-}
-
-.header {
-    display: flex;
-    flex-direction: column;
-}
-
-.headerRow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.headerRow span {
-    flex-grow: 1;
-}
-
-.headerRow button {
-    margin-left: 20px;
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-}
-
-.form button {
-    margin-top: 40px;
-}
-
-.formRows {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.formRowItem {
-    flex-grow: 1;
-    flex-shrink: 0;
-    flex-basis: calc(25% - 10px);
-    margin: 5px;
-    align-items: center;
-    justify-content: center;
-}
-
 .errorMessageContainer {
     display: flex;
     flex-direction: row;
@@ -67,14 +18,4 @@
 .errorMessageContainer button:hover {
     background-color: var(--red);
     color: var(--gray-1);
-}
-
-.container input,
-.container label {
-    display: block;
-}
-
-.container textarea {
-    width: calc(100% - 10px);
-    margin: 5px;
 }

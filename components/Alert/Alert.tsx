@@ -13,7 +13,7 @@ function Alert(props: AlertProps) {
     return (
         (open && (
             <div
-                className={`${styles.alert} ${styles[type]}`}
+                className={`${styles.alert} ${styles[type]} noprint`}
                 onClick={onClose}
             >
                 {children}

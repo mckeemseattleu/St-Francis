@@ -51,8 +51,7 @@ export default function AddClient() {
     return (
         <ClientInfoForm
             title="New Client"
-            onSave={onSave}
-            onSaveAndCheck={onSaveAndCheck}
+            actions={{ Save: onSave, 'Save and check in': onSaveAndCheck }}
         />
     );
 }

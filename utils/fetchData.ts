@@ -8,6 +8,8 @@ import {
     setDoc,
     where,
     Timestamp,
+    orderBy,
+    deleteDoc,
 } from 'firebase/firestore';
 import { firestore } from '@/firebase/firebase';
 
@@ -35,9 +37,10 @@ export type DocFilter = {
  * @author ducmvo
  */
 export async function fetchData<DocType>(
-    fields: DocFilter,
+    fields: DocFilter = {},
     path: string | Array<string> = DEFAULT_PATH,
-    limit = LIMIT
+    limit = LIMIT,
+    order: { by: string; desc: boolean } | null = null
 ): Promise<Array<DocType> | DocType> {
     // Todo: Add support for other comparison constraints
     if (!path) return [];
@@ -55,7 +58,17 @@ export async function fetchData<DocType>(
     const constraints = Object.entries(fields).map(([key, val]) =>
         where(key, '==', val)
     );
-    const preparedQuery = fquery(collectionRef, flimit(limit), ...constraints);
+
+    const orderContraints = [];
+    if (order)
+        orderContraints.push(orderBy(order.by, order.desc ? 'desc' : 'asc'));
+
+    const preparedQuery = fquery(
+        collectionRef,
+        flimit(limit),
+        ...orderContraints,
+        ...constraints
+    );
     const snapshot = await getDocs(preparedQuery);
 
     return snapshot.docs.map((doc) => ({
@@ -70,12 +83,14 @@ export async function fetchData<DocType>(
  * @param data  Data to be stored in the document.
  * @param path  Path to the collection to mutate. If not provided, the default collection is used.
  *              Path can be an array of path segments
+ * @param isDelete  If true, the document will be deleted instead of updated.
  * @returns id of the updated or newly created document.
  * @author ducmvo
  */
 export async function mutateData(
     data: DocFilter,
-    path: string | Array<string> = DEFAULT_PATH
+    path: string | Array<string> = DEFAULT_PATH,
+    isDelete: boolean = false
 ) {
     if (!path) return null;
     if (typeof path == 'string') path = [path];
@@ -85,7 +100,8 @@ export async function mutateData(
     if (id) docRef = doc(firestore, path[0], ...path.slice(1), id);
     else docRef = doc(collection(firestore, path[0], ...path.slice(1)));
 
-    await setDoc(docRef, data);
+    if (isDelete) await deleteDoc(docRef);
+    else await setDoc(docRef, data, { merge: true });
 
     return docRef.id;
 }

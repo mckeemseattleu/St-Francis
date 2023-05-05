@@ -1,16 +1,14 @@
 import { Client, Settings, Visit } from '@/models/index';
-import { Timestamp } from 'firebase/firestore';
-import { DocFilter, fetchData } from './fetchData';
-
-export const CLIENTS_PATH = 'clients';
-export const VISITS_PATH = 'visits';
-export const SETTINGS_PATH = 'settings';
-
-// TODO: consider moving these to user settings
-// TODO: add pagination
-export const CLIENTS_LIMIT = 50;
-export const VISITS_LIMIT = 5;
-export const SETTINGS_ID = 'default';
+import {
+    DocFilter,
+    fetchData,
+    CLIENTS_LIMIT,
+    CLIENTS_PATH,
+    SETTINGS_ID,
+    SETTINGS_PATH,
+    VISITS_LIMIT,
+    VISITS_PATH,
+} from '@/utils/index';
 
 /**
  * List clients documents from firestore based on the provided filter fields.
@@ -23,34 +21,15 @@ export const SETTINGS_ID = 'default';
  */
 export async function listClients(
     fields: DocFilter = {},
-    limit = CLIENTS_LIMIT
+    limit = CLIENTS_LIMIT,
+    order: { by: string; desc: boolean } | null = null
 ) {
-    const clientDocs = (await fetchData<Client>(
+    return (await fetchData<Client>(
         fields,
         CLIENTS_PATH,
-        limit
+        limit,
+        order
     )) as Array<Client>;
-    return clientDocs.map((clientDoc: Client) => ({
-        ...clientDoc,
-        birthday:
-            clientDoc.birthday &&
-            new Timestamp(
-                clientDoc.birthday.seconds,
-                clientDoc.birthday.nanoseconds
-            ),
-        createdAt:
-            clientDoc.createdAt &&
-            new Timestamp(
-                clientDoc.createdAt.seconds,
-                clientDoc.createdAt.nanoseconds
-            ),
-        updatedAt:
-            clientDoc.updatedAt &&
-            new Timestamp(
-                clientDoc.updatedAt.seconds,
-                clientDoc.updatedAt.nanoseconds
-            ),
-    }));
 }
 
 /**
@@ -61,19 +40,7 @@ export async function listClients(
  * @author ducmvo
  */
 export async function getClient(id: string) {
-    const clientDoc = (await fetchData<Client>(
-        { id: id },
-        CLIENTS_PATH
-    )) as Client;
-    return clientDoc?.birthday
-        ? {
-              ...clientDoc,
-              birthday: new Timestamp(
-                  clientDoc.birthday.seconds,
-                  clientDoc.birthday.nanoseconds
-              ),
-          }
-        : clientDoc;
+    return (await fetchData<Client>({ id: id }, CLIENTS_PATH)) as Client;
 }
 
 /**
@@ -89,19 +56,18 @@ export async function getClient(id: string) {
 export async function listVisits(
     clientID: string,
     fields: DocFilter = {},
-    limit = VISITS_LIMIT
+    limit = VISITS_LIMIT,
+    order: { by: string; desc: boolean } | null = {
+        by: 'createdAt',
+        desc: true,
+    }
 ) {
-    const visitDocs = (await fetchData<Visit>(
+    return (await fetchData(
         fields,
         [CLIENTS_PATH, clientID, VISITS_PATH],
-        limit
+        limit,
+        order
     )) as Array<Visit>;
-    return visitDocs.map((visit: Visit) => ({
-        ...visit,
-        createdAt:
-            visit.createdAt &&
-            new Timestamp(visit.createdAt.seconds, visit.createdAt.nanoseconds),
-    }));
 }
 
 /**
@@ -111,20 +77,11 @@ export async function listVisits(
  * @returns  requested visit document fetched from firestore.
  */
 export async function getVisit(clientID: string, visitID: string) {
-    const visitDoc = (await fetchData<Visit>({ id: visitID }, [
+    return (await fetchData<Visit>({ id: visitID }, [
         CLIENTS_PATH,
         clientID,
         VISITS_PATH,
     ])) as Visit;
-    return visitDoc?.createdAt
-        ? {
-              ...visitDoc,
-              createdAt: new Timestamp(
-                  visitDoc.createdAt.seconds,
-                  visitDoc.createdAt.nanoseconds
-              ),
-          }
-        : visitDoc;
 }
 
 /**
@@ -133,17 +90,8 @@ export async function getVisit(clientID: string, visitID: string) {
  * @returns requested settings document fetched from firestore.
  */
 export async function getSettings(settingsID: string = SETTINGS_ID) {
-    const settingsDoc = (await fetchData<Settings>(
+    return (await fetchData<Settings>(
         { id: settingsID },
         SETTINGS_PATH
     )) as Settings;
-    return settingsDoc?.updatedAt
-        ? {
-              ...settingsDoc,
-              updatedAt: new Timestamp(
-                  settingsDoc.updatedAt.seconds,
-                  settingsDoc.updatedAt.nanoseconds
-              ),
-          }
-        : settingsDoc;
 }

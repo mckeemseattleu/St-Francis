@@ -1,0 +1,20 @@
+.formTitle {
+    flex: 1;
+}
+
+.formRow {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.formItem {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: calc(25% - 10px);
+    margin: 5px;
+    padding-block: 5px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}

@@ -2,6 +2,11 @@ import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import PrintoutForm from '@/components/PrintoutForm/PrintoutForm';
 
+jest.mock('next/navigation', () => ({
+    __esModule: true,
+    useRouter: jest.fn(() => ({ push: jest.fn() })),
+}));
+
 const mockClientData = {
     firstName: 'First',
     lastName: 'Last',

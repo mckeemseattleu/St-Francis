@@ -1,4 +1,5 @@
 'use client';
+import { Button } from '@/components/UI';
 import type { DocFilter } from '@/utils/index';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,7 +22,7 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
     const defaultData = {
         firstName: '',
         lastName: '',
-        birthday: new Date().toLocaleDateString('en-CA'),
+        birthday: '',
         filterByBirthday: false,
     };
 
@@ -93,6 +94,8 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                                 id="birthday"
                                 value={clientData.birthday}
                                 onChange={handleChange}
+                                required={!!clientData.filterByBirthday}
+                                max={new Date().toISOString().split('T')[0]}
                             />
                             <input
                                 type="checkbox"
@@ -107,7 +110,7 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                 </div>
 
                 <div className={styles.formControls}>
-                    <button type="submit">
+                    <Button type="submit">
                         Search
                         <Image
                             src="/search.svg"
@@ -115,13 +118,13 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                             width="20"
                             height="20"
                         />
-                    </button>
+                    </Button>
                     <Link href="/add-client">
-                        <button>New Client</button>
+                        <Button>New Client</Button>
                     </Link>
-                    <button type="button" onClick={handleClear}>
+                    <Button type="button" onClick={handleClear}>
                         Clear
-                    </button>
+                    </Button>
                 </div>
             </form>
         </div>

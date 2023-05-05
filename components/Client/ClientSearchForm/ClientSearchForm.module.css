@@ -19,6 +19,12 @@
     flex-direction: column;
     margin: auto;
     padding: 10px;
+    flex: 1;
+    max-width: 250px;
+}
+
+.formContainer input {
+    font-size: 1em;
 }
 
 .formControls {
@@ -41,4 +47,8 @@
 .birthdayControlsContainer {
     display: flex;
     align-items: center;
+}
+
+.birthdayControlsContainer input[type='date'] {
+    width: 100%;
 }

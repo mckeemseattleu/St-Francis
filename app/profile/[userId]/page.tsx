@@ -1,19 +1,25 @@
 'use client';
 
+import { ClientStatus } from '@/components/Client';
 import Spinner from '@/components/Spinner/Spinner';
-import { formatDate } from '@/utils/formatDate';
+import { Button, Modal } from '@/components/UI';
+import { useAlert, useQueryCache } from '@/hooks/index';
+import { formatDate, updateClient } from '@/utils/index';
 import {
     CLIENTS_PATH,
-    VISITS_LIMIT,
-    VISITS_PATH,
+    deleteClient,
     getClient,
     listVisits,
-} from '@/utils/queries';
+    VISITS_LIMIT,
+    VISITS_PATH,
+} from '@/utils/index';
+import ErrorPage from 'next/error';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styles from './profile.module.css';
-import ErrorPage from 'next/error';
-import { useEffect } from 'react';
+
 interface ProfileProps {
     params: { userId: string };
 }
@@ -29,6 +35,12 @@ export default function Profile({ params }: ProfileProps) {
         () => listVisits(params.userId)
     );
 
+    const { updateClientCache, updateVisitCache } = useQueryCache();
+
+    const [show, setShow] = useState(false);
+    const [, setAlert] = useAlert();
+    const router = useRouter();
+
     useEffect(() => {
         window.scrollTo({ top: 0 });
     }, []);
@@ -41,7 +53,7 @@ export default function Profile({ params }: ProfileProps) {
             visitsData.map((visit, i) => {
                 return (
                     <div className={styles.rowContainer} key={i}>
-                        <h2 className={styles.rowContainer} style={{ flex: 1 }}>
+                        <h2 className={styles.rowContainer}>
                             <Link
                                 href={`/profile/${params.userId}/visit/${visit.id}`}
                             >
@@ -57,23 +69,45 @@ export default function Profile({ params }: ProfileProps) {
                             <Link
                                 href={`/profile/${params.userId}/visit/${visit.id}/printout`}
                             >
-                                <button className={styles.visitBtn}>
+                                <Button className={styles.visitBtn}>
                                     Printout
-                                </button>
+                                </Button>
                             </Link>
 
                             <Link
                                 href={`/profile/${params.userId}/visit/${visit.id}`}
                             >
-                                <button className={styles.visitBtn}>
+                                <Button className={styles.visitBtn}>
                                     Details
-                                </button>
+                                </Button>
                             </Link>
                         </div>
                     </div>
                 );
             })
         );
+
+    const handleDelete = async () => {
+        await deleteClient(params.userId);
+        updateClientCache({ id: params.userId }, true);
+        updateVisitCache(params.userId);
+        setShow(false);
+        setAlert({ message: 'Successfully deleted client', type: 'success' });
+        router.push(`/`);
+    };
+
+    const checkOut = async () => {
+        if (!clientData) return;
+        const data = await updateClient({
+            ...clientData,
+            isCheckedIn: false,
+        });
+        updateClientCache(data);
+        setAlert({
+            message: `Successfully Checked Out ${clientData?.firstName}`,
+            type: 'success',
+        });
+    };
 
     if (isClientloading) return <Spinner />;
     if (!clientData)
@@ -85,47 +119,31 @@ export default function Profile({ params }: ProfileProps) {
             />
         );
 
+    const fullName = `${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`;
+
     return (
         <>
             <div>
+                <h1>Profile Page</h1>
                 <div className={styles.rowContainer}>
-                    <h1>
-                        {`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}
-                    </h1>
-                    <span
-                        className={
-                            clientData?.isCheckedIn
-                                ? styles.success
-                                : styles.error
-                        }
-                    >
-                        {clientData?.isCheckedIn
-                            ? 'Checked In'
-                            : 'Not Checked In'}
-                    </span>
-                    {clientData?.unhoused && (
-                        <span className={styles.warning}>Unhoused</span>
-                    )}
-                    {clientData?.isBanned && (
-                        <span className={styles.error}>Banned</span>
-                    )}
+                    <h1>{fullName}</h1>
+                    <ClientStatus
+                        isBanned={!!clientData.isBanned}
+                        isCheckedIn={!!clientData.isCheckedIn}
+                        unhoused={!!clientData.unhoused}
+                    />
                 </div>
                 <hr />
                 <div className={styles.rowContainer}>
                     <Link href={`/update/${params.userId}`}>
-                        <button className={styles.visitBtn}>Edit</button>
+                        <Button>Edit</Button>
                     </Link>
+                    <Button onClick={() => setShow(true)}>Delete</Button>
                     {clientData.isCheckedIn ? (
-                        <Link href={`/checkout/${params.userId}`}>
-                            <button className={styles.visitBtn}>
-                                Check out
-                            </button>
-                        </Link>
+                        <Button onClick={checkOut}>Check out</Button>
                     ) : (
                         <Link href={`/checkin/${params.userId}`}>
-                            <button className={styles.visitBtn}>
-                                Check in
-                            </button>
+                            <Button>Check in</Button>
                         </Link>
                     )}
                 </div>
@@ -140,6 +158,7 @@ export default function Profile({ params }: ProfileProps) {
                             </p>
                         ) : null}
                     </div>
+
                     <div className={styles.rowContainer}>
                         {clientData?.gender ? <h3>Gender</h3> : null}
                         {clientData?.gender ? (
@@ -167,6 +186,43 @@ export default function Profile({ params }: ProfileProps) {
                             <p>{clientData?.numKids}</p>
                         ) : null}
                     </div>
+
+                    <div className={styles.rowContainer}>
+                        {clientData?.lastVisit ? <h3>Last Visit</h3> : null}
+                        {clientData?.lastVisit ? (
+                            <p>
+                                {clientData?.lastVisit &&
+                                    formatDate(clientData.lastVisit, true)}
+                            </p>
+                        ) : null}
+                    </div>
+
+                    <div className={styles.rowContainer}>
+                        {clientData?.lastBackpack ? (
+                            <h3>Last backpack</h3>
+                        ) : null}
+                        {clientData?.lastBackpack ? (
+                            <p>
+                                {clientData?.lastBackpack &&
+                                    formatDate(clientData.lastBackpack, true)}
+                            </p>
+                        ) : null}
+                    </div>
+
+                    <div className={styles.rowContainer}>
+                        {clientData?.lastSleepingbag ? (
+                            <h3>Last sleeping bag</h3>
+                        ) : null}
+                        {clientData?.lastSleepingbag ? (
+                            <p>
+                                {clientData?.lastSleepingbag &&
+                                    formatDate(
+                                        clientData.lastSleepingbag,
+                                        true
+                                    )}
+                            </p>
+                        ) : null}
+                    </div>
                 </div>
                 {clientData?.notes ? (
                     <div>
@@ -181,6 +237,15 @@ export default function Profile({ params }: ProfileProps) {
                 <hr />
                 {isVisitsloading ? <Spinner /> : visits}
             </div>
+            <Modal show={show} setShow={setShow}>
+                <h3>Are you sure you want to delete this client?</h3>
+                <h4>{`${fullName}`}</h4>
+                <hr />
+                <div className={styles.rowContainer}>
+                    <Button onClick={handleDelete}>Confirm Delete</Button>
+                    <Button onClick={() => setShow(false)}>Cancel</Button>
+                </div>
+            </Modal>
         </>
     );
 }
