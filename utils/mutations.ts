@@ -1,12 +1,7 @@
+import { CLIENTS_PATH, SETTINGS_PATH, VISITS_PATH } from '@/utils/constants';
 import { Timestamp } from 'firebase/firestore';
-import { DocFilter, mutateData } from '@/utils/index';
-import {
-    CLIENTS_PATH,
-    listVisits,
-    SETTINGS_PATH,
-    VISITS_PATH,
-} from '@/utils/index';
-
+import { mutateData, DocFilter } from '@/utils/fetchData';
+import { listVisits } from '@/utils/queries';
 /**
  * Creates client data, id will be generated
  * @param clientData - client data to be created
