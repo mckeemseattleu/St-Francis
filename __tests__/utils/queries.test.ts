@@ -7,7 +7,8 @@ import {
     getVisit,
     listClients,
     listVisits,
-} from '@/utils/index';
+} from '@/utils/queries';
+import { Timestamp } from 'firebase/firestore';
 
 jest.mock('@/utils/fetchData', () => ({
     __esModule: true,
@@ -18,7 +19,7 @@ describe('queries utilities', () => {
     const defaultISOTimestamp = '1970-01-01T00:00:00.000Z';
     const mockClientID = '123';
     const mockVisitID = '456';
-    const mockTimestamp = { seconds: 0, nanoseconds: 0 };
+    const mockTimestamp = new Timestamp(0,0);
     const mockFetchData = (value: object) =>
         (fetchData as jest.Mock).mockReturnValue(value);
 
