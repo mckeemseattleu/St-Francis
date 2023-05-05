@@ -46,7 +46,7 @@ describe('Checkout page', () => {
         const { container } = render(
             <CheckOut params={{ userId: mockClient.id }} />
         );
-        expect(container.innerHTML).toContain('Checked in');
+        expect(container.innerHTML).toContain('Checked In');
     });
 
     it('renders correctly with not checked in client', async () => {
@@ -59,6 +59,6 @@ describe('Checkout page', () => {
         const { container } = render(
             <CheckOut params={{ userId: mockClient.id }} />
         );
-        expect(container.innerHTML).toContain('Not checked in');
+        expect(container.innerHTML).toContain('Not Checked In');
     });
 });

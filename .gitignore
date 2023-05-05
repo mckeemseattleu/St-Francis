@@ -37,3 +37,6 @@ next-env.d.ts
 
 # vscode settings
 .vscode
+
+# jetbrains settings
+.idea

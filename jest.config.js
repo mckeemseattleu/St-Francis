@@ -15,6 +15,7 @@ const customJestConfig = {
         '^@/styles/(.*)$': '<rootDir>/styles/$1',
         '^@/utils/(.*)$': '<rootDir>/utils/$1',
         '^@/models/(.*)$': '<rootDir>/models/$1',
+        '^@/firebase/(.*)$': '<rootDir>/firebase/$1',
     },
     testEnvironment: 'jest-environment-jsdom',
     preset: "ts-jest",

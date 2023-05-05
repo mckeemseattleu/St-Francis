@@ -2,6 +2,7 @@ import ClientInfoForm from '@/components/Client/ClientInfoForm/ClientInfoForm';
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import renderer from 'react-test-renderer';
+import userEvent from '@testing-library/user-event';
 
 describe('Client Info Form Component', () => {
     const mockClient = {
@@ -43,8 +44,6 @@ describe('Client Info Form Component', () => {
         expect(screen.queryByText('Notes')).toBeInTheDocument();
         expect(screen.queryByText('Unhoused')).toBeInTheDocument();
         expect(screen.queryByText('Ban')).toBeInTheDocument();
-        expect(screen.queryByText('Save and check in')).toBeInTheDocument();
-        expect(screen.queryByText('Save')).toBeInTheDocument();
     });
 
     it('renders correctly with initial client Data', async () => {
@@ -91,8 +90,16 @@ describe('Client Info Form Component', () => {
     it('saves correct output with mock onSubmit callback', async () => {
         // numKids will be convert to integer by the form on submit
         const mockOnSave = jest.fn((clientData) => clientData.numKids);
-        render(<ClientInfoForm initialData={mockClient} onSave={mockOnSave} />);
+        render(
+            <ClientInfoForm
+                initialData={mockClient}
+                actions={{ Save: mockOnSave }}
+            />
+        );
         const saveButton = screen.getByRole('button', { name: 'Save' });
+        fireEvent.click(saveButton); // validate input fields before submit
+        expect(mockOnSave).toHaveBeenCalledTimes(0);
+
         fireEvent.click(saveButton);
         expect(mockOnSave).toHaveBeenCalledTimes(1);
         expect(mockOnSave.mock.results[0].value).toBe(mockClient.numKids);
@@ -103,16 +110,29 @@ describe('Client Info Form Component', () => {
         render(
             <ClientInfoForm
                 initialData={{ ...mockClient, isCheckedIn: false }}
-                onSaveAndCheck={mockOnSaveAndCheck}
+                actions={{
+                    'Save and Check-in': mockOnSaveAndCheck,
+                }}
             />
         );
         const saveButton = screen.getByRole('button', {
-            name: 'Save and check in',
+            name: 'Save and Check-in',
         });
+        // Check input fields validation before submit
+        fireEvent.click(saveButton);
+        expect(mockOnSaveAndCheck).toHaveBeenCalledTimes(0);
         fireEvent.click(saveButton);
         expect(mockOnSaveAndCheck).toHaveBeenCalledTimes(1);
         expect(mockOnSaveAndCheck.mock.results[0].value).toBe(
             mockClient.birthday
         );
+    });
+
+    it('let user type in the firstName input fields correctly', async () => {
+        render(<ClientInfoForm />);
+        const firstNameInput = screen.getByLabelText('First name');
+        expect(firstNameInput).toBeInTheDocument();
+        await userEvent.type(firstNameInput, 'First');
+        expect(firstNameInput.value).toBe('First');
     });
 });

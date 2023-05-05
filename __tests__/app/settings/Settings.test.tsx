@@ -1,12 +1,21 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Settings from '../../../app/settings/page';
 
+jest.mock('@/hooks/useAlert', () => {
+    return () => [{}, jest.fn()];
+})
+
 describe('Settings page', () => {
-    it('renders no options when context is not ready', async () => {
+    it('should display Settings heading', () => {
+        render(<Settings />);
+        const title = screen.getByRole('heading', { name: 'Settings' });
+        expect(title).toBeInTheDocument();
+    });
+
+    it('renders with default form when settings context is not ready', async () => {
         render(<Settings />);
 
-        screen.getByRole('heading', { name: 'Settings' });
         const daysEarly = screen.queryByRole('heading', {
             name: 'Days Early Threshold',
         });
@@ -20,9 +29,18 @@ describe('Settings page', () => {
             name: 'Early Check In Override',
         });
 
-        expect(daysEarly).not.toBeInTheDocument();
-        expect(backpack).not.toBeInTheDocument();
-        expect(sleepingBag).not.toBeInTheDocument();
-        expect(override).not.toBeInTheDocument();
+        expect(daysEarly).toBeInTheDocument();
+        expect(backpack).toBeInTheDocument();
+        expect(sleepingBag).toBeInTheDocument();
+        expect(override).toBeInTheDocument();
+    });
+
+    it('renders with default form when settings context is not ready', async () => {
+        render(<Settings />);
+
+        const saveButton = screen.queryByRole('button', {
+            name: 'Save as default',
+        }) as HTMLButtonElement;
+        fireEvent.click(saveButton);
     });
 });

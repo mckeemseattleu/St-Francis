@@ -1,4 +1,5 @@
 'use client';
+import { Button, Form, FormItem, FormRow, FormTitle } from '@/components/UI';
 import { Client } from '@/models/index';
 import { DocFilter } from '@/utils/index';
 import Link from 'next/link';
@@ -10,8 +11,7 @@ interface ClientInfoFormProps {
     redirect?: string;
     title?: string;
     showBackButton?: boolean;
-    onSave?: (clientData: DocFilter) => void;
-    onSaveAndCheck?: (clientData: DocFilter) => void;
+    actions?: { [actionType: string]: (clientData: DocFilter) => void };
 }
 
 /**
@@ -26,8 +26,7 @@ interface ClientInfoFormProps {
 export default function ClientInfoForm({
     initialData = {} as Omit<Client, 'birthday'> & { birthday?: string },
     title = 'Client Form',
-    onSave,
-    onSaveAndCheck,
+    actions,
 }: ClientInfoFormProps) {
     //TODO: Add Validation
 
@@ -51,20 +50,16 @@ export default function ClientInfoForm({
     };
 
     const [clientData, setClientData] = useState(defaultData);
-    const handleSave = async () => {
-        const data = {
-            ...clientData,
-            numKids: parseInt(clientData.numKids) || 0,
-        };
-        onSave && onSave(data);
-    };
+    const [required, setRequired] = useState(false);
+    const [actionType, setActionType] = useState('');
 
-    const handleSaveAndCheck = async () => {
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
         const data = {
             ...clientData,
             numKids: parseInt(clientData.numKids) || 0,
         };
-        onSaveAndCheck && onSaveAndCheck(data);
+        actions?.[actionType]?.(data);
     };
 
     const handleChange = (key: any) => (e: any) => {
@@ -80,17 +75,17 @@ export default function ClientInfoForm({
 
     return (
         <div className={styles.container}>
-            <div className={styles.titleContainer}>
-                <h1>
-                    {(!clientData.firstName &&
-                        !clientData.middleInitial &&
-                        !clientData.lastName &&
-                        title) ||
-                        getFullName()}
-                </h1>
-                <div className={styles.titleItem}>
-                    <label htmlFor="unhoused">Unhoused</label>
-                    <input
+            <Form onSubmit={handleSubmit}>
+                <FormRow>
+                    <FormTitle>
+                        {(!clientData.firstName &&
+                            !clientData.middleInitial &&
+                            !clientData.lastName &&
+                            title) ||
+                            getFullName()}
+                    </FormTitle>
+                    <FormItem
+                        label="Unhoused"
                         type="checkbox"
                         name="unhoused"
                         id="unhoused"
@@ -98,11 +93,10 @@ export default function ClientInfoForm({
                         defaultChecked={clientData.unhoused}
                         value={clientData.unhoused ? 'on' : 'off'}
                         onChange={handleChange('unhoused')}
+                        className={styles.formTitleItem}
                     />
-                </div>
-                <div className={styles.titleItem}>
-                    <label htmlFor="isBanned">Ban</label>
-                    <input
+                    <FormItem
+                        label="Ban"
                         type="checkbox"
                         name="isBanned"
                         id="isBanned"
@@ -110,132 +104,113 @@ export default function ClientInfoForm({
                         defaultChecked={clientData.isBanned}
                         value={clientData.isBanned ? 'on' : 'off'}
                         onChange={handleChange('isBanned')}
+                        className={styles.formTitleItem}
                     />
-                </div>
-            </div>
+                </FormRow>
+                <hr />
+                <FormRow>
+                    <FormItem
+                        label="First name"
+                        value={clientData.firstName}
+                        id="firstName"
+                        onChange={handleChange('firstName')}
+                        required={required}
+                    />
 
-            <form>
-                <div className={styles.formRows}>
-                    <div className={styles.formRowItem}>
-                        <label htmlFor="firstName">First name</label>
-                        <input
-                            type="text"
-                            value={clientData.firstName}
-                            id="firstName"
-                            onChange={handleChange('firstName')}
-                        />
-                    </div>
+                    <FormItem
+                        label="Middle initial"
+                        id="middleInitial"
+                        value={clientData.middleInitial}
+                        onChange={handleChange('middleInitial')}
+                    />
 
-                    <div className={styles.formRowItem}>
-                        <label htmlFor="middleInitial">Middle initial</label>
-                        <input
-                            type="text"
-                            value={clientData.middleInitial}
-                            id="middleInitial"
-                            onChange={handleChange('middleInitial')}
-                        />
-                    </div>
+                    <FormItem
+                        label="Last name"
+                        id="lastName"
+                        value={clientData.lastName}
+                        onChange={handleChange('lastName')}
+                    />
 
-                    <div className={styles.formRowItem}>
-                        <label htmlFor="lastName">Last name</label>
-                        <input
-                            type="text"
-                            value={clientData.lastName}
-                            id="lastName"
-                            onChange={handleChange('lastName')}
-                        />
-                    </div>
+                    <FormItem
+                        label="Birthday"
+                        type="date"
+                        id="birthday"
+                        name="birthday"
+                        title="Client's birthday, use today's date if unknown"
+                        value={clientData.birthday}
+                        onChange={handleChange('birthday')}
+                        max={new Date().toISOString().split('T')[0]}
+                        required={required}
+                    />
 
-                    <div className={styles.formRowItem}>
-                        <label htmlFor="birthday">Birthday</label>
-                        <input
-                            type="date"
-                            name="birthday"
-                            id="birthday"
-                            title="Enter client's birthday MM/DD/YYYY. 
-                                    Select today's date if unknown"
-                            value={clientData.birthday}
-                            onChange={handleChange('birthday')}
-                        />
-                    </div>
+                    <FormItem
+                        label="Gender"
+                        id="gender"
+                        value={clientData.gender}
+                        onChange={handleChange('gender')}
+                    />
 
-                    <div className={styles.formRowItem}>
-                        <label htmlFor="gender">Gender</label>
-                        <input
-                            type="text"
-                            value={clientData.gender}
-                            id="gender"
-                            onChange={handleChange('gender')}
-                        />
-                        <br />
-                    </div>
+                    <FormItem
+                        label="Race"
+                        id="race"
+                        value={clientData.race}
+                        onChange={handleChange('race')}
+                    />
 
-                    <div className={styles.formRowItem}>
-                        <label htmlFor="race">Race</label>
-                        <input
-                            type="text"
-                            value={clientData.race}
-                            id="race"
-                            onChange={handleChange('race')}
-                        />
-                    </div>
+                    <FormItem
+                        label="Postal code"
+                        id="postalCode"
+                        value={clientData.postalCode}
+                        onChange={handleChange('postalCode')}
+                    />
 
-                    <div className={styles.formRowItem}>
-                        <label htmlFor="postalCode">Postal code</label>
-                        <input
-                            type="text"
-                            value={clientData.postalCode}
-                            id="postalCode"
-                            onChange={handleChange('postalCode')}
-                        />
-                    </div>
+                    <FormItem
+                        label="Number of Kids"
+                        type="number"
+                        id="numKids"
+                        value={clientData.numKids}
+                        onChange={handleChange('numKids')}
+                    />
+                </FormRow>
 
-                    <div className={styles.formRowItem}>
-                        <label htmlFor="numKids">Number of Kids</label>
-                        <input
-                            type="number"
-                            value={clientData.numKids}
-                            id="numKids"
-                            onChange={handleChange('numKids')}
-                        />
-                    </div>
-                </div>
-
-                <div>
-                    <label htmlFor="notes">Notes</label>
-                    <textarea
-                        value={clientData.notes}
+                <FormRow>
+                    <FormItem
+                        label="Notes"
                         id="notes"
-                        onChange={handleChange('notes')}
+                        type="textarea"
                         rows={5}
+                        value={clientData.notes}
+                        onChange={handleChange('notes')}
                     />
+                </FormRow>
+                <div className={styles.saveButtons}>
+                    {clientData.id && (
+                        <>
+                            <Link href={`/profile/${clientData.id}`}>
+                                <Button className={styles.backButton}>
+                                    Back to Profile
+                                </Button>
+                            </Link>
+
+                            <span />
+                        </>
+                    )}
+                    {actions &&
+                        Object.keys(actions).map((label) => (
+                            <Button
+                                key={label}
+                                className={styles.saveButton}
+                                onClick={() => {
+                                    setActionType(label);
+                                    setRequired(true);
+                                }}
+                                type="submit"
+                            >
+                                {label}
+                            </Button>
+                        ))}
                 </div>
-            </form>
-
-            <div className={styles.saveButtons}>
-                {clientData.id && (
-                    <>
-                        <Link href={`/profile/${clientData.id}`}>
-                            <button className={styles.backButton}>
-                                Back to Profile
-                            </button>
-                        </Link>
-
-                        <span />
-                    </>
-                )}
-
-                <button className={styles.saveButton} onClick={handleSave}>
-                    Save
-                </button>
-
-                <button
-                    className={styles.saveButton}
-                    onClick={handleSaveAndCheck}
-                >
-                    Save and check {clientData.isCheckedIn ? 'out' : 'in'}
-                </button>
-            </div>
+            </Form>
         </div>
     );
 }

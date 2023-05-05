@@ -1,0 +1,8 @@
+.modal {
+    border: 1px solid var(--gray-3);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 16px;
+    transition: all 0.3s ease-out;
+    min-width: 500px;
+}

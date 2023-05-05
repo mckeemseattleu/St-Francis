@@ -13,11 +13,11 @@ export default function Providers(props: ProvidersProps) {
     const { children } = props;
     return (
         <AuthProvider>
-            <SettingsProvider>
-                <QueryClientProvider client={queryClient}>
-                    <AlertProvider>{children}</AlertProvider>
-                </QueryClientProvider>
-            </SettingsProvider>
+            <QueryClientProvider client={queryClient}>
+                <AlertProvider>
+                    <SettingsProvider>{children}</SettingsProvider>
+                </AlertProvider>
+            </QueryClientProvider>
         </AuthProvider>
     );
 }

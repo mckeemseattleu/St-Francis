@@ -11,34 +11,16 @@
     align-items: center;
     border-bottom: 0.5px solid var(--gray-3);
     gap: 1rem;
+    margin-bottom: 10px;
 }
 
-.titleContainer h1 {
-    flex-grow: 1;
-}
-
-.formRows {
+.formTitleItem {
     display: flex;
-    flex-wrap: wrap;
-}
-
-.formRowItem {
-    flex-grow: 1;
-    flex-shrink: 0;
-    flex-basis: calc(25% - 10px);
-    margin: 5px;
-    align-items: center;
+    flex-direction: row-reverse;
     justify-content: center;
-}
-
-.container input,
-.container label {
-    display: block;
-}
-
-.container textarea {
-    width: calc(100% - 10px);
-    margin: 5px;
+    align-items: center;
+    gap: 5px;
+    padding-left: 15px;
 }
 
 .saveButtons {
@@ -55,17 +37,22 @@
 }
 
 .saveButtons .saveButton {
-    width: 200px;
+    width: 150px;
     margin-left: 25px;
+    height: 45px;
 }
 
 .saveButtons span {
     flex-grow: 1;
 }
 
-.titleItem {
+.birthday {
+    flex-grow: 1;
+    flex-basis: calc(25% - 10px);
+    margin: 5px;
+    justify-content: center;
     display: flex;
-    align-items: center;
-    flex-direction: row-reverse;
+    flex-direction: column;
     gap: 5px;
+    padding-block: 5px;
 }

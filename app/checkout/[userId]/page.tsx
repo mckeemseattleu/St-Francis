@@ -1,9 +1,10 @@
 'use client';
 
+import { ClientStatus } from '@/components/Client';
 import Spinner from '@/components/Spinner/Spinner';
+import { Button } from '@/components/UI';
 import { useAlert, useQueryCache } from '@/hooks/index';
-import { updateClient } from '@/utils/mutations';
-import { CLIENTS_PATH, getClient } from '@/utils/queries';
+import { CLIENTS_PATH, getClient, updateClient } from '@/utils/index';
 import ErrorPage from 'next/error';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -43,33 +44,29 @@ export default function CheckOut({ params }: CheckOutProps) {
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <div className={styles.headerRow}>
-                    <h2>{`${clientData?.firstName} ${clientData?.lastName}`}</h2>
-
-                    <p>
-                        {clientData?.isCheckedIn
-                            ? 'Checked in'
-                            : 'Not checked in'}
-                    </p>
-
-                    <Link href={`/update/${params.userId}`}>
-                        <button>Edit profile</button>
-                    </Link>
-                </div>
-
-                <h2>Notes:</h2>
-                <p>{clientData ? clientData.notes : null}</p>
+            <h1>Checkout Page</h1>
+            <div className={styles.rowContainer}>
+                <h1>{`${clientData?.firstName} ${clientData?.lastName}`}</h1>
+                <ClientStatus
+                    isBanned={!!clientData.isBanned}
+                    isCheckedIn={!!clientData.isCheckedIn}
+                    unhoused={!!clientData.unhoused}
+                />
             </div>
-
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault(); // Prevent redirect
-                    checkOut();
-                }}
-            >
-                <button type="submit">Check out</button>
-            </form>
+            <hr />
+            <div className={styles.rowContainer}>
+                <Button>
+                    <Link href={`/profile/${params.userId}`}>Profile</Link>
+                </Button>
+                <Button>
+                    <Link href={`/update/${params.userId}`}>Edit</Link>
+                </Button>
+                <Button type="submit" onClick={checkOut}>
+                    Check out
+                </Button>
+            </div>
+            <h2>Notes:</h2>
+            <p>{clientData ? clientData.notes : null}</p>
         </div>
     );
 }

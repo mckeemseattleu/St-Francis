@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SettingsForm should match snapshot 1`] = `
+<form
+  onSubmit={[Function]}
+>
+  <label
+    htmlFor="daysEarlyThreshold"
+  >
+    <h2>
+      Days Early Threshold
+    </h2>
+  </label>
+  <input
+    id="daysEarlyThreshold"
+    name="daysEarlyThreshold"
+    onChange={[Function]}
+    type="number"
+    value="0"
+  />
+  <br />
+  <label
+    htmlFor="backpackThreshold"
+  >
+    <h2>
+      Backpack Threshold
+    </h2>
+  </label>
+  <input
+    id="backpackThreshold"
+    name="backpackThreshold"
+    onChange={[Function]}
+    type="number"
+    value="0"
+  />
+  <br />
+  <label
+    htmlFor="sleepingBagThreshold"
+  >
+    <h2>
+      Sleeping Bag Threshold
+    </h2>
+  </label>
+  <input
+    id="sleepingBagThreshold"
+    name="sleepingBagThreshold"
+    onChange={[Function]}
+    type="number"
+    value="0"
+  />
+  <br />
+  <label
+    htmlFor="earlyOverride"
+  >
+    <h2>
+      Early Check In Override
+    </h2>
+  </label>
+  <input
+    checked={false}
+    id="earlyOverride"
+    name="earlyOverride"
+    onChange={[Function]}
+    title="enable to bypass early check in"
+    type="checkbox"
+  />
+  <br />
+  <br />
+  <button
+    className="undefined defaultButton"
+    type="submit"
+  >
+    Save as default
+  </button>
+</form>
+`;

@@ -17,11 +17,11 @@ export declare type Client = {
     readonly postalCode?: string | null;
     readonly isCheckedIn?: boolean | null;
     readonly middleInitial?: string | null;
-    readonly numInFamily?: string | null;
+    readonly numInFamily?: number | null;
     readonly lastBackpack?: Timestamp | null;
     readonly lastBusTicket?: Timestamp | null;
     readonly lastSleepingbag?: Timestamp | null;
-    readonly BerthaPittsCampbellResident?: string | null;
+    readonly BerthaPittsCampbellResident?: boolean | null;
     readonly lastFinancialAssistanceDate?: Timestamp | null;
     readonly lastFinancialAssistanceValue?: string | null;
     readonly lastVisit?: Timestamp | null;
@@ -56,8 +56,18 @@ export declare type Visit = {
     readonly clothingGirl?: boolean | null;
     readonly lastBackpack?: string | null;
     readonly clothingWomen?: boolean | null;
-    readonly lastSleepingBag?: string | null;
+    readonly lastSleepingBag?: Timestamp | null; // Warning: lastSleepingbag on Client
     readonly shampooConditioner?: string | null;
     readonly financialAssistance?: number | null;
     readonly lastFinancialAssistance?: string | null;
+};
+
+export declare type Settings = {
+    readonly id: string;
+    readonly daysEarlyThreshold?: number;
+    readonly backpackThreshold?: number;
+    readonly sleepingBagThreshold?: number;
+    readonly earlyOverride?: boolean;
+    readonly createdAt?: Timestamp | null;
+    readonly updatedAt?: Timestamp | null;
 };

@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Visit Info Form Component matches snapshot without any props 1`] = `
+<form
+  onSubmit={[Function]}
+>
+  <h2>
+    Clothing
+  </h2>
+  <div
+    className="formRow"
+  >
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="clothingMen"
+      >
+        Men
+      </label>
+      <input
+        checked={false}
+        id="clothingMen"
+        label="Men"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="clothingWomen"
+      >
+        Women
+      </label>
+      <input
+        checked={false}
+        id="clothingWomen"
+        label="Women"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="clothingBoy"
+      >
+        Kids (Boy)
+      </label>
+      <input
+        checked={false}
+        id="clothingBoy"
+        label="Kids (Boy)"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="clothingGirl"
+      >
+        Kids (Girl)
+      </label>
+      <input
+        checked={false}
+        id="clothingGirl"
+        label="Kids (Girl)"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </div>
+  </div>
+  <h2>
+    Special Requests
+  </h2>
+  <div
+    className="formRow"
+  >
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="busTicket"
+      >
+        Bus Ticket
+      </label>
+      <input
+        id="busTicket"
+        label="Bus Ticket"
+        onChange={[Function]}
+        type="number"
+        value=""
+      />
+    </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="giftCard"
+      >
+        Gift Card
+      </label>
+      <input
+        id="giftCard"
+        label="Gift Card"
+        onChange={[Function]}
+        type="number"
+        value=""
+      />
+    </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="diaper"
+      >
+        Diaper
+      </label>
+      <input
+        id="diaper"
+        label="Diaper"
+        onChange={[Function]}
+        type="number"
+        value=""
+      />
+    </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="financialAssistance"
+      >
+        Financial Assistance
+      </label>
+      <input
+        id="financialAssistance"
+        label="Financial Assistance"
+        onChange={[Function]}
+        type="number"
+        value=""
+      />
+    </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="backpack"
+      >
+        Backpack
+      </label>
+      <input
+        checked={false}
+        id="backpack"
+        label="Backpack"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="sleepingBag"
+      >
+        Sleeping Bag
+      </label>
+      <input
+        checked={false}
+        id="sleepingBag"
+        label="Sleeping Bag"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </div>
+  </div>
+  <h2>
+    Household items
+  </h2>
+  <div
+    className="formItem"
+  >
+    <label
+      htmlFor="household"
+    />
+    <textarea
+      id="household"
+      onChange={[Function]}
+      rows={3}
+      type="textarea"
+      value=""
+    />
+  </div>
+  <h2>
+    Notes
+  </h2>
+  <div
+    className="formItem"
+  >
+    <label
+      htmlFor="notes"
+    />
+    <textarea
+      id="notes"
+      onChange={[Function]}
+      rows={3}
+      type="textarea"
+      value=""
+    />
+  </div>
+  <button
+    className="undefined defaultButton"
+    type="submit"
+  >
+    New Visit / Check-in
+  </button>
+</form>
+`;

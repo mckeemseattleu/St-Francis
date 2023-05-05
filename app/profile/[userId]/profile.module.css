@@ -24,21 +24,12 @@
     flex: 1;
 }
 
+.rowContainer h2 {
+    flex: 1;
+}
+
 .rowContainer span {
     margin-left: 10px;
-}
-
-.rowContainer span.error {
-    color: var(--red);
-}
-
-.rowContainer span.warning {
-    color: var(--yellow);
-}
-
-.rowContainer span.success {
-    margin-left: 10px;
-    color: var(--green);
 }
 
 .rowContainer p {

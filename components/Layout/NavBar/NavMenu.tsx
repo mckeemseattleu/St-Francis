@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/UI';
 import { useAuth } from '@/hooks/index';
 import Link from 'next/link';
 import Login from '../../Login/Login';
@@ -19,7 +20,7 @@ export default function NavMenu(props: NavMenuProps) {
             {isSignedIn &&
                 items.map(({ title, href }, i) => (
                     <Link href={href} key={i}>
-                        <button>{title}</button>
+                        <Button>{title}</Button>
                     </Link>
                 ))}
             <Login />

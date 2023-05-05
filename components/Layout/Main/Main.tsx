@@ -1,6 +1,7 @@
 'use client';
 
 import Spinner from '@/components/Spinner/Spinner';
+import { Button } from '@/components/UI';
 import { useAuth } from '@/hooks/index';
 import Image from 'next/image';
 import styles from './Main.module.css';
@@ -12,7 +13,7 @@ export default function Main(props: MainProps) {
     const display = (
         <div className={styles.signInMain}>
             <h1>Please sign in</h1>
-            <button onClick={() => signIn()} className={styles.googleButton}>
+            <Button onClick={() => signIn()} className={styles.googleButton}>
                 <h2>Sign In With</h2>
                 <Image
                     src="/google.svg"
@@ -20,7 +21,7 @@ export default function Main(props: MainProps) {
                     width="50"
                     height="50"
                 />
-            </button>
+            </Button>
         </div>
     );
     return (

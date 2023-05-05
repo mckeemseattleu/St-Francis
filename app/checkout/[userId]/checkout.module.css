@@ -5,21 +5,37 @@
     max-width: 1000px;
 }
 
-.header {
-    display: flex;
-    flex-direction: column;
-}
-
-.headerRow {
+.rowContainer {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: left;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
-.headerRow h2 {
-    flex-grow: 1;
+.rowContainer h3 {
+    font-weight: 800;
+    margin-right: 10px;
 }
 
-.headerRow button {
-    margin-left: 20px;
+.rowContainer h1 {
+    margin: 0;
+    flex: 1;
+}
+
+.rowContainer span {
+    margin-left: 10px;
+}
+
+.rowContainer p {
+    margin-right: 30px;
+}
+
+.rowContainer button {
+    margin-right: 15px;
+}
+
+.visitBtn {
+    width: 100px;
 }
