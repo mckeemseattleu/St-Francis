@@ -4,55 +4,64 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
 <div
   className="container"
 >
-  <div
-    className="titleContainer"
+  <form
+    onSubmit={[Function]}
   >
-    <h1>
-      Client Form
-    </h1>
     <div
-      className="titleItem"
+      className="formRow"
     >
-      <label
-        htmlFor="unhoused"
+      <h1
+        className="formTitle"
       >
-        Unhoused
-      </label>
-      <input
-        defaultChecked={false}
-        id="unhoused"
-        name="unhoused"
-        onChange={[Function]}
-        title="Check if client is unhoused"
-        type="checkbox"
-        value="off"
-      />
-    </div>
-    <div
-      className="titleItem"
-    >
-      <label
-        htmlFor="isBanned"
+        Client Form
+      </h1>
+      <div
+        className="formTitleItem"
       >
-        Ban
-      </label>
-      <input
-        defaultChecked={false}
-        id="isBanned"
-        name="isBanned"
-        onChange={[Function]}
-        title="Check if client is banned"
-        type="checkbox"
-        value="off"
-      />
+        <label
+          htmlFor="unhoused"
+        >
+          Unhoused
+        </label>
+        <input
+          className="formTitleItem"
+          defaultChecked={false}
+          id="unhoused"
+          label="Unhoused"
+          name="unhoused"
+          onChange={[Function]}
+          title="Check if client is unhoused"
+          type="checkbox"
+          value="off"
+        />
+      </div>
+      <div
+        className="formTitleItem"
+      >
+        <label
+          htmlFor="isBanned"
+        >
+          Ban
+        </label>
+        <input
+          className="formTitleItem"
+          defaultChecked={false}
+          id="isBanned"
+          label="Ban"
+          name="isBanned"
+          onChange={[Function]}
+          title="Check if client is banned"
+          type="checkbox"
+          value="off"
+        />
+      </div>
     </div>
-  </div>
-  <form>
+    <hr />
     <div
-      className="formRows"
+      className="formRow"
     >
       <div
-        className="formRowItem"
+        className="formItem"
       >
         <label
           htmlFor="firstName"
@@ -61,13 +70,14 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
         </label>
         <input
           id="firstName"
+          label="First name"
           onChange={[Function]}
-          type="text"
+          required={false}
           value=""
         />
       </div>
       <div
-        className="formRowItem"
+        className="formItem"
       >
         <label
           htmlFor="middleInitial"
@@ -76,13 +86,13 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
         </label>
         <input
           id="middleInitial"
+          label="Middle initial"
           onChange={[Function]}
-          type="text"
           value=""
         />
       </div>
       <div
-        className="formRowItem"
+        className="formItem"
       >
         <label
           htmlFor="lastName"
@@ -91,13 +101,13 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
         </label>
         <input
           id="lastName"
+          label="Last name"
           onChange={[Function]}
-          type="text"
           value=""
         />
       </div>
       <div
-        className="formRowItem"
+        className="formItem"
       >
         <label
           htmlFor="birthday"
@@ -106,15 +116,18 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
         </label>
         <input
           id="birthday"
+          label="Birthday"
+          max="2023-05-05"
           name="birthday"
           onChange={[Function]}
-          title="Enter client's birthday MM/DD/YYYY.  Select today's date if unknown"
+          required={false}
+          title="Client's birthday, use today's date if unknown"
           type="date"
           value=""
         />
       </div>
       <div
-        className="formRowItem"
+        className="formItem"
       >
         <label
           htmlFor="gender"
@@ -123,14 +136,13 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
         </label>
         <input
           id="gender"
+          label="Gender"
           onChange={[Function]}
-          type="text"
           value=""
         />
-        <br />
       </div>
       <div
-        className="formRowItem"
+        className="formItem"
       >
         <label
           htmlFor="race"
@@ -139,13 +151,13 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
         </label>
         <input
           id="race"
+          label="Race"
           onChange={[Function]}
-          type="text"
           value=""
         />
       </div>
       <div
-        className="formRowItem"
+        className="formItem"
       >
         <label
           htmlFor="postalCode"
@@ -154,13 +166,13 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
         </label>
         <input
           id="postalCode"
+          label="Postal code"
           onChange={[Function]}
-          type="text"
           value=""
         />
       </div>
       <div
-        className="formRowItem"
+        className="formItem"
       >
         <label
           htmlFor="numKids"
@@ -169,42 +181,37 @@ exports[`Client Info Form Component matches snapshot without any props 1`] = `
         </label>
         <input
           id="numKids"
+          label="Number of Kids"
           onChange={[Function]}
           type="number"
           value=""
         />
       </div>
     </div>
-    <div>
-      <label
-        htmlFor="notes"
+    <div
+      className="formRow"
+    >
+      <div
+        className="formItem"
       >
-        Notes
-      </label>
-      <textarea
-        id="notes"
-        onChange={[Function]}
-        rows={5}
-        value=""
-      />
+        <label
+          htmlFor="notes"
+        >
+          Notes
+        </label>
+        <textarea
+          id="notes"
+          label="Notes"
+          onChange={[Function]}
+          rows={5}
+          type="textarea"
+          value=""
+        />
+      </div>
     </div>
+    <div
+      className="saveButtons"
+    />
   </form>
-  <div
-    className="saveButtons"
-  >
-    <button
-      className="saveButton"
-      onClick={[Function]}
-    >
-      Save
-    </button>
-    <button
-      className="saveButton"
-      onClick={[Function]}
-    >
-      Save and check 
-      in
-    </button>
-  </div>
 </div>
 `;

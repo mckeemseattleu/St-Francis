@@ -2,7 +2,7 @@
 
 exports[`NavMenuMobile matches snapshot without any props 1`] = `
 <button
-  className="navMenuButton"
+  className="navMenuButton defaultButton"
   onClick={[Function]}
 >
   <img

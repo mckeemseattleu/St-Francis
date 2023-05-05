@@ -67,6 +67,7 @@ exports[`SettingsForm should match snapshot 1`] = `
   <br />
   <br />
   <button
+    className="undefined defaultButton"
     type="submit"
   >
     Save as default

@@ -2,17 +2,16 @@
 
 exports[`Visit Info Form Component matches snapshot without any props 1`] = `
 <form
-  className="form"
   onSubmit={[Function]}
 >
   <h2>
     Clothing
   </h2>
   <div
-    className="formRows"
+    className="formRow"
   >
     <div
-      className="formRowItem"
+      className="formItem"
     >
       <label
         htmlFor="clothingMen"
@@ -20,15 +19,15 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         Men
       </label>
       <input
+        checked={false}
         id="clothingMen"
-        name="clothingMen"
+        label="Men"
         onChange={[Function]}
         type="checkbox"
-        value="off"
       />
     </div>
     <div
-      className="formRowItem"
+      className="formItem"
     >
       <label
         htmlFor="clothingWomen"
@@ -36,15 +35,15 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         Women
       </label>
       <input
+        checked={false}
         id="clothingWomen"
-        name="clothingWomen"
+        label="Women"
         onChange={[Function]}
         type="checkbox"
-        value="off"
       />
     </div>
     <div
-      className="formRowItem"
+      className="formItem"
     >
       <label
         htmlFor="clothingBoy"
@@ -52,15 +51,15 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         Kids (Boy)
       </label>
       <input
+        checked={false}
         id="clothingBoy"
-        name="clothingBoy"
+        label="Kids (Boy)"
         onChange={[Function]}
         type="checkbox"
-        value="off"
       />
     </div>
     <div
-      className="formRowItem"
+      className="formItem"
     >
       <label
         htmlFor="clothingGirl"
@@ -68,11 +67,11 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         Kids (Girl)
       </label>
       <input
+        checked={false}
         id="clothingGirl"
-        name="clothingGirl"
+        label="Kids (Girl)"
         onChange={[Function]}
         type="checkbox"
-        value="off"
       />
     </div>
   </div>
@@ -80,42 +79,10 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
     Special Requests
   </h2>
   <div
-    className="formRows"
+    className="formRow"
   >
     <div
-      className="formRowItem"
-    >
-      <label
-        htmlFor="backpack"
-      >
-        Backpack
-      </label>
-      <input
-        id="backpack"
-        name="backpack"
-        onChange={[Function]}
-        type="checkbox"
-        value="off"
-      />
-    </div>
-    <div
-      className="formRowItem"
-    >
-      <label
-        htmlFor="sleepingBag"
-      >
-        Sleeping Bag
-      </label>
-      <input
-        id="sleepingBag"
-        name="sleepingBag"
-        onChange={[Function]}
-        type="checkbox"
-        value="off"
-      />
-    </div>
-    <div
-      className="formRowItem"
+      className="formItem"
     >
       <label
         htmlFor="busTicket"
@@ -124,14 +91,14 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       </label>
       <input
         id="busTicket"
-        name="busTicket"
+        label="Bus Ticket"
         onChange={[Function]}
         type="number"
         value=""
       />
     </div>
     <div
-      className="formRowItem"
+      className="formItem"
     >
       <label
         htmlFor="giftCard"
@@ -140,14 +107,14 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       </label>
       <input
         id="giftCard"
-        name="giftCard"
+        label="Gift Card"
         onChange={[Function]}
         type="number"
         value=""
       />
     </div>
     <div
-      className="formRowItem"
+      className="formItem"
     >
       <label
         htmlFor="diaper"
@@ -156,14 +123,14 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       </label>
       <input
         id="diaper"
-        name="diaper"
+        label="Diaper"
         onChange={[Function]}
         type="number"
         value=""
       />
     </div>
     <div
-      className="formRowItem"
+      className="formItem"
     >
       <label
         htmlFor="financialAssistance"
@@ -172,45 +139,84 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       </label>
       <input
         id="financialAssistance"
-        name="financialAssistance"
+        label="Financial Assistance"
         onChange={[Function]}
         type="number"
         value=""
       />
     </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="backpack"
+      >
+        Backpack
+      </label>
+      <input
+        checked={false}
+        id="backpack"
+        label="Backpack"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="sleepingBag"
+      >
+        Sleeping Bag
+      </label>
+      <input
+        checked={false}
+        id="sleepingBag"
+        label="Sleeping Bag"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </div>
   </div>
-  <label
-    htmlFor="household"
+  <h2>
+    Household items
+  </h2>
+  <div
+    className="formItem"
   >
-    <h2>
-      Household items
-    </h2>
-  </label>
-  <input
-    id="household"
-    name="household"
-    onChange={[Function]}
-    type="text"
-    value=""
-  />
-  <label
-    htmlFor="notes"
+    <label
+      htmlFor="household"
+    />
+    <textarea
+      id="household"
+      onChange={[Function]}
+      rows={3}
+      type="textarea"
+      value=""
+    />
+  </div>
+  <h2>
+    Notes
+  </h2>
+  <div
+    className="formItem"
   >
-    <h2>
-      Notes
-    </h2>
-  </label>
-  <input
-    id="notes"
-    name="notes"
-    onChange={[Function]}
-    type="text"
-    value=""
-  />
+    <label
+      htmlFor="notes"
+    />
+    <textarea
+      id="notes"
+      onChange={[Function]}
+      rows={3}
+      type="textarea"
+      value=""
+    />
+  </div>
   <button
+    className="undefined defaultButton"
     type="submit"
   >
-    Check in
+    New Visit / Check-in
   </button>
 </form>
 `;
