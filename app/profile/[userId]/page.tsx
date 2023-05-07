@@ -192,7 +192,7 @@ export default function Profile({ params }: ProfileProps) {
                         {clientData?.lastVisit ? (
                             <p>
                                 {clientData?.lastVisit &&
-                                    formatDate(clientData.lastVisit, true)}
+                                    formatDate(clientData.lastVisit)}
                             </p>
                         ) : null}
                     </div>
@@ -204,7 +204,7 @@ export default function Profile({ params }: ProfileProps) {
                         {clientData?.lastBackpack ? (
                             <p>
                                 {clientData?.lastBackpack &&
-                                    formatDate(clientData.lastBackpack, true)}
+                                    formatDate(clientData.lastBackpack)}
                             </p>
                         ) : null}
                     </div>
@@ -216,10 +216,7 @@ export default function Profile({ params }: ProfileProps) {
                         {clientData?.lastSleepingBag ? (
                             <p>
                                 {clientData?.lastSleepingBag &&
-                                    formatDate(
-                                        clientData.lastSleepingBag,
-                                        true
-                                    )}
+                                    formatDate(clientData.lastSleepingBag)}
                             </p>
                         ) : null}
                     </div>
