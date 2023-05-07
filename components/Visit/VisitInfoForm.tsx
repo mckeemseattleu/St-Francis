@@ -3,6 +3,7 @@
 import { Button, Form, FormItem, FormRow } from '@/components/UI';
 import { Visit } from '@/models/index';
 import { useState } from 'react';
+import styles from './VisitInfoForm.module.css';
 
 interface VisitInfoFormProps {
     initialVisitData?: Visit;
@@ -19,31 +20,56 @@ const defaultVisitData = {
     notes: '',
     backpack: false,
     sleepingBag: false,
+    mensQ: '',
+    womensQ: '',
+    kidsQ: '',
 };
+
+const toInt = (value: string) => parseInt(value) || 0;
+const toString = (value: number | undefined | null) => value?.toString() || '';
 
 export default function VisitInfoForm({
     onSubmit,
     initialVisitData,
 }: VisitInfoFormProps) {
+    // Append boyAge and girlAge to notes
+    let initialNotes = initialVisitData?.notes || '';
+    initialVisitData?.boyAge &&
+        (initialNotes += `\nBoy Age: ${initialVisitData?.boyAge} `);
+    initialVisitData?.girlAge &&
+        (initialNotes += `\nGirl Age: ${initialVisitData?.girlAge} `);
+
     const [visitData, setVisitData] = useState({
         ...defaultVisitData,
         ...initialVisitData,
-        busTicket: initialVisitData?.busTicket?.toString() || '',
-        giftCard: initialVisitData?.giftCard?.toString() || '',
-        diaper: initialVisitData?.diaper?.toString() || '',
-        financialAssistance:
-            initialVisitData?.financialAssistance?.toString() || '',
+        busTicket: toString(initialVisitData?.busTicket),
+        giftCard: toString(initialVisitData?.giftCard),
+        diaper: toString(initialVisitData?.diaper),
+        financialAssistance: toString(initialVisitData?.financialAssistance),
+        mensQ: toString(initialVisitData?.mensQ),
+        womensQ: toString(initialVisitData?.womensQ),
+        kidsQ: toString(initialVisitData?.kidsQ),
+        notes: initialNotes,
     });
 
     const handleSubmit = async (e: any) => {
         e.preventDefault(); // Prevent redirect
-
         const transformedVisitData = {
             ...visitData,
-            busTicket: parseInt(visitData.busTicket) || 0,
-            giftCard: parseInt(visitData.giftCard) || 0,
-            diaper: parseInt(visitData.diaper) || 0,
-            financialAssistance: parseInt(visitData.financialAssistance) || 0,
+            busTicket: toInt(visitData.busTicket),
+            giftCard: toInt(visitData.giftCard),
+            diaper: toInt(visitData.diaper),
+            financialAssistance: toInt(visitData.financialAssistance),
+            // default to 0 if unchecked before submit
+            mensQ: visitData.clothingMen ? toInt(visitData.mensQ) : 0,
+            womensQ: visitData.clothingWomen ? toInt(visitData.womensQ) : 0,
+            kidsQ:
+                visitData.clothingBoy || visitData.clothingGirl
+                    ? toInt(visitData.kidsQ)
+                    : 0,
+            // transfer boyAge and girlAge to notes with submit
+            boyAge: '',
+            girlAge: '',
         };
         onSubmit && onSubmit(transformedVisitData);
     };
@@ -60,35 +86,64 @@ export default function VisitInfoForm({
         <Form onSubmit={handleSubmit}>
             <h2>Clothing</h2>
 
-            <FormRow>
-                <FormItem
-                    label="Men"
-                    type="checkbox"
-                    id="clothingMen"
-                    checked={!!visitData.clothingMen}
-                    onChange={handleChange('clothingMen')}
-                />
-                <FormItem
-                    type="checkbox"
-                    id="clothingWomen"
-                    label="Women"
-                    checked={!!visitData.clothingWomen}
-                    onChange={handleChange('clothingWomen')}
-                />
-                <FormItem
-                    type="checkbox"
-                    id="clothingBoy"
-                    label="Kids (Boy)"
-                    checked={!!visitData.clothingBoy}
-                    onChange={handleChange('clothingBoy')}
-                />
-                <FormItem
-                    type="checkbox"
-                    id="clothingGirl"
-                    label="Kids (Girl)"
-                    checked={!!visitData.clothingGirl}
-                    onChange={handleChange('clothingGirl')}
-                />
+            <FormRow className={styles.formRows}>
+                <FormRow className={styles.rowItems}>
+                    <FormItem
+                        label="Men"
+                        type="checkbox"
+                        id="clothingMen"
+                        checked={!!visitData.clothingMen}
+                        onChange={handleChange('clothingMen')}
+                    />
+                    <FormItem
+                        type="number"
+                        id="mensQ"
+                        value={visitData.mensQ}
+                        onChange={handleChange('mensQ')}
+                        hidden={!visitData.clothingMen}
+                    />
+                </FormRow>
+                <FormRow className={styles.rowItems}>
+                    <FormItem
+                        type="checkbox"
+                        id="clothingWomen"
+                        label="Women"
+                        checked={!!visitData.clothingWomen}
+                        onChange={handleChange('clothingWomen')}
+                    />
+                    <FormItem
+                        type="number"
+                        id="womensQ"
+                        value={visitData.womensQ}
+                        onChange={handleChange('womensQ')}
+                        hidden={!visitData.clothingWomen}
+                    />
+                </FormRow>
+                <FormRow className={styles.rowItems}>
+                    <FormItem
+                        type="checkbox"
+                        id="clothingBoy"
+                        label="Kids (Boy)"
+                        checked={!!visitData.clothingBoy}
+                        onChange={handleChange('clothingBoy')}
+                    />
+                    <FormItem
+                        type="checkbox"
+                        id="clothingGirl"
+                        label="Kids (Girl)"
+                        checked={!!visitData.clothingGirl}
+                        onChange={handleChange('clothingGirl')}
+                    />
+                    <FormItem
+                        type="number"
+                        id="kidsQ"
+                        value={visitData.kidsQ}
+                        onChange={handleChange('kidsQ')}
+                        hidden={
+                            !visitData.clothingBoy && !visitData.clothingGirl
+                        }
+                    />
+                </FormRow>
             </FormRow>
 
             <h2>Special Requests</h2>
