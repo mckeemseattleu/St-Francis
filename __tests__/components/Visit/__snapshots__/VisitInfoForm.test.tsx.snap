@@ -8,71 +8,128 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
     Clothing
   </h2>
   <div
-    className="formRow"
+    className="formRows"
   >
     <div
-      className="formItem"
+      className="rowItems"
     >
-      <label
-        htmlFor="clothingMen"
+      <div
+        className="formItem"
       >
-        Men
-      </label>
-      <input
-        checked={false}
-        id="clothingMen"
-        label="Men"
-        onChange={[Function]}
-        type="checkbox"
-      />
+        <label
+          htmlFor="clothingMen"
+        >
+          Men
+        </label>
+        <input
+          checked={false}
+          id="clothingMen"
+          label="Men"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+      <div
+        className="formItem"
+      >
+        <label
+          htmlFor="mensQ"
+        />
+        <input
+          hidden={true}
+          id="mensQ"
+          min={0}
+          onChange={[Function]}
+          type="number"
+          value=""
+        />
+      </div>
     </div>
     <div
-      className="formItem"
+      className="rowItems"
     >
-      <label
-        htmlFor="clothingWomen"
+      <div
+        className="formItem"
       >
-        Women
-      </label>
-      <input
-        checked={false}
-        id="clothingWomen"
-        label="Women"
-        onChange={[Function]}
-        type="checkbox"
-      />
+        <label
+          htmlFor="clothingWomen"
+        >
+          Women
+        </label>
+        <input
+          checked={false}
+          id="clothingWomen"
+          label="Women"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+      <div
+        className="formItem"
+      >
+        <label
+          htmlFor="womensQ"
+        />
+        <input
+          hidden={true}
+          id="womensQ"
+          min={0}
+          onChange={[Function]}
+          type="number"
+          value=""
+        />
+      </div>
     </div>
     <div
-      className="formItem"
+      className="rowItems"
     >
-      <label
-        htmlFor="clothingBoy"
+      <div
+        className="formItem"
       >
-        Kids (Boy)
-      </label>
-      <input
-        checked={false}
-        id="clothingBoy"
-        label="Kids (Boy)"
-        onChange={[Function]}
-        type="checkbox"
-      />
-    </div>
-    <div
-      className="formItem"
-    >
-      <label
-        htmlFor="clothingGirl"
+        <label
+          htmlFor="clothingBoy"
+        >
+          Kids (Boy)
+        </label>
+        <input
+          checked={false}
+          id="clothingBoy"
+          label="Kids (Boy)"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+      <div
+        className="formItem"
       >
-        Kids (Girl)
-      </label>
-      <input
-        checked={false}
-        id="clothingGirl"
-        label="Kids (Girl)"
-        onChange={[Function]}
-        type="checkbox"
-      />
+        <label
+          htmlFor="clothingGirl"
+        >
+          Kids (Girl)
+        </label>
+        <input
+          checked={false}
+          id="clothingGirl"
+          label="Kids (Girl)"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+      <div
+        className="formItem"
+      >
+        <label
+          htmlFor="kidsQ"
+        />
+        <input
+          hidden={true}
+          id="kidsQ"
+          min={0}
+          onChange={[Function]}
+          type="number"
+          value=""
+        />
+      </div>
     </div>
   </div>
   <h2>
@@ -92,6 +149,7 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       <input
         id="busTicket"
         label="Bus Ticket"
+        min={0}
         onChange={[Function]}
         type="number"
         value=""
@@ -108,6 +166,7 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       <input
         id="giftCard"
         label="Gift Card"
+        min={0}
         onChange={[Function]}
         type="number"
         value=""
@@ -124,6 +183,7 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       <input
         id="diaper"
         label="Diaper"
+        min={0}
         onChange={[Function]}
         type="number"
         value=""
@@ -140,6 +200,7 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       <input
         id="financialAssistance"
         label="Financial Assistance"
+        min={0}
         onChange={[Function]}
         type="number"
         value=""
