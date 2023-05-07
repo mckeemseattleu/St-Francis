@@ -5,14 +5,16 @@ type FormItemProps = React.HTMLProps<HTMLInputElement> &
 
 function FormItem(props: FormItemProps) {
     const { id, label, className, type = 'text' } = props;
+    const updatedProps = { ...props };
+    if (type === 'number') updatedProps.min = 0;
     return (
         <div className={`${className || styles.formItem}`}>
             <label htmlFor={id}>{label}</label>
 
             {type === 'textarea' ? (
-                <textarea {...props} />
+                <textarea {...updatedProps} />
             ) : (
-                <input {...props} />
+                <input {...updatedProps} />
             )}
         </div>
     );
