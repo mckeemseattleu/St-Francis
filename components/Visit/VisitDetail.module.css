@@ -1,5 +1,13 @@
 .rowContainer {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: left;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.row {
+    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: left;

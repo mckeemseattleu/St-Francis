@@ -14,6 +14,9 @@ function VisitDetail(props: VisitDetailProps) {
         clothingMen,
         clothingWomen,
         clothingGirl,
+        mensQ,
+        womensQ,
+        kidsQ,
         backpack,
         sleepingBag,
         busTicket,
@@ -26,12 +29,15 @@ function VisitDetail(props: VisitDetailProps) {
     return (
         <div>
             <h2>Clothing</h2>
-            {clothingBoy || clothingWomen || clothingBoy || clothingGirl ? (
+            {clothingMen || clothingWomen || clothingBoy || clothingGirl ? (
                 <div className={styles.rowContainer}>
-                    <p>{clothingMen && 'Men ✔️'}</p>
-                    <p>{clothingWomen && 'Women ✔️'}</p>
-                    <p>{clothingBoy && 'Kids (boy) ✔️'}</p>
-                    <p>{clothingGirl && 'Kids (girl) ✔️'}</p>
+                    <div className={styles.row}>
+                        <p>{clothingMen && `Men: ${mensQ}`}</p>
+                        <p>{clothingWomen && `Women: ${womensQ}`}</p>
+                        <p>
+                            {(clothingGirl || clothingBoy) && `Kids: ${kidsQ}`}
+                        </p>
+                    </div>
                 </div>
             ) : (
                 <p>None</p>
@@ -45,16 +51,20 @@ function VisitDetail(props: VisitDetailProps) {
             diaper ||
             financialAssistance ? (
                 <div className={styles.rowContainer}>
-                    {backpack ? <p>{'Backpack ✔️'}</p> : ''}
-                    {sleepingBag ? <p>{'Sleeping Bag ✔️'}</p> : ''}
-                    {busTicket ? <p>Bus Tickets: {busTicket}</p> : ''}
-                    {giftCard ? <p>Gift Card: {giftCard}</p> : ''}
-                    {diaper ? <p>Diapers: {diaper}</p> : ''}
-                    {financialAssistance ? (
-                        <p>Financial Assistance: {financialAssistance}</p>
-                    ) : (
-                        ''
-                    )}
+                    <div className={styles.row}>
+                        {backpack ? <p>{'Backpack ✔️'}</p> : ''}
+                        {sleepingBag ? <p>{'Sleeping Bag ✔️'}</p> : ''}
+                    </div>
+                    <div className={styles.row}>
+                        {busTicket ? <p>Bus Tickets: {busTicket}</p> : ''}
+                        {giftCard ? <p>Gift Card: {giftCard}</p> : ''}
+                        {diaper ? <p>Diapers: {diaper}</p> : ''}
+                        {financialAssistance ? (
+                            <p>Financial Assistance: {financialAssistance}</p>
+                        ) : (
+                            ''
+                        )}
+                    </div>
                 </div>
             ) : (
                 <p>None</p>
