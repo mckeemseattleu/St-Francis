@@ -14,6 +14,17 @@ interface ClientInfoFormProps {
     actions?: { [actionType: string]: (clientData: DocFilter) => void };
 }
 
+const raceList = [
+    'Black or African American',
+    'White',
+    'Hispanic or Latino',
+    'Asian',
+    'Other',
+    'American Indian or Alaska Native',
+    'Native Hawaiian or Other Pacific Islander',
+];
+const genderList = ['Male', 'Female', 'Other'];
+
 /**
  * A form for creating or editing a client's document in the database.
  *
@@ -146,16 +157,28 @@ export default function ClientInfoForm({
                     <FormItem
                         label="Gender"
                         id="gender"
+                        list="genderList"
                         value={clientData.gender}
                         onChange={handleChange('gender')}
                     />
+                    <datalist id="genderList">
+                        {genderList.map((gender) => (
+                            <option value={gender} key={gender} />
+                        ))}
+                    </datalist>
 
                     <FormItem
                         label="Race"
                         id="race"
+                        list="raceList"
                         value={clientData.race}
                         onChange={handleChange('race')}
                     />
+                    <datalist id="raceList">
+                        {raceList.map((race) => (
+                            <option value={race} key={race} />
+                        ))}
+                    </datalist>
 
                     <FormItem
                         label="Postal code"
