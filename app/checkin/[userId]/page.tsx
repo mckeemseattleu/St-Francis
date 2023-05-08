@@ -45,8 +45,8 @@ export default function Checkin({ params }: CheckinProps) {
 
     // Checkin process, handles validate eligibility
     const handleSubmit = async (visitData: Visit) => {
-        if (!clientData || !visitData) return;
-        const { validated, data } = await validateClient(clientData, settings);
+        if (!clientData || !visitData || !settings) return;
+        const { validated, data } = validateClient(clientData, settings);
         if (!show && !validated) {
             setShow(true);
             setVisitData(visitData);
