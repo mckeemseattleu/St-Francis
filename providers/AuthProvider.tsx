@@ -2,7 +2,7 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import 'firebase/compat/auth';
 import { createContext, useEffect, useState } from 'react';
 import { firebase } from '@/firebase/firebase';
-
+import { StyledFirebaseAuth } from 'react-firebaseui';
 const provider = new GoogleAuthProvider();
 
 interface AuthContext {
@@ -17,6 +17,19 @@ export const AuthContext = createContext({} as AuthContext);
 interface AuthProviderProps {
     children: React.ReactNode;
 }
+
+export const FirebaseAuth = () => (
+    <StyledFirebaseAuth
+        uiConfig={{
+            signInFlow: 'popup',
+            signInOptions: [
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            ],
+        }}
+        firebaseAuth={firebase.auth()}
+    />
+);
 
 export default function AuthProvider(props: AuthProviderProps) {
     const { children } = props;

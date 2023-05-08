@@ -3,3 +3,7 @@
     min-height: 40px;
     align-content: center;
 }
+
+.defaultButton:hover {
+    color: var(--white);
+}

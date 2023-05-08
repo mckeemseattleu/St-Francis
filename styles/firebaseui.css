@@ -1,0 +1,29 @@
+.firebaseui-container {
+    background: #ffffff7b;
+    margin-bottom: 20px;
+    min-height: 150px;
+    min-width: 300px;
+    border-radius: 10px;
+}
+
+.firebaseui-container.firebaseui-page-provider-sign-in {
+    background: transparent;
+}
+
+.firebaseui-form-actions .mdl-button--colored.firebaseui-button {
+    color: var(--gray-5);
+    background-color: var(--gray-2);
+    border-radius: 5px;
+    align-content: center;
+}
+.firebaseui-form-actions .mdl-button--colored.firebaseui-button:hover {
+    color: var(--white);
+    background-color: var(--yellow);
+}
+.firebaseui-form-actions .mdl-button--primary.firebaseui-button {
+    color: var(--yellow);
+}
+.firebaseui-form-actions .mdl-button--primary.firebaseui-button:hover {
+    background-color: transparent;
+    color: var(--gray-5);
+}
