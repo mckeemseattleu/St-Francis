@@ -58,10 +58,15 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
       </button>
     </a>
   </div>
-  <div>
-    <h2>
+  <div
+    className="rowContainer"
+  />
+  <div
+    className="rowContainer"
+  >
+    <h3>
       Notes
-    </h2>
+    </h3>
     <p>
       Notes
     </p>
