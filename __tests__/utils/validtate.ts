@@ -1,8 +1,7 @@
-import '@testing-library/jest-dom';
-import { act } from '@testing-library/react';
-import { validateClient } from '@/utils/validate';
-import { Timestamp } from 'firebase/firestore';
 import { getSettings } from '@/utils/index';
+import { validateClient } from '@/utils/validate';
+import '@testing-library/jest-dom';
+import { Timestamp } from 'firebase/firestore';
 
 jest.mock('@/utils/index', () => ({
     __esModule: true,
@@ -24,15 +23,15 @@ describe('validateClient', () => {
         earlyOverride: false,
     };
     (getSettings as jest.Mock).mockReturnValue(mockSettings);
-    it('should validate eligible client', async () => {
-        const result = await validateClient(mockClient, mockSettings);
+    it('should validate eligible client', () => {
+        const result = validateClient(mockClient, mockSettings);
         expect(result?.data?.daysVisitLeft).toBe(0);
         expect(result?.data?.daysBackpackLeft).toBe(0);
         expect(result?.data?.daysSleepingBagLeft).toBe(0);
         expect(result.validated).toBe(true);
     });
-    it('shoudld validate ineligible client', async () => {
-        const result = await validateClient(
+    it('shoudld validate ineligible client', () => {
+        const result = validateClient(
             {
                 ...mockClient,
                 lastVisit: Timestamp.fromDate(new Date()),
@@ -51,21 +50,16 @@ describe('validateClient', () => {
         expect(result?.data?.daysSleepingBagLeft).toBe(10);
         expect(result.validated).toBe(false);
     });
-    it('should validate failed if no client', async () => {
-        const result = await validateClient(null, null);
+    it('should validate failed if no client', () => {
+        const result = validateClient(null, mockSettings);
         expect(result.validated).toBe(false);
     });
 
-    it('should bypass validation if earlyOverride is true', async () => {
-        const result = await validateClient(mockClient, {
+    it('should bypass validation if earlyOverride is true', () => {
+        const result = validateClient(mockClient, {
             ...mockSettings,
             earlyOverride: true,
         });
         expect(result.validated).toBe(true);
     });
-
-    it('expect validate with fetched settings if no settings provided', async () => {
-        const result = await validateClient(mockClient, null);
-        expect(result.validated).toBe(true);
-    })
 });
