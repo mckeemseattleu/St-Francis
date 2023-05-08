@@ -5,6 +5,7 @@ import ClientSearchForm from './ClientSearchForm/ClientSearchForm';
 import ClientSearch from './ClientSearch/ClientSearch';
 import ClientInfoForm from './ClientInfoForm/ClientInfoForm';
 import ClientStatus from './ClientStatus/ClientStatus';
+import ClientProfileInfo from './ClientProfileInfo/ClientProfileInfo';
 
 export {
     ClientCard,
@@ -14,6 +15,7 @@ export {
     ClientSearch,
     ClientInfoForm,
     ClientStatus,
+    ClientProfileInfo,
 };
 
 export default ClientSearch;
