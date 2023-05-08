@@ -1,11 +1,37 @@
+'use client';
 import { Button } from '@/components/UI';
-import { formatDate } from '@/utils/index';
+import { useSettings } from '@/hooks/index';
+import { formatDate, toLicenseDateString, validateClient } from '@/utils/index';
 import type { Client } from 'models';
 import Link from 'next/link';
 import styles from './ClientCard.module.css';
 
 export default function ClientCard({ client }: { client: Client }) {
-    const { id, firstName, lastName, birthday, notes, isBanned } = client;
+    const {
+        id,
+        firstName,
+        lastName,
+        birthday,
+        notes,
+        isBanned,
+        lastVisit,
+        lastBackpack,
+        lastSleepingBag,
+    } = client;
+    const { settings } = useSettings();
+
+    const createField = (label: string, value?: string | number | null) => {
+        return (
+            (value && (
+                <div className={styles.rowContainer}>
+                    <h3>{label}</h3>
+                    <p>{value}</p>
+                </div>
+            )) ||
+            null
+        );
+    };
+    const validated = settings && validateClient(client, settings).validated;
     return (
         <div className={styles.card}>
             <Link href={`/profile/${id}`}>
@@ -13,17 +39,38 @@ export default function ClientCard({ client }: { client: Client }) {
             </Link>
 
             <div className={styles.detailsContainer}>
-                {isBanned ? <h2>Banned</h2> : null}
-
-                <h2>Birthday:</h2>
-                <p>{birthday && formatDate(birthday, true)}</p>
-
-                <h2>Notes:</h2>
-                <p>
-                    {notes && notes.length > 128
-                        ? notes?.slice(0, 128) + '...'
-                        : notes}
-                </p>
+                <div className={styles.status}>
+                    {settings && !validated ? (
+                        <h3 className={styles.early}>Early</h3>
+                    ) : null}
+                    {isBanned ? (
+                        <h3 className={styles.banned}>Banned</h3>
+                    ) : null}
+                </div>
+                {createField(
+                    'Birthday',
+                    birthday && toLicenseDateString(birthday)
+                )}
+                {createField('Last Visit', lastVisit && formatDate(lastVisit))}
+                {createField(
+                    'Last backpack',
+                    lastBackpack && formatDate(lastBackpack)
+                )}
+                {createField(
+                    'Last sleeping bag',
+                    lastSleepingBag && formatDate(lastSleepingBag)
+                )}
+                {notes && (
+                    <>
+                        <hr />
+                        <h3>Notes</h3>
+                        <p>
+                            {notes && notes.length > 128
+                                ? notes?.slice(0, 128) + '...'
+                                : notes}
+                        </p>
+                    </>
+                )}
             </div>
 
             <div className={styles.buttonContainer}>

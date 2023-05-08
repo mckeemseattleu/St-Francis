@@ -6,12 +6,13 @@
     text-decoration: none;
     border: 1px solid #eaeaea;
     border-radius: 10px;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    transition: 0.15s ease;
     justify-content: center;
     align-items: center;
     width: 375px;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .card:hover,
@@ -19,6 +20,9 @@
 .card:active {
     color: var(--blue);
     border-color: var(--blue);
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    transform: translate(0, -5px);
+    transition: 0.15s ease;
 }
 
 .card h2 {
@@ -81,4 +85,33 @@
     width: 60px;
     margin: 0 10px;
     border-radius: 5px;
+}
+
+.rowContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+}
+.card h3 {
+    margin: 0;
+}
+
+.status {
+    position: absolute;
+    margin: 0;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 1rem;
+}
+
+.banned {
+    color: var(--red);
+}
+
+.early {
+    color: var(--yellow);
 }
