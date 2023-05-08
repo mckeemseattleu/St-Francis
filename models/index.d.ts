@@ -34,7 +34,7 @@ export declare type Visit = {
     readonly boyAge?: string | null;
     readonly diaper?: number | null;
     readonly girlAge?: string | null;
-    readonly womensQ?: string | null;
+    readonly womensQ?: number | null;
     readonly backpack?: boolean | null;
     readonly giftCard?: number | null;
     readonly busTicket?: number | null;

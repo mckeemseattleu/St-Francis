@@ -70,6 +70,9 @@ const mockVisitDoc = {
     busTicket: 1,
     giftCard: 2,
     diaper: 3,
+    mensQ: 4,
+    womensQ: 5,
+    kidsQ: 6,
     financialAssistance: 4,
 };
 
@@ -97,10 +100,6 @@ describe('Visit details page', () => {
             name: /confirm delete/i,
         });
         fireEvent.click(confirmDeleteButton);
-
-        // screen.logTestingPlaygroundURL();
-        // // Assert that we're back to the profile page
-        // expect(mockRouter.push).toHaveBeenCalledWith('/profile/1234');
 
         // Assert we've called deleteVisit()
         expect(deleteVisit).toHaveBeenCalled();
@@ -138,24 +137,14 @@ describe('Visit details page', () => {
         expect(title).toBeInTheDocument();
     });
 
-    // it('redirects to profile when visit doc not found', async () => {
-    //     // Return that the visit doc doesn't exist
-    //     await act(async () => {
-    //         render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
-    //     });
-
-    //     expect(mockRouter.push).toHaveBeenCalledWith('/profile/1234');
-    // });
-
     it('displays all requests correctly when requests are true', async () => {
         await act(async () => {
             render(<Visit params={{ userId: '1234', visitId: 'abcd' }} />);
         });
 
-        screen.getByText('Men ✔️');
-        screen.getByText('Women ✔️');
-        screen.getByText('Kids (boy) ✔️');
-        screen.getByText('Kids (girl) ✔️');
+        screen.getByText('Men: 4');
+        screen.getByText('Women: 5');
+        screen.getByText('Kids: 6');
         screen.getByText('Backpack ✔️');
         screen.getByText('Sleeping Bag ✔️');
         screen.getByText('Bus Tickets: 1');

@@ -1,21 +1,21 @@
-.errorMessageContainer {
+.formRows {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 25px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: flex-end;
 }
-
-.errorMessageContainer p {
-    margin-right: 50px;
-    color: var(--red);
+.rowItems {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 80px;
 }
-
-.errorMessageContainer button {
-    margin: 0;
+.rowItems > *:first-child {
+    align-self: flex-start;
 }
-
-.errorMessageContainer button:hover {
-    background-color: var(--red);
-    color: var(--gray-1);
+.rowItems > *:last-child {
+    align-self: flex-end;
+}
+.rowItems > * {
+    width: 80px;
 }
