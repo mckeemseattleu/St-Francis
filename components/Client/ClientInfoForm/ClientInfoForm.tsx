@@ -98,7 +98,7 @@ export default function ClientInfoForm({
                             getFullName()}
                     </FormTitle>
                     <FormItem
-                        label="BPCResident"
+                        label="BPC Resident"
                         type="checkbox"
                         name="BPCResident"
                         id="BPCResident"
