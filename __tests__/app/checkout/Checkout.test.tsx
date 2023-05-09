@@ -42,7 +42,10 @@ describe('Checkout page', () => {
             isLoading: false,
             data: { ...mockClient, isCheckedIn: true },
         };
-        (useQuery as jest.Mock).mockReturnValue(queryResult);
+        (useQuery as jest.Mock).mockImplementation((path, cb) => {
+            if (path.length === 2) return queryResult;
+            else return { data: [{ id: 'visitID' }], isLoading: false };
+        });
         const { container } = render(
             <CheckOut params={{ userId: mockClient.id }} />
         );
@@ -54,7 +57,10 @@ describe('Checkout page', () => {
             isLoading: false,
             data: { ...mockClient, isCheckedIn: false },
         };
-        (useQuery as jest.Mock).mockReturnValue(queryResult);
+        (useQuery as jest.Mock).mockImplementation((path, cb) => {
+            if (path.length === 2) return queryResult;
+            else return { data: [{ id: 'visitID' }], isLoading: false };
+        });
 
         const { container } = render(
             <CheckOut params={{ userId: mockClient.id }} />
