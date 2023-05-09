@@ -127,11 +127,7 @@ export default function Profile({ params }: ProfileProps) {
                 <h1>Profile Page</h1>
                 <div className={styles.rowContainer}>
                     <h1>{fullName}</h1>
-                    <ClientStatus
-                        isBanned={!!clientData.isBanned}
-                        isCheckedIn={!!clientData.isCheckedIn}
-                        unhoused={!!clientData.unhoused}
-                    />
+                    <ClientStatus client={clientData} />
                 </div>
                 <hr />
                 <div className={styles.rowContainer}>
