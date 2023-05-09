@@ -68,7 +68,7 @@ export default function Checkin({ params }: CheckinProps) {
                 type: 'success',
             });
             // Redirect to user profile page after checking user in
-            router.push(`/profile/${params.userId}`);
+            router.push(`/profile/${params.userId}/visit/${visit.id}/printout`);
         } catch (error: any) {
             setAlert({
                 message: error.message,
