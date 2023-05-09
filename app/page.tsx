@@ -1,10 +1,12 @@
-import styles from '../styles/Home.module.css';
 import ClientLookup from '@/components/Client/index';
+
+export const metadata = {
+    title: 'St. Francis House Seattle',
+};
 
 export default function Home() {
     return (
         <div>
-            <h1 className={styles.title}>St. Francis House</h1>
             <ClientLookup />
         </div>
     );

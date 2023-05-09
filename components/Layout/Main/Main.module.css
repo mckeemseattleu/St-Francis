@@ -2,7 +2,7 @@
 /* for main container size and positioning check Layout.module.css */
 
 .main {
-    padding: 3rem 0;
+    padding: 0 0 3rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;

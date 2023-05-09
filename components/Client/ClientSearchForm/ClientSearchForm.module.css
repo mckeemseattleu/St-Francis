@@ -1,9 +1,14 @@
 .container {
     display: flex;
     flex-direction: column;
-    margin: 1.5rem auto;
+    margin: 1rem auto;
     width: 80vw;
     max-width: 1000px;
+}
+
+.container h1 {
+    text-align: center;
+    margin-block: 0rem;
 }
 
 .formContainer {
@@ -29,15 +34,15 @@
 
 .formControls {
     display: flex;
-    margin-top: 25px;
+    margin-top: 1rem;
     justify-content: center;
     align-items: center;
+    gap: 20px;
 }
 
 .formControls button {
-    margin-right: 20px;
-    height: 45px;
-    width: 100px;
+    height: 50px;
+    width: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
