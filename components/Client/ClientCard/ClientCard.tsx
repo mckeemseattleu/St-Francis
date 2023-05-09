@@ -1,23 +1,14 @@
 'use client';
+import Spinner from '@/components/Spinner/Spinner';
 import { Button } from '@/components/UI';
 import { useSettings } from '@/hooks/index';
-import { formatDate, toLicenseDateString, validateClient } from '@/utils/index';
+import { toLicenseDateString, validateClient } from '@/utils/index';
 import type { Client } from 'models';
 import Link from 'next/link';
 import styles from './ClientCard.module.css';
 
 export default function ClientCard({ client }: { client: Client }) {
-    const {
-        id,
-        firstName,
-        lastName,
-        birthday,
-        notes,
-        isBanned,
-        lastVisit,
-        lastBackpack,
-        lastSleepingBag,
-    } = client;
+    const { id, firstName, lastName, birthday, notes, isBanned } = client;
     const { settings } = useSettings();
 
     const createField = (label: string, value?: string | number | null) => {
@@ -25,13 +16,20 @@ export default function ClientCard({ client }: { client: Client }) {
             (value && (
                 <div className={styles.rowContainer}>
                     <h3>{label}</h3>
-                    <p>{value}</p>
+                    <p className={(label !== 'Birthday' && styles.days) || ''}>
+                        {value}
+                    </p>
                 </div>
             )) ||
             null
         );
     };
-    const validated = settings && validateClient(client, settings).validated;
+
+    if (!settings) return <Spinner />;
+
+    const { data, validated } = validateClient(client, settings);
+    const { daysVisitLeft, daysBackpackLeft, daysSleepingBagLeft } = data || {};
+
     return (
         <div className={styles.card}>
             <Link href={`/profile/${id}`}>
@@ -40,26 +38,27 @@ export default function ClientCard({ client }: { client: Client }) {
 
             <div className={styles.detailsContainer}>
                 <div className={styles.status}>
-                    {settings && !validated ? (
+                    {!!settings && !validated && (
                         <h3 className={styles.early}>Early</h3>
-                    ) : null}
-                    {isBanned ? (
-                        <h3 className={styles.banned}>Banned</h3>
-                    ) : null}
+                    )}
+                    {!!isBanned && <h3 className={styles.banned}>Banned</h3>}
                 </div>
                 {createField(
                     'Birthday',
                     birthday && toLicenseDateString(birthday)
                 )}
-                {createField('Last Visit', lastVisit && formatDate(lastVisit))}
-                {createField(
-                    'Last backpack',
-                    lastBackpack && formatDate(lastBackpack)
-                )}
-                {createField(
-                    'Last sleeping bag',
-                    lastSleepingBag && formatDate(lastSleepingBag)
-                )}
+                {!!daysVisitLeft &&
+                    createField('Early by ', daysVisitLeft + ' days')}
+                {!!daysBackpackLeft &&
+                    createField(
+                        'Backpack ',
+                        daysBackpackLeft + ' days remaining'
+                    )}
+                {!!daysSleepingBagLeft &&
+                    createField(
+                        'Sleeping Bag ',
+                        daysSleepingBagLeft + ' days remaining'
+                    )}
                 {notes && (
                     <>
                         <hr />

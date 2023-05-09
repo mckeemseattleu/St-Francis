@@ -13,6 +13,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    min-height: 300px;
 }
 
 .card:hover,
@@ -27,6 +28,10 @@
 
 .card h2 {
     margin: 1rem 0 0 0;
+}
+
+.card h3 {
+    margin: 0;
 }
 
 .card p {
@@ -93,8 +98,12 @@
     gap: 10px;
     flex-grow: 1;
 }
-.card h3 {
-    margin: 0;
+
+.rowContainer .days {
+    font-weight: bolder;
+    color: var(--orange);
+    text-shadow: 0px 0px 5px var(--gray-2);
+    font-size: 1.1rem;
 }
 
 .status {
@@ -102,15 +111,14 @@
     margin: 0;
     top: 10px;
     right: 15px;
-    font-size: 0.8rem;
     display: flex;
     gap: 1rem;
 }
 
 .banned {
-    color: var(--red);
+    color: var(--orange);
 }
 
 .early {
-    color: var(--yellow);
+    color: var(--red);
 }
