@@ -96,19 +96,6 @@ export default function Profile({ params }: ProfileProps) {
         router.push(`/`);
     };
 
-    const checkOut = async () => {
-        if (!clientData) return;
-        const data = await updateClient({
-            ...clientData,
-            isCheckedIn: false,
-        });
-        updateClientCache(data);
-        setAlert({
-            message: `Successfully Checked Out ${clientData?.firstName}`,
-            type: 'success',
-        });
-    };
-
     if (isClientloading) return <Spinner />;
     if (!clientData)
         return (
@@ -136,7 +123,9 @@ export default function Profile({ params }: ProfileProps) {
                     </Link>
                     <Button onClick={() => setShow(true)}>Delete</Button>
                     {clientData.isCheckedIn ? (
-                        <Button onClick={checkOut}>Check out</Button>
+                        <Link href={`/checkout/${params.userId}`}>
+                            <Button>Check in</Button>
+                        </Link>
                     ) : (
                         <Link href={`/checkin/${params.userId}`}>
                             <Button>Check in</Button>
