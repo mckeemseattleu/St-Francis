@@ -9,7 +9,6 @@ import { Timestamp } from 'firebase/firestore';
 export function formatDate(timestamp: Timestamp, utc = false) {
     if (!timestamp) return '';
     try {
-        // if (utc) return timestamp.toDate().toUTCString().substring(5, 16);
         if (utc) return timestamp.toDate().toUTCString().substring(5, 16);
         return timestamp.toDate().toDateString().substring(4, 16);
     } catch (err) {
