@@ -8,6 +8,7 @@ import styles from './VisitInfoForm.module.css';
 interface VisitInfoFormProps {
     initialVisitData?: Visit;
     onSubmit?: (visitData: Visit) => void;
+    submitLabel?: string;
 }
 
 const defaultVisitData = {
@@ -31,6 +32,7 @@ const toString = (value: number | undefined | null) => value?.toString() || '';
 export default function VisitInfoForm({
     onSubmit,
     initialVisitData,
+    submitLabel,
 }: VisitInfoFormProps) {
     // Append boyAge and girlAge to notes
     let initialNotes = initialVisitData?.notes || '';
@@ -212,8 +214,9 @@ export default function VisitInfoForm({
                 value={visitData.notes || ''}
                 onChange={handleChange('notes')}
             />
-            <Button type="submit">
-                {initialVisitData ? 'Save Visit' : 'New Visit / Check-in'}
+            <Button type="submit" className={styles.submitBtn}>
+                {submitLabel ||
+                    (initialVisitData ? 'Save Visit' : 'New Visit / Check-in')}
             </Button>
         </Form>
     );
