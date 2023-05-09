@@ -2,6 +2,7 @@ import { Client, Visit } from '@/models/index';
 import { Button } from '@/components/UI';
 import styles from './PrintoutForm.module.css';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 interface PrintoutFormProps {
     // TODO: We can ask for form title instead of clientData and update
     // component doc
@@ -65,6 +66,11 @@ export default function PrintoutForm({
         );
     });
 
+    useEffect(() => {
+        // immediately print the page when it loads
+        window.print();
+    }, []);
+
     return (
         <div className={styles.container}>
             <div className={styles.title}>
@@ -81,10 +87,10 @@ export default function PrintoutForm({
                 <Button
                     className={`noprint ${styles.printBtn}`}
                     onClick={() => {
-                        router.back();
+                        router.push(`/checkout/${clientData.id}`);
                     }}
                 >
-                    Go Back
+                    Checkout
                 </Button>
                 <Button
                     className={`noprint ${styles.printBtn}`}
