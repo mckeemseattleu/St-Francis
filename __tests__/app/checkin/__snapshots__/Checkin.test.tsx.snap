@@ -358,7 +358,7 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
       />
     </div>
     <button
-      className="undefined defaultButton"
+      className="submitBtn defaultButton"
       type="submit"
     >
       New Visit / Check-in

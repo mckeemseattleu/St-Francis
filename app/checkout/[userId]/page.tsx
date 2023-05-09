@@ -3,8 +3,17 @@
 import { ClientStatus } from '@/components/Client';
 import Spinner from '@/components/Spinner/Spinner';
 import { Button } from '@/components/UI';
+import VisitInfoForm from '@/components/Visit/VisitInfoForm';
 import { useAlert, useQueryCache } from '@/hooks/index';
-import { CLIENTS_PATH, getClient, updateClient } from '@/utils/index';
+import { Visit } from '@/models/index';
+import {
+    CLIENTS_PATH,
+    getClient,
+    listVisits,
+    updateClient,
+    updateVisit,
+    VISITS_PATH,
+} from '@/utils/index';
 import ErrorPage from 'next/error';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -16,7 +25,7 @@ interface CheckOutProps {
 }
 
 export default function CheckOut({ params }: CheckOutProps) {
-    const { updateClientCache } = useQueryCache();
+    const { updateClientCache, updateVisitCache } = useQueryCache();
     const [, setAlert] = useAlert();
     const router = useRouter();
 
@@ -25,22 +34,32 @@ export default function CheckOut({ params }: CheckOutProps) {
         () => getClient(params.userId)
     );
 
+    const { isLoading: isVisitsloading, data: visitsData } = useQuery(
+        [CLIENTS_PATH, params.userId, VISITS_PATH],
+        () => listVisits(params.userId, undefined, 1)
+    );
     // Sets isCheckedIn status to false then gets updated client data
-    const checkOut = async () => {
-        const data = await updateClient({
+    const checkOut = async (visitData: Visit) => {
+        await updateVisit(visitData, params.userId);
+        const client = await updateClient({
             ...clientData,
             isCheckedIn: false,
         });
-        updateClientCache(data);
+        updateVisitCache(params.userId, visitData);
+        updateClientCache(client);
         setAlert({
-            message: `Successfully Checked Out ${clientData?.firstName}`,
+            message: `Successfully update visit and check out ${clientData?.firstName}`,
             type: 'success',
         });
-        router.push(`/checkedin`);
+        router.push(`/`);
     };
 
-    if (isLoading) return <Spinner />;
+    if (isLoading || isVisitsloading) return <Spinner />;
     if (!clientData) return <ErrorPage statusCode={404} withDarkMode={false} />;
+    if (!visitsData?.[0]) {
+        router.push(`/profile/${params.userId}`);
+        return null;
+    }
 
     return (
         <div className={styles.container}>
@@ -57,12 +76,12 @@ export default function CheckOut({ params }: CheckOutProps) {
                 <Button>
                     <Link href={`/update/${params.userId}`}>Edit</Link>
                 </Button>
-                <Button type="submit" onClick={checkOut}>
-                    Check out
-                </Button>
             </div>
-            <h2>Notes:</h2>
-            <p>{clientData ? clientData.notes : null}</p>
+            <VisitInfoForm
+                initialVisitData={visitsData[0]}
+                onSubmit={checkOut}
+                submitLabel="Save and Check Out"
+            />
         </div>
     );
 }

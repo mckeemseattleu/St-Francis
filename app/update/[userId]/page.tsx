@@ -48,10 +48,9 @@ export default function Update({ params }: UpdateProps) {
     };
 
     const onSaveAndCheck = async (clientData: DocFilter) => {
-        // save and check-out, redirect to profile page
+        // save and check-out, redirect to checkout page
         if (clientData.isCheckedIn) {
-            clientData.isCheckedIn = false;
-            return await onUpdate(clientData);
+            return router.push(`/checkout/${clientData.id}`);
         }
         // save and redirect to check-in page
         try {
