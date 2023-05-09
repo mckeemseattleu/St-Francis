@@ -113,7 +113,7 @@ export default function Printout({ params }: PrintoutProps) {
         }
         formatData();
     }, [visitData, clientData]);
-    if (isClientloading || isVisitLoading) return <Spinner />;
+    if (isClientloading || isVisitLoading || !formData) return <Spinner />;
     return clientData && visitData && formData ? (
         <PrintoutForm
             clientData={clientData}
