@@ -13,6 +13,7 @@ export declare type Client = {
     readonly createdAt?: Timestamp | null;
     readonly firstName?: string | null;
     readonly lastVisit?: Timestamp | null;
+    readonly sheltered?: boolean | null;
     readonly updatedAt?: Timestamp | null;
     readonly postalCode?: string | null;
     readonly isCheckedIn?: boolean | null;

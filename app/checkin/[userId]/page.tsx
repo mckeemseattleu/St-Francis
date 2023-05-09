@@ -78,7 +78,7 @@ export default function Checkin({ params }: CheckinProps) {
     };
 
     if (isLoading) return <Spinner />;
-
+    if (!clientData) return <h1>Client not found</h1>;
     return (
         <div className={styles.container}>
             <h1>Check-in Page</h1>
@@ -86,11 +86,7 @@ export default function Checkin({ params }: CheckinProps) {
                 <h1>
                     {`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}
                 </h1>
-                <ClientStatus
-                    isBanned={!!clientData?.isBanned}
-                    isCheckedIn={!!clientData?.isCheckedIn}
-                    unhoused={!!clientData?.unhoused}
-                />
+                <ClientStatus client={clientData} />
             </div>
             <hr />
             <div className={styles.rowContainer}>

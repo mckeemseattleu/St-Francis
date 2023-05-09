@@ -47,11 +47,7 @@ export default function CheckOut({ params }: CheckOutProps) {
             <h1>Checkout Page</h1>
             <div className={styles.rowContainer}>
                 <h1>{`${clientData?.firstName} ${clientData?.lastName}`}</h1>
-                <ClientStatus
-                    isBanned={!!clientData.isBanned}
-                    isCheckedIn={!!clientData.isCheckedIn}
-                    unhoused={!!clientData.unhoused}
-                />
+                <ClientStatus client={clientData} />
             </div>
             <hr />
             <div className={styles.rowContainer}>
