@@ -274,7 +274,7 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
     />
   </div>
   <button
-    className="undefined defaultButton"
+    className="submitBtn defaultButton"
     type="submit"
   >
     New Visit / Check-in
