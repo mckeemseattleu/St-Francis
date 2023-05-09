@@ -8,7 +8,7 @@ export {
 } from './constants';
 export { fetchData, mutateData } from './fetchData';
 export type { DocFilter } from './fetchData';
-export { formatDate, toUTCDateString } from './formatDate';
+export { formatDate, toUTCDateString, toLicenseDateString } from './formatDate';
 export {
     createClient,
     updateClient,

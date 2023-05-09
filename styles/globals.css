@@ -10,14 +10,11 @@
 
     --blue: #3d5169;
     --yellow: #b4975a;
+    --orange: #e05900;
     --white: #ffffff;
     --green: #2e7d32;
     --red: #9d0000;
-
-    /* Old */
-    /* --gray-1: var(--gray-2);
-    --blue: var(--yellow);
-    --white: var(--gray-1); */
+    --purple: #5e35b1;
     overflow-y: scroll;
 }
 html,

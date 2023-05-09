@@ -2,6 +2,11 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ClientCard } from '@/components/Client/index';
 
+jest.mock('@/hooks/useSettings', () => ({
+    useSettings: jest.fn(() => ({
+        settings: {}
+    })),
+}))
 describe('ClientCard', () => {
     it('renders all info correctly', () => {
         const client = {
