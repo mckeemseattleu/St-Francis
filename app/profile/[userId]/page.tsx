@@ -1,15 +1,15 @@
 'use client';
 
-import { ClientStatus } from '@/components/Client';
+import { ClientProfileInfo, ClientStatus } from '@/components/Client';
 import Spinner from '@/components/Spinner/Spinner';
 import { Button, Modal } from '@/components/UI';
 import { useAlert, useQueryCache } from '@/hooks/index';
-import { formatDate, updateClient } from '@/utils/index';
 import {
     CLIENTS_PATH,
     deleteClient,
     getClient,
     listVisits,
+    updateClient,
     VISITS_LIMIT,
     VISITS_PATH,
 } from '@/utils/index';
@@ -96,19 +96,6 @@ export default function Profile({ params }: ProfileProps) {
         router.push(`/`);
     };
 
-    const checkOut = async () => {
-        if (!clientData) return;
-        const data = await updateClient({
-            ...clientData,
-            isCheckedIn: false,
-        });
-        updateClientCache(data);
-        setAlert({
-            message: `Successfully Checked Out ${clientData?.firstName}`,
-            type: 'success',
-        });
-    };
-
     if (isClientloading) return <Spinner />;
     if (!clientData)
         return (
@@ -127,11 +114,7 @@ export default function Profile({ params }: ProfileProps) {
                 <h1>Profile Page</h1>
                 <div className={styles.rowContainer}>
                     <h1>{fullName}</h1>
-                    <ClientStatus
-                        isBanned={!!clientData.isBanned}
-                        isCheckedIn={!!clientData.isCheckedIn}
-                        unhoused={!!clientData.unhoused}
-                    />
+                    <ClientStatus client={clientData} />
                 </div>
                 <hr />
                 <div className={styles.rowContainer}>
@@ -140,93 +123,16 @@ export default function Profile({ params }: ProfileProps) {
                     </Link>
                     <Button onClick={() => setShow(true)}>Delete</Button>
                     {clientData.isCheckedIn ? (
-                        <Button onClick={checkOut}>Check out</Button>
+                        <Link href={`/checkout/${params.userId}`}>
+                            <Button>Check in</Button>
+                        </Link>
                     ) : (
                         <Link href={`/checkin/${params.userId}`}>
                             <Button>Check in</Button>
                         </Link>
                     )}
                 </div>
-
-                <div className={styles.rowContainer}>
-                    <div className={styles.rowContainer}>
-                        {clientData?.birthday ? <h3>Birthday</h3> : null}
-                        {clientData?.birthday ? (
-                            <p>
-                                {clientData?.birthday &&
-                                    formatDate(clientData.birthday, true)}
-                            </p>
-                        ) : null}
-                    </div>
-
-                    <div className={styles.rowContainer}>
-                        {clientData?.gender ? <h3>Gender</h3> : null}
-                        {clientData?.gender ? (
-                            <p>{clientData?.gender}</p>
-                        ) : null}
-                    </div>
-
-                    <div className={styles.rowContainer}>
-                        {clientData?.race ? <h3>Race</h3> : null}
-                        {clientData?.race ? <p>{clientData?.race}</p> : null}
-                    </div>
-
-                    <div className={styles.rowContainer}>
-                        {clientData?.postalCode ? <h3>Postal code</h3> : null}
-                        {clientData?.postalCode ? (
-                            <p>{clientData?.postalCode}</p>
-                        ) : null}
-                    </div>
-
-                    <div className={styles.rowContainer}>
-                        {clientData?.numKids || clientData?.numKids === 0 ? (
-                            <h3>Number of kids</h3>
-                        ) : null}
-                        {clientData?.numKids || clientData?.numKids === 0 ? (
-                            <p>{clientData?.numKids}</p>
-                        ) : null}
-                    </div>
-
-                    <div className={styles.rowContainer}>
-                        {clientData?.lastVisit ? <h3>Last Visit</h3> : null}
-                        {clientData?.lastVisit ? (
-                            <p>
-                                {clientData?.lastVisit &&
-                                    formatDate(clientData.lastVisit)}
-                            </p>
-                        ) : null}
-                    </div>
-
-                    <div className={styles.rowContainer}>
-                        {clientData?.lastBackpack ? (
-                            <h3>Last backpack</h3>
-                        ) : null}
-                        {clientData?.lastBackpack ? (
-                            <p>
-                                {clientData?.lastBackpack &&
-                                    formatDate(clientData.lastBackpack)}
-                            </p>
-                        ) : null}
-                    </div>
-
-                    <div className={styles.rowContainer}>
-                        {clientData?.lastSleepingBag ? (
-                            <h3>Last sleeping bag</h3>
-                        ) : null}
-                        {clientData?.lastSleepingBag ? (
-                            <p>
-                                {clientData?.lastSleepingBag &&
-                                    formatDate(clientData.lastSleepingBag)}
-                            </p>
-                        ) : null}
-                    </div>
-                </div>
-                {clientData?.notes ? (
-                    <div>
-                        <h2>Notes</h2>
-                        <p>{clientData.notes}</p>
-                    </div>
-                ) : null}
+                <ClientProfileInfo client={clientData} />
             </div>
 
             <div>

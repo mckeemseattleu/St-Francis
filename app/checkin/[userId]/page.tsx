@@ -1,6 +1,6 @@
 'use client';
 
-import { ClientStatus } from '@/components/Client';
+import { ClientProfileInfo, ClientStatus } from '@/components/Client';
 import Spinner from '@/components/Spinner/Spinner';
 import { Button, Modal } from '@/components/UI';
 import VisitInfoForm from '@/components/Visit/VisitInfoForm';
@@ -27,6 +27,7 @@ export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
     const [, setAlert] = useAlert();
     const [show, setShow] = useState(false);
+    const [showInfo, setShowInfo] = useState(false);
     const [visitData, setVisitData] = useState<Visit>();
     const [validatedData, setValidatedData] = useState<
         | {
@@ -45,8 +46,8 @@ export default function Checkin({ params }: CheckinProps) {
 
     // Checkin process, handles validate eligibility
     const handleSubmit = async (visitData: Visit) => {
-        if (!clientData || !visitData) return;
-        const { validated, data } = await validateClient(clientData, settings);
+        if (!clientData || !visitData || !settings) return;
+        const { validated, data } = validateClient(clientData, settings);
         if (!show && !validated) {
             setShow(true);
             setVisitData(visitData);
@@ -68,7 +69,7 @@ export default function Checkin({ params }: CheckinProps) {
                 type: 'success',
             });
             // Redirect to user profile page after checking user in
-            router.push(`/profile/${params.userId}`);
+            router.push(`/profile/${params.userId}/visit/${visit.id}/printout`);
         } catch (error: any) {
             setAlert({
                 message: error.message,
@@ -78,7 +79,7 @@ export default function Checkin({ params }: CheckinProps) {
     };
 
     if (isLoading) return <Spinner />;
-
+    if (!clientData) return <h1>Client not found</h1>;
     return (
         <div className={styles.container}>
             <h1>Check-in Page</h1>
@@ -86,11 +87,7 @@ export default function Checkin({ params }: CheckinProps) {
                 <h1>
                     {`${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`}
                 </h1>
-                <ClientStatus
-                    isBanned={!!clientData?.isBanned}
-                    isCheckedIn={!!clientData?.isCheckedIn}
-                    unhoused={!!clientData?.unhoused}
-                />
+                <ClientStatus client={clientData} />
             </div>
             <hr />
             <div className={styles.rowContainer}>
@@ -101,12 +98,17 @@ export default function Checkin({ params }: CheckinProps) {
                     <Button>Profile</Button>
                 </Link>
             </div>
-            {clientData?.notes ? (
-                <div>
-                    <h2>Notes</h2>
-                    <p>{clientData.notes}</p>
-                </div>
-            ) : null}
+            <div className={styles.rowContainer}>
+                <details>
+                    <summary>
+                        <h2 onClick={() => setShowInfo(!showInfo)}>
+                            Show Client Info {showInfo ? '⬆' : '⬇'}
+                        </h2>
+                    </summary>
+                    <ClientProfileInfo client={clientData} />
+                </details>
+            </div>
+
             <VisitInfoForm onSubmit={handleSubmit} />
             <Modal show={show} setShow={setShow}>
                 <h3>Early Visit For {clientData?.firstName}</h3>

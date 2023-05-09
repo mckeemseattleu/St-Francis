@@ -20,6 +20,8 @@ describe('Client Info Form Component', () => {
         isCheckedIn: false,
         isBanned: false,
         unhoused: false,
+        sheltered: false,
+        BPCResident: false,
     };
 
     it('renders correctly without initial data', async () => {
@@ -76,11 +78,15 @@ describe('Client Info Form Component', () => {
             mockClient.numKids.toString()
         );
         expect(screen.getByLabelText('Notes').value).toBe(mockClient.notes);
-        expect(screen.getByLabelText('Unhoused').value).toBe(
-            (mockClient.unhoused && 'on') || 'off'
+        expect(screen.getByLabelText('Unhoused').checked).toBe(
+            mockClient.unhoused
         );
-        expect(screen.getByLabelText('Ban').value).toBe(
-            (mockClient.isBanned && 'on') || 'off'
+        expect(screen.getByLabelText('Ban').checked).toBe(mockClient.isBanned);
+        expect(screen.getByLabelText('Shelter').checked).toBe(
+            mockClient.sheltered
+        );
+        expect(screen.getByLabelText('BPC Resident').checked).toBe(
+            mockClient.BPCResident
         );
     });
 

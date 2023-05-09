@@ -7,13 +7,12 @@ import { getSettings } from '@/utils/index';
  * @param settings Settings document
  * @returns validated result and validation data (days left)
  */
-export const validateClient = async (
+export const validateClient = (
     client: Client | null = null,
-    settings: Settings | null = null
+    settings: Settings
 ) => {
     // TODO: Validate for edge cases with daylight savings and different timezones
-    if (!client) return { validated: false };
-    if (!settings) settings = await getSettings();
+    if (!client || !settings) return { validated: false };
     const {
         daysEarlyThreshold = 0,
         backpackThreshold = 0,

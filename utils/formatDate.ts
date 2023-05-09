@@ -23,5 +23,16 @@ export function formatDate(timestamp: Timestamp, utc = false) {
  */
 export function toUTCDateString(timestamp: Timestamp | undefined | null) {
     if (!timestamp) return '';
-    return timestamp.toDate().toISOString().split('T')[0];
+    return timestamp?.toDate?.()?.toISOString?.().split('T')[0] || '';
+}
+
+/**
+ * Converts a firebase Timestamp object to a UTC date string with timezone offset
+ * @param timestamp - firebase Timestamp object
+ * @returns - date string in the format 'MM/DD/YYYY'
+ */
+export function toLicenseDateString(timestamp: Timestamp | undefined | null) {
+    if (!timestamp) return '';
+    const date = toUTCDateString(timestamp).split('-');
+    return `${date[1]}/${date[2]}/${date[0]}`;
 }

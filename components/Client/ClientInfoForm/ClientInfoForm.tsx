@@ -58,6 +58,8 @@ export default function ClientInfoForm({
         isCheckedIn: !!initialData.isCheckedIn,
         isBanned: !!initialData.isBanned,
         unhoused: !!initialData.unhoused,
+        sheltered: !!initialData.sheltered,
+        BPCResident: !!initialData.BPCResident,
     };
 
     const [clientData, setClientData] = useState(defaultData);
@@ -75,7 +77,7 @@ export default function ClientInfoForm({
 
     const handleChange = (key: any) => (e: any) => {
         let value = e.target.value;
-        if (key === 'isBanned') value = e.target.checked;
+        if (e.target.type === 'checkbox') value = e.target.checked;
         if (key === 'firstName')
             clientData.firstNameLower = value.toLowerCase();
         if (key === 'lastName') clientData.lastNameLower = value.toLowerCase();
@@ -96,13 +98,32 @@ export default function ClientInfoForm({
                             getFullName()}
                     </FormTitle>
                     <FormItem
+                        label="BPC Resident"
+                        type="checkbox"
+                        name="BPCResident"
+                        id="BPCResident"
+                        title="Check if client is a BPC resident"
+                        checked={clientData.BPCResident}
+                        onChange={handleChange('BPCResident')}
+                        className={styles.formTitleItem}
+                    />
+                    <FormItem
+                        label="Shelter"
+                        type="checkbox"
+                        name="sheltered"
+                        id="sheltered"
+                        title="Check if client has shelter"
+                        checked={clientData.sheltered}
+                        onChange={handleChange('sheltered')}
+                        className={styles.formTitleItem}
+                    />
+                    <FormItem
                         label="Unhoused"
                         type="checkbox"
                         name="unhoused"
                         id="unhoused"
                         title="Check if client is unhoused"
-                        defaultChecked={clientData.unhoused}
-                        value={clientData.unhoused ? 'on' : 'off'}
+                        checked={clientData.unhoused}
                         onChange={handleChange('unhoused')}
                         className={styles.formTitleItem}
                     />
@@ -112,8 +133,7 @@ export default function ClientInfoForm({
                         name="isBanned"
                         id="isBanned"
                         title="Check if client is banned"
-                        defaultChecked={clientData.isBanned}
-                        value={clientData.isBanned ? 'on' : 'off'}
+                        checked={clientData.isBanned}
                         onChange={handleChange('isBanned')}
                         className={styles.formTitleItem}
                     />

@@ -8,6 +8,7 @@ import NavMenuMobile from './NavMenuMobile';
 export type MenuItems = Array<{ title: string; href: string }>;
 
 const menuItems: MenuItems = [
+    { title: 'New Client', href: '/add-client' },
     { title: 'Checked in Clients', href: '/checkedin' },
     { title: 'Settings', href: '/settings' },
 ];

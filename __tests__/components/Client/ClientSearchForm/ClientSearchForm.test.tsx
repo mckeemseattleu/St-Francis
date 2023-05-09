@@ -33,7 +33,6 @@ describe('Client Info Form Component', () => {
         expect(screen.queryByText('Last name')).toBeInTheDocument();
         expect(screen.queryByText('Birthday')).toBeInTheDocument();
         expect(screen.queryByText('Search')).toBeInTheDocument();
-        expect(screen.queryByText('New Client')).toBeInTheDocument();
         expect(screen.queryByText('Clear')).toBeInTheDocument();
     });
 

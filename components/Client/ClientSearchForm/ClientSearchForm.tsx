@@ -2,7 +2,6 @@
 import { Button } from '@/components/UI';
 import type { DocFilter } from '@/utils/index';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 import styles from './ClientSearchForm.module.css';
 
@@ -119,9 +118,6 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                             height="20"
                         />
                     </Button>
-                    <Link href="/add-client">
-                        <Button>New Client</Button>
-                    </Link>
                     <Button type="button" onClick={handleClear}>
                         Clear
                     </Button>
