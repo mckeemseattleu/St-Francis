@@ -119,9 +119,6 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                             height="20"
                         />
                     </Button>
-                    <Link href="/add-client">
-                        <Button>New Client</Button>
-                    </Link>
                     <Button type="button" onClick={handleClear}>
                         Clear
                     </Button>
