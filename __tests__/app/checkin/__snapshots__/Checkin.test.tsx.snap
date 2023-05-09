@@ -60,16 +60,30 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
   </div>
   <div
     className="rowContainer"
-  />
-  <div
-    className="rowContainer"
   >
-    <h3>
-      Notes
-    </h3>
-    <p>
-      Notes
-    </p>
+    <details>
+      <summary>
+        <h2
+          onClick={[Function]}
+        >
+          Show Client Info 
+          ⬇
+        </h2>
+      </summary>
+      <div
+        className="rowContainer"
+      />
+      <div
+        className="rowContainer"
+      >
+        <h3>
+          Notes
+        </h3>
+        <p>
+          Notes
+        </p>
+      </div>
+    </details>
   </div>
   <form
     onSubmit={[Function]}

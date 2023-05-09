@@ -27,6 +27,7 @@ export default function Checkin({ params }: CheckinProps) {
     const router = useRouter();
     const [, setAlert] = useAlert();
     const [show, setShow] = useState(false);
+    const [showInfo, setShowInfo] = useState(false);
     const [visitData, setVisitData] = useState<Visit>();
     const [validatedData, setValidatedData] = useState<
         | {
@@ -97,7 +98,17 @@ export default function Checkin({ params }: CheckinProps) {
                     <Button>Profile</Button>
                 </Link>
             </div>
-            <ClientProfileInfo client={clientData} />
+            <div className={styles.rowContainer}>
+                <details>
+                    <summary>
+                        <h2 onClick={() => setShowInfo(!showInfo)}>
+                            Show Client Info {showInfo ? '⬆' : '⬇'}
+                        </h2>
+                    </summary>
+                    <ClientProfileInfo client={clientData} />
+                </details>
+            </div>
+
             <VisitInfoForm onSubmit={handleSubmit} />
             <Modal show={show} setShow={setShow}>
                 <h3>Early Visit For {clientData?.firstName}</h3>
