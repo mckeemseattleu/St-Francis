@@ -61,3 +61,26 @@
 .rowContainer button {
     margin-right: 15px;
 }
+
+.rowContainer {
+    display: flex;
+}
+.rowContainer details {
+    user-select: none;
+}
+
+.rowContainer summary {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.rowContainer summary h2 {
+    margin: 0.5rem 0;
+    color: var(--blue);
+}
+.rowContainer summary h2:hover {
+    color: var(--orange);
+}
