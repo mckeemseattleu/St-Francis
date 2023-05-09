@@ -85,7 +85,7 @@ describe('Client Info Form Component', () => {
         expect(screen.getByLabelText('Shelter').checked).toBe(
             mockClient.sheltered
         );
-        expect(screen.getByLabelText('BPCResident').checked).toBe(
+        expect(screen.getByLabelText('BPC Resident').checked).toBe(
             mockClient.BPCResident
         );
     });
