@@ -24,7 +24,7 @@ export function formatDate(timestamp: Timestamp, utc = false) {
  */
 export function toUTCDateString(timestamp: Timestamp | undefined | null) {
     if (!timestamp) return '';
-    return timestamp.toDate().toISOString().split('T')[0];
+    return timestamp?.toDate?.()?.toISOString?.().split('T')[0] || '';
 }
 
 /**
