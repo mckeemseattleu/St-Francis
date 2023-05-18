@@ -48,7 +48,7 @@ export default function CheckOut({ params }: CheckOutProps) {
         updateVisitCache(params.userId, visitData);
         updateClientCache(client);
         setAlert({
-            message: `Successfully update visit and check out ${clientData?.firstName}`,
+            message: `Successfully updated visit and checked ${clientData?.firstName} out`,
             type: 'success',
         });
         router.push(`/`);
