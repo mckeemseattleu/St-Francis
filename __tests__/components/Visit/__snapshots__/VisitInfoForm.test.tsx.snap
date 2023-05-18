@@ -4,6 +4,12 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
 <form
   onSubmit={[Function]}
 >
+  <button
+    className="submitBtn defaultButton"
+    type="submit"
+  >
+    New Visit / Check-in
+  </button>
   <h2>
     Clothing
   </h2>
