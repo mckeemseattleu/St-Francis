@@ -45,6 +45,7 @@ export default function VisitInfoForm({
         ...defaultVisitData,
         ...initialVisitData,
         busTicket: toString(initialVisitData?.busTicket),
+        orcaCard: toString(initialVisitData?.orcaCard),
         giftCard: toString(initialVisitData?.giftCard),
         diaper: toString(initialVisitData?.diaper),
         financialAssistance: toString(initialVisitData?.financialAssistance),
@@ -59,6 +60,7 @@ export default function VisitInfoForm({
         const transformedVisitData = {
             ...visitData,
             busTicket: toInt(visitData.busTicket),
+            orcaCard: toInt(visitData.orcaCard),
             giftCard: toInt(visitData.giftCard),
             diaper: toInt(visitData.diaper),
             financialAssistance: toInt(visitData.financialAssistance),
@@ -161,6 +163,13 @@ export default function VisitInfoForm({
                     label="Bus Ticket"
                     value={visitData.busTicket}
                     onChange={handleChange('busTicket')}
+                />
+                <FormItem
+                    type="number"
+                    id="orcaCard"
+                    label="Orca Card"
+                    value={visitData.orcaCard}
+                    onChange={handleChange('orcaCard')}
                 />
                 <FormItem
                     type="number"
