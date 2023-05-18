@@ -86,6 +86,10 @@ export default function VisitInfoForm({
 
     return (
         <Form onSubmit={handleSubmit}>
+            <Button type="submit" className={styles.submitBtn}>
+                {submitLabel ||
+                    (initialVisitData ? 'Save Visit' : 'New Visit / Check-in')}
+            </Button>
             <h2>Clothing</h2>
 
             <FormRow className={styles.formRows}>
