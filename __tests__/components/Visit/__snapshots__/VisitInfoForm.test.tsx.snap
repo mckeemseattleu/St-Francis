@@ -165,6 +165,23 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       className="formItem"
     >
       <label
+        htmlFor="orcaCard"
+      >
+        Orca Card
+      </label>
+      <input
+        id="orcaCard"
+        label="Orca Card"
+        min={0}
+        onChange={[Function]}
+        type="number"
+        value=""
+      />
+    </div>
+    <div
+      className="formItem"
+    >
+      <label
         htmlFor="giftCard"
       >
         Gift Card
