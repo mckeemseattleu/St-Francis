@@ -63,9 +63,16 @@ export default function Visit({ params }: VisitProps) {
                 {visitData?.createdAt && <h2>{visitDate}</h2>}
             </div>
             <hr />
-            <Button onClick={() => router.push(`/profile/${params.userId}`)}>
-                Back to Profile
-            </Button>
+            <div className={styles.rowContainer}>
+                <Button
+                    onClick={() => router.push(`/profile/${params.userId}`)}
+                >
+                    Back to Profile
+                </Button>
+                <Button onClick={() => setEditVisit(!editVisit)}>
+                    {!editVisit ? 'Edit Visit' : 'Cancel Edit'}
+                </Button>
+            </div>
             {editVisit ? (
                 <VisitInfoForm
                     initialVisitData={visitData}
