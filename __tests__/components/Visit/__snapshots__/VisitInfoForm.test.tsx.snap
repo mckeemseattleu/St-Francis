@@ -229,6 +229,10 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         value=""
       />
     </div>
+  </div>
+  <div
+    className="formRow"
+  >
     <div
       className="formItem"
     >

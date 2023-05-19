@@ -313,6 +313,10 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           value=""
         />
       </div>
+    </div>
+    <div
+      className="formRow"
+    >
       <div
         className="formItem"
       >
