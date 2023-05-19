@@ -192,6 +192,8 @@ export default function VisitInfoForm({
                     value={visitData.financialAssistance}
                     onChange={handleChange('financialAssistance')}
                 />
+            </FormRow>
+            <FormRow>
                 <FormItem
                     type="checkbox"
                     id="backpack"
