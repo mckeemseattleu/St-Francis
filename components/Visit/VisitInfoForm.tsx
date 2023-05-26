@@ -9,6 +9,7 @@ interface VisitInfoFormProps {
     initialVisitData?: Visit;
     onSubmit?: (visitData: Visit) => void;
     submitLabel?: string;
+    onChange?: (visitData: Visit) => void;
 }
 
 const defaultVisitData = {
@@ -33,6 +34,7 @@ export default function VisitInfoForm({
     onSubmit,
     initialVisitData,
     submitLabel,
+    onChange,
 }: VisitInfoFormProps) {
     // Append boyAge and girlAge to notes
     let initialNotes = initialVisitData?.notes || '';
@@ -57,7 +59,11 @@ export default function VisitInfoForm({
 
     const handleSubmit = async (e: any) => {
         e.preventDefault(); // Prevent redirect
-        const transformedVisitData = {
+        onSubmit && onSubmit(transformData(visitData));
+    };
+
+    const transformData = (visitData: any) => {
+        return {
             ...visitData,
             busTicket: toInt(visitData.busTicket),
             orcaCard: toInt(visitData.orcaCard),
@@ -75,7 +81,6 @@ export default function VisitInfoForm({
             boyAge: '',
             girlAge: '',
         };
-        onSubmit && onSubmit(transformedVisitData);
     };
 
     const handleChange = (key: string) => (e: any) => {
@@ -83,15 +88,12 @@ export default function VisitInfoForm({
         if (e.target.type === 'checkbox') {
             value = e.target.checked;
         } else value = e.target.value;
+        const data = transformData({ ...visitData, [key]: value });
+        onChange && onChange(data);
         setVisitData({ ...visitData, [key]: value });
     };
-
     return (
         <Form onSubmit={handleSubmit}>
-            <Button type="submit" className={styles.submitBtn}>
-                {submitLabel ||
-                    (initialVisitData ? 'Save Visit' : 'New Visit / Check-in')}
-            </Button>
             <h2>Clothing</h2>
 
             <FormRow className={styles.formRows}>
@@ -230,8 +232,7 @@ export default function VisitInfoForm({
                 onChange={handleChange('notes')}
             />
             <Button type="submit" className={styles.submitBtn}>
-                {submitLabel ||
-                    (initialVisitData ? 'Save Visit' : 'New Visit / Check-in')}
+                {submitLabel || 'Submit'}
             </Button>
         </Form>
     );
