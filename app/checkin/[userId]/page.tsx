@@ -29,6 +29,7 @@ export default function Checkin({ params }: CheckinProps) {
     const [show, setShow] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
     const [visitData, setVisitData] = useState<Visit>();
+    const [visitFormData, setVisitFormData] = useState<Visit>();
     const [validatedData, setValidatedData] = useState<
         | {
               daysBackpackLeft: number;
@@ -78,6 +79,14 @@ export default function Checkin({ params }: CheckinProps) {
         }
     };
 
+    const onChange = (visitData: Visit) => {
+        setVisitFormData(visitData);
+    };
+
+    const checkIn = () => {
+        visitFormData && handleSubmit(visitFormData);
+    };
+
     if (isLoading) return <Spinner />;
     if (!clientData) return <h1>Client not found</h1>;
     return (
@@ -97,6 +106,7 @@ export default function Checkin({ params }: CheckinProps) {
                 <Link href={`/profile/${params.userId}`}>
                     <Button>Profile</Button>
                 </Link>
+                <Button onClick={checkIn}>New Visit / Check-in</Button>
             </div>
             <div className={styles.rowContainer}>
                 <details>
@@ -109,7 +119,11 @@ export default function Checkin({ params }: CheckinProps) {
                 </details>
             </div>
 
-            <VisitInfoForm onSubmit={handleSubmit} />
+            <VisitInfoForm
+                onSubmit={handleSubmit}
+                onChange={onChange}
+                submitLabel={'New Visit / Check-in'}
+            />
             <Modal show={show} setShow={setShow}>
                 <h3>Early Visit For {clientData?.firstName}</h3>
                 <hr />
