@@ -77,6 +77,7 @@ export default function Visit({ params }: VisitProps) {
                 <VisitInfoForm
                     initialVisitData={visitData}
                     onSubmit={handleSubmit}
+                    submitLabel="Save Visit"
                 />
             ) : (
                 <VisitDetail visitData={visitData as VisitModel} />
