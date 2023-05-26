@@ -74,7 +74,7 @@ describe('Visit Info Form Component', () => {
         const mockOnSave = jest.fn((VisitData) => VisitData);
         render(<VisitInfoForm onSubmit={mockOnSave} />);
         const saveButton = screen.getAllByRole('button', {
-            name: 'New Visit / Check-in',
+            name: 'Submit',
         })[0];
         fireEvent.click(saveButton);
         expect(mockOnSave).toHaveBeenCalledTimes(1);
@@ -95,7 +95,7 @@ describe('Visit Info Form Component', () => {
         }) as HTMLInputElement;
         await userEvent.clear(input);
         const saveButton = screen.getAllByRole('button', {
-            name: 'New Visit / Check-in',
+            name: 'Submit',
         })[0];
         fireEvent.click(saveButton);
     });
@@ -107,7 +107,7 @@ describe('Visit Info Form Component', () => {
         const mockOnSave = jest.fn((VisitData) => VisitData);
         render(<VisitInfoForm onSubmit={mockOnSave} />);
         const saveButton = screen.getAllByRole('button', {
-            name: 'New Visit / Check-in',
+            name: 'Submit',
         })[0];
         fireEvent.click(saveButton);
         expect(mockOnSave).toHaveBeenCalledTimes(1);

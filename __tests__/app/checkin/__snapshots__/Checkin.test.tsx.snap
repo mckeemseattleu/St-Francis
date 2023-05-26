@@ -57,6 +57,12 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
         Profile
       </button>
     </a>
+    <button
+      className="undefined defaultButton"
+      onClick={[Function]}
+    >
+      New Visit / Check-in
+    </button>
   </div>
   <div
     className="rowContainer"
@@ -88,12 +94,6 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
   <form
     onSubmit={[Function]}
   >
-    <button
-      className="submitBtn defaultButton"
-      type="submit"
-    >
-      New Visit / Check-in
-    </button>
     <h2>
       Clothing
     </h2>
