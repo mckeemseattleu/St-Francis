@@ -39,6 +39,7 @@ export declare type Visit = {
     readonly backpack?: boolean | null;
     readonly giftCard?: number | null;
     readonly busTicket?: number | null;
+    readonly orcaCard?: number | null;
     readonly household?: string | null;
     readonly createdAt?: Timestamp | null;
     readonly clothingBoy?: boolean | null;

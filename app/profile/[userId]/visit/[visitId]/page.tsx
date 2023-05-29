@@ -27,6 +27,7 @@ export default function Visit({ params }: VisitProps) {
     const router = useRouter();
     const [, setAlert] = useAlert();
     const [show, setShow] = useState(false);
+    const [visitFormData, setVisitFormData] = useState<VisitModel>();
 
     const {
         isLoading,
@@ -56,6 +57,14 @@ export default function Visit({ params }: VisitProps) {
 
     const visitDate = visitData?.createdAt?.toDate()?.toLocaleString();
 
+    const onChange = (visitData: VisitModel) => {
+        setVisitFormData(visitData);
+    };
+
+    const saveVisit = () => {
+        visitFormData && handleSubmit(visitFormData);
+    };
+
     return (
         <div>
             <div>
@@ -63,13 +72,23 @@ export default function Visit({ params }: VisitProps) {
                 {visitData?.createdAt && <h2>{visitDate}</h2>}
             </div>
             <hr />
-            <Button onClick={() => router.push(`/profile/${params.userId}`)}>
-                Back to Profile
-            </Button>
+            <div className={styles.rowContainer}>
+                <Button
+                    onClick={() => router.push(`/profile/${params.userId}`)}
+                >
+                    Back to Profile
+                </Button>
+                <Button onClick={() => setEditVisit(!editVisit)}>
+                    {!editVisit ? 'Edit Visit' : 'Cancel Edit'}
+                </Button>
+                {editVisit && <Button onClick={saveVisit}>Save Visit</Button>}
+            </div>
             {editVisit ? (
                 <VisitInfoForm
                     initialVisitData={visitData}
                     onSubmit={handleSubmit}
+                    onChange={onChange}
+                    submitLabel="Save Visit"
                 />
             ) : (
                 <VisitDetail visitData={visitData as VisitModel} />
