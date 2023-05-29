@@ -2,6 +2,7 @@
     min-width: 100px;
     min-height: 40px;
     align-content: center;
+    padding: 10px 20px;
 }
 
 .defaultButton:hover {
