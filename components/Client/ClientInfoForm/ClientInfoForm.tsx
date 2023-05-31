@@ -19,9 +19,9 @@ const raceList = [
     'White',
     'Hispanic or Latino',
     'Asian',
-    'Other',
     'American Indian or Alaska Native',
     'Native Hawaiian or Other Pacific Islander',
+    'Other',
 ];
 const genderList = ['Male', 'Female', 'Other'];
 
