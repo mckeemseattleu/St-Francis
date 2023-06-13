@@ -38,7 +38,7 @@ export default function ClientCard({ client }: { client: Client }) {
 
             <div className={styles.detailsContainer}>
                 <div className={styles.status}>
-                    {!!settings && !validated && (
+                    {!!settings && !validated && !client.isCheckedIn && (
                         <h3 className={styles.early}>Early</h3>
                     )}
                     {!!isBanned && <h3 className={styles.banned}>Banned</h3>}
@@ -48,13 +48,16 @@ export default function ClientCard({ client }: { client: Client }) {
                     birthday && toLicenseDateString(birthday)
                 )}
                 {!!daysVisitLeft &&
+                    !client.isCheckedIn &&
                     createField('Early by ', daysVisitLeft + ' days')}
                 {!!daysBackpackLeft &&
+                    !client.isCheckedIn &&
                     createField(
                         'Backpack ',
                         daysBackpackLeft + ' days remaining'
                     )}
                 {!!daysSleepingBagLeft &&
+                    !client.isCheckedIn &&
                     createField(
                         'Sleeping Bag ',
                         daysSleepingBagLeft + ' days remaining'
