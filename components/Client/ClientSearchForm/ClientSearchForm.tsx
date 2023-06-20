@@ -71,6 +71,7 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                             name="firstName"
                             value={clientData.firstName}
                             onChange={handleChange}
+                            autoFocus
                         />
                     </label>
 
