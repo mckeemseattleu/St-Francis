@@ -26,7 +26,12 @@ export default function ClientsSearch() {
                 filter.birthday = new Date(filter.birthday as string);
                 delete filter.filterByBirthday;
             }
-            clients = await listClients(filter);
+            if (!Object.keys(filter).length) {
+                filter.updatedAt = new Date(new Date().toDateString());
+                clients = await listClients(filter, '>=');
+            } else {
+                clients = await listClients(filter, '==');
+            }
             return { clients, fields };
         },
         enabled: false,
