@@ -38,6 +38,7 @@ export type DocFilter = {
  */
 export async function fetchData<DocType>(
     fields: DocFilter = {},
+    opStr: string = '==',
     path: string | Array<string> = DEFAULT_PATH,
     limit = LIMIT,
     order: { by: string; desc: boolean } | null = null
@@ -55,9 +56,14 @@ export async function fetchData<DocType>(
     }
 
     const collectionRef = collection(firestore, path[0], ...path.slice(1));
-    const constraints = Object.entries(fields).map(([key, val]) =>
-        where(key, '==', val)
-    );
+    const constraints = Object.entries(fields).map(([key, val]) => {
+        console.log(fields);
+        if (opStr === '>=') {
+            return where(key, '>=', val);
+        } else {
+            return where(key, '==', val);
+        }
+    });
 
     const orderContraints = [];
     if (order)
