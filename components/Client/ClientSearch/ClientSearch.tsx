@@ -6,6 +6,7 @@ import type { Client } from 'models';
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { useAlert } from '@/hooks/index';
+import { FilterObject } from '@/utils/fetchData';
 export default function ClientsSearch() {
     const [fields, setFields] = useState<DocFilter>();
     const queryClient = useQueryClient();
@@ -26,6 +27,12 @@ export default function ClientsSearch() {
                 filter.birthday = new Date(filter.birthday as string);
                 delete filter.filterByBirthday;
             }
+            if (!Object.keys(filter).length)
+                filter.updatedAt = {
+                    opStr: '>=',
+                    value: new Date(new Date().toDateString()),
+                } as FilterObject;
+
             clients = await listClients(filter);
             return { clients, fields };
         },
