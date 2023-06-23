@@ -10,11 +10,19 @@ import {
     Timestamp,
     orderBy,
     deleteDoc,
+    WhereFilterOp,
 } from 'firebase/firestore';
 import { firestore } from '@/firebase/firebase';
 
 const DEFAULT_PATH = 'clients';
 const LIMIT = 50;
+
+export type FilterValue = string | number | boolean | Timestamp | Date | null;
+export type FilterObject = {
+    opStr: WhereFilterOp;
+    value: FilterValue;
+};
+const isFilterObject = (x: any): x is FilterObject => !!x?.opStr;
 
 /**
  * Interface for filtering documents in firestore.
@@ -22,7 +30,7 @@ const LIMIT = 50;
  * Could be used with QueryFieldFilterConstraint from firebase/firestore.
  */
 export type DocFilter = {
-    [key: string]: string | number | boolean | Timestamp | Date | null;
+    [key: string]: FilterValue | FilterObject;
 };
 
 /**
@@ -56,7 +64,9 @@ export async function fetchData<DocType>(
 
     const collectionRef = collection(firestore, path[0], ...path.slice(1));
     const constraints = Object.entries(fields).map(([key, val]) =>
-        where(key, '==', val)
+        isFilterObject(val)
+            ? where(key, val.opStr, val.value)
+            : where(key, '==', val)
     );
 
     const orderContraints = [];
