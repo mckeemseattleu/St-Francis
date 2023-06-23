@@ -10,11 +10,22 @@ import {
     Timestamp,
     orderBy,
     deleteDoc,
+    WhereFilterOp,
 } from 'firebase/firestore';
 import { firestore } from '@/firebase/firebase';
 
 const DEFAULT_PATH = 'clients';
 const LIMIT = 50;
+
+// Filter value is used with default == opStr
+export type FilterValue = string | number | boolean | Timestamp | Date | null;
+// Filter object support all defined opStr
+export type FilterObject = {
+    opStr: WhereFilterOp;
+    value: FilterValue;
+};
+// Check whether the provided value is a filter object
+const isFilterObject = (x: any): x is FilterObject => !!x?.opStr;
 
 /**
  * Interface for filtering documents in firestore.
@@ -22,14 +33,15 @@ const LIMIT = 50;
  * Could be used with QueryFieldFilterConstraint from firebase/firestore.
  */
 export type DocFilter = {
-    [key: string]: string | number | boolean | Timestamp | Date | null;
+    [key: string]: FilterValue | FilterObject;
 };
 
 /**
  * Fetches documents from firestore based on the provided fields and path parameters.
  *
  * @param fields Filtering object where the key is the field name and the value is the value to filter by.
- *               Support: the filter supports equality ('==') only for key-value pair.
+ *               Support (updated): the filter supports equality ('==') for default filter value,
+ *                                  Use filter object to specify other filter constraints.
  * @param limit Maximum number of documents to fetch. If not provided, the default limit is used.
  * @param path  Path to the collection to fetch from. If not provided, the default collection is used.
  *              Path can be an array of path segments
@@ -38,7 +50,6 @@ export type DocFilter = {
  */
 export async function fetchData<DocType>(
     fields: DocFilter = {},
-    opStr: string = '==',
     path: string | Array<string> = DEFAULT_PATH,
     limit = LIMIT,
     order: { by: string; desc: boolean } | null = null
@@ -56,14 +67,11 @@ export async function fetchData<DocType>(
     }
 
     const collectionRef = collection(firestore, path[0], ...path.slice(1));
-    const constraints = Object.entries(fields).map(([key, val]) => {
-        console.log(fields);
-        if (opStr === '>=') {
-            return where(key, '>=', val);
-        } else {
-            return where(key, '==', val);
-        }
-    });
+    const constraints = Object.entries(fields).map(([key, val]) =>
+        isFilterObject(val)
+            ? where(key, val.opStr, val.value)
+            : where(key, '==', val)
+    );
 
     const orderContraints = [];
     if (order)

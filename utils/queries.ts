@@ -21,13 +21,11 @@ import {
  */
 export async function listClients(
     fields: DocFilter = {},
-    opStr: string = '==',
     limit = CLIENTS_LIMIT,
     order: { by: string; desc: boolean } | null = null
 ) {
     return (await fetchData<Client>(
         fields,
-        opStr,
         CLIENTS_PATH,
         limit,
         order
@@ -58,7 +56,6 @@ export async function getClient(id: string) {
 export async function listVisits(
     clientID: string,
     fields: DocFilter = {},
-    opStr: string = '==',
     limit = VISITS_LIMIT,
     order: { by: string; desc: boolean } | null = {
         by: 'createdAt',
@@ -67,7 +64,6 @@ export async function listVisits(
 ) {
     return (await fetchData(
         fields,
-        opStr,
         [CLIENTS_PATH, clientID, VISITS_PATH],
         limit,
         order
@@ -80,12 +76,8 @@ export async function listVisits(
  * @param visitID  Id of the visit to fetch.
  * @returns  requested visit document fetched from firestore.
  */
-export async function getVisit(
-    clientID: string,
-    visitID: string,
-    opStr: string = '=='
-) {
-    return (await fetchData<Visit>({ id: visitID }, opStr, [
+export async function getVisit(clientID: string, visitID: string) {
+    return (await fetchData<Visit>({ id: visitID }, [
         CLIENTS_PATH,
         clientID,
         VISITS_PATH,

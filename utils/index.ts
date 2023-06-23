@@ -7,7 +7,7 @@ export {
     VISITS_PATH,
 } from './constants';
 export { fetchData, mutateData } from './fetchData';
-export type { DocFilter } from './fetchData';
+export type { DocFilter, FilterObject } from './fetchData';
 export { formatDate, toUTCDateString, toLicenseDateString } from './formatDate';
 export {
     createClient,
