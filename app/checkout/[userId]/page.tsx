@@ -2,7 +2,7 @@
 
 import { ClientStatus } from '@/components/Client';
 import Spinner from '@/components/Spinner/Spinner';
-import { Button } from '@/components/UI';
+import { Button, Modal } from '@/components/UI';
 import VisitInfoForm from '@/components/Visit/VisitInfoForm';
 import { useAlert, useQueryCache } from '@/hooks/index';
 import { Visit } from '@/models/index';
@@ -17,6 +17,7 @@ import {
 import ErrorPage from 'next/error';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import styles from './checkout.module.css';
 
@@ -28,6 +29,7 @@ export default function CheckOut({ params }: CheckOutProps) {
     const { updateClientCache, updateVisitCache } = useQueryCache();
     const [, setAlert] = useAlert();
     const router = useRouter();
+    const [show, setShow] = useState(false);
 
     const { isLoading, data: clientData } = useQuery(
         [CLIENTS_PATH, params.userId],
@@ -54,6 +56,8 @@ export default function CheckOut({ params }: CheckOutProps) {
         router.push(`/`);
     };
 
+    const fullName = `${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`;
+
     if (isLoading || isVisitsloading) return <Spinner />;
     if (!clientData) return <ErrorPage statusCode={404} withDarkMode={false} />;
     if (!visitsData?.[0]) {
@@ -79,9 +83,20 @@ export default function CheckOut({ params }: CheckOutProps) {
             </div>
             <VisitInfoForm
                 initialVisitData={visitsData[0]}
-                onSubmit={checkOut}
+                onSubmit={() => setShow(true)}
                 submitLabel="Save and Check Out"
             />
+            <Modal show={show} setShow={setShow}>
+                <h3>Are you sure you want to checkout this client?</h3>
+                <h4>{`${fullName}`}</h4>
+                <hr />
+                <div className={styles.rowContainer}>
+                    <Button onClick={() => checkOut(visitsData[0])}>
+                        Confirm Checkout
+                    </Button>
+                    <Button onClick={() => setShow(false)}>Cancel</Button>
+                </div>
+            </Modal>
         </div>
     );
 }
