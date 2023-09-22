@@ -57,22 +57,17 @@ export default function CheckOut({ params }: CheckOutProps) {
         router.push(`/`);
     };
 
-    const onChange = (visitData: Visit) => {
-        setVisitFormData(visitData);
-    };
-
     const saveVisit = async (visitData: Visit) => {
         await updateVisit(visitData, params.userId);
         const client = await updateClient({
             ...clientData,
         });
         updateVisitCache(params.userId, visitData);
-        updateClientCache(client);
         setAlert({
             message: `Successfully updated visit for ${clientData?.firstName}`,
             type: 'success',
         });
-        router.push(`/checkedin`);
+        setShow(false);
     };
 
     const fullName = `${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`;
@@ -103,7 +98,7 @@ export default function CheckOut({ params }: CheckOutProps) {
             <VisitInfoForm
                 initialVisitData={visitsData[0]}
                 onSubmit={() => setShow(true)}
-                onChange={onChange}
+                onChange={setVisitFormData}
                 submitLabel="Save and Check Out"
             />
             <Modal show={show} setShow={setShow}>
