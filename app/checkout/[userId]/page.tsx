@@ -30,6 +30,7 @@ export default function CheckOut({ params }: CheckOutProps) {
     const [, setAlert] = useAlert();
     const router = useRouter();
     const [show, setShow] = useState(false);
+    const [visitFormData, setVisitFormData] = useState<Visit>();
 
     const { isLoading, data: clientData } = useQuery(
         [CLIENTS_PATH, params.userId],
@@ -54,6 +55,24 @@ export default function CheckOut({ params }: CheckOutProps) {
             type: 'success',
         });
         router.push(`/`);
+    };
+
+    const onChange = (visitData: Visit) => {
+        setVisitFormData(visitData);
+    };
+
+    const saveVisit = async (visitData: Visit) => {
+        await updateVisit(visitData, params.userId);
+        const client = await updateClient({
+            ...clientData,
+        });
+        updateVisitCache(params.userId, visitData);
+        updateClientCache(client);
+        setAlert({
+            message: `Successfully updated visit for ${clientData?.firstName}`,
+            type: 'success',
+        });
+        router.push(`/checkedin`);
     };
 
     const fullName = `${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`;
@@ -84,6 +103,7 @@ export default function CheckOut({ params }: CheckOutProps) {
             <VisitInfoForm
                 initialVisitData={visitsData[0]}
                 onSubmit={() => setShow(true)}
+                onChange={onChange}
                 submitLabel="Save and Check Out"
             />
             <Modal show={show} setShow={setShow}>
@@ -91,8 +111,19 @@ export default function CheckOut({ params }: CheckOutProps) {
                 <h4>{`${fullName}`}</h4>
                 <hr />
                 <div className={styles.rowContainer}>
-                    <Button onClick={() => checkOut(visitsData[0])}>
+                    <Button
+                        onClick={() =>
+                            visitFormData && checkOut(visitFormData!)
+                        }
+                    >
                         Confirm Checkout
+                    </Button>
+                    <Button
+                        onClick={() =>
+                            visitFormData && saveVisit(visitFormData!)
+                        }
+                    >
+                        Save Only
                     </Button>
                     <Button onClick={() => setShow(false)}>Cancel</Button>
                 </div>
