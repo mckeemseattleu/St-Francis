@@ -59,9 +59,6 @@ export default function CheckOut({ params }: CheckOutProps) {
 
     const saveVisit = async (visitData: Visit) => {
         await updateVisit(visitData, params.userId);
-        const client = await updateClient({
-            ...clientData,
-        });
         updateVisitCache(params.userId, visitData);
         setAlert({
             message: `Successfully updated visit for ${clientData?.firstName}`,
