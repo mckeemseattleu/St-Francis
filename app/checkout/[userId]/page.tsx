@@ -30,7 +30,6 @@ export default function CheckOut({ params }: CheckOutProps) {
     const [, setAlert] = useAlert();
     const router = useRouter();
     const [show, setShow] = useState(false);
-    const [visitFormData, setVisitFormData] = useState<Visit>();
 
     const { isLoading, data: clientData } = useQuery(
         [CLIENTS_PATH, params.userId],
@@ -41,6 +40,10 @@ export default function CheckOut({ params }: CheckOutProps) {
         [CLIENTS_PATH, params.userId, VISITS_PATH],
         () => listVisits(params.userId, undefined, 1)
     );
+    const [visitFormData, setVisitFormData] = useState<Visit>(
+        visitsData ? visitsData[0] : ({} as Visit)
+    );
+
     // Sets isCheckedIn status to false then gets updated client data
     const checkOut = async (visitData: Visit) => {
         await updateVisit(visitData, params.userId);
