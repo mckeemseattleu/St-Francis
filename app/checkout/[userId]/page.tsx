@@ -40,6 +40,10 @@ export default function CheckOut({ params }: CheckOutProps) {
         [CLIENTS_PATH, params.userId, VISITS_PATH],
         () => listVisits(params.userId, undefined, 1)
     );
+    const [visitFormData, setVisitFormData] = useState<Visit>(
+        visitsData ? visitsData[0] : ({} as Visit)
+    );
+
     // Sets isCheckedIn status to false then gets updated client data
     const checkOut = async (visitData: Visit) => {
         await updateVisit(visitData, params.userId);
@@ -54,6 +58,16 @@ export default function CheckOut({ params }: CheckOutProps) {
             type: 'success',
         });
         router.push(`/`);
+    };
+
+    const saveVisit = async (visitData: Visit) => {
+        await updateVisit(visitData, params.userId);
+        updateVisitCache(params.userId, visitData);
+        setAlert({
+            message: `Successfully updated visit for ${clientData?.firstName}`,
+            type: 'success',
+        });
+        setShow(false);
     };
 
     const fullName = `${clientData?.firstName} ${clientData?.middleInitial} ${clientData?.lastName}`;
@@ -84,6 +98,7 @@ export default function CheckOut({ params }: CheckOutProps) {
             <VisitInfoForm
                 initialVisitData={visitsData[0]}
                 onSubmit={() => setShow(true)}
+                onChange={setVisitFormData}
                 submitLabel="Save and Check Out"
             />
             <Modal show={show} setShow={setShow}>
@@ -91,8 +106,19 @@ export default function CheckOut({ params }: CheckOutProps) {
                 <h4>{`${fullName}`}</h4>
                 <hr />
                 <div className={styles.rowContainer}>
-                    <Button onClick={() => checkOut(visitsData[0])}>
+                    <Button
+                        onClick={() =>
+                            visitFormData && checkOut(visitFormData!)
+                        }
+                    >
                         Confirm Checkout
+                    </Button>
+                    <Button
+                        onClick={() =>
+                            visitFormData && saveVisit(visitFormData!)
+                        }
+                    >
+                        Save Only
                     </Button>
                     <Button onClick={() => setShow(false)}>Cancel</Button>
                 </div>
