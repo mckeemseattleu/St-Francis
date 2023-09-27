@@ -58,7 +58,7 @@ describe('SettingsForm', () => {
         expect(mockOnSubmit).toReturnWith('default');
     });
 
-    it('shoudld save form with modified input value', () => {
+    it('should save form with modified input value', () => {
         const mockOnSubmit = jest.fn();
         const newValue = 10;
         mockOnSubmit.mockImplementation(
