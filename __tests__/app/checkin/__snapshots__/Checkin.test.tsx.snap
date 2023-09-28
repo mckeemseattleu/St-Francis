@@ -78,7 +78,18 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
       </summary>
       <div
         className="rowContainer"
-      />
+      >
+        <div
+          className="rowContainer"
+        >
+          <h3>
+            Birthday
+          </h3>
+          <p>
+            undefined/undefined/
+          </p>
+        </div>
+      </div>
       <div
         className="rowContainer"
       >
