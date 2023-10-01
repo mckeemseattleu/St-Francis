@@ -1,7 +1,8 @@
 'use client';
 
 import { Client } from '@/models/index';
-import { formatDate } from '@/utils/index';
+import { toLicenseDateString, formatDate } from '@/utils/index';
+import { format } from 'path';
 import styles from './ClientProfileInfo.module.css';
 
 type ClientProfileInfoProps = {
@@ -37,7 +38,10 @@ const ClientProfileInfo = (props: ClientProfileInfoProps) => {
     return (
         <>
             <div className={styles.rowContainer}>
-                {createField('Birthday', birthday && formatDate(birthday))}
+                {createField(
+                    'Birthday',
+                    birthday && toLicenseDateString(birthday)
+                )}
                 {createField('Gender', gender)}
                 {createField('Race', race)}
                 {createField('Postal code', postalCode)}
