@@ -2,7 +2,6 @@ import '@testing-library/jest-dom';
 import { act, render, screen } from '@testing-library/react';
 import Profile from '../../../app/profile/[userId]/page';
 import { useQuery } from 'react-query';
-// import { Timestamp } from 'firebase/firestore';
 
 jest.mock('@/hooks/index', () => ({
     __esModule: true,
