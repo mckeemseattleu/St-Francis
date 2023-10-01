@@ -66,7 +66,7 @@ export default function Checkin({ params }: CheckinProps) {
             } as Client);
             updateClientCache(client);
             setAlert({
-                message: `Successfully Checked In ${client?.firstName}`,
+                message: `Successfully Checked In ${clientData?.firstName}`,
                 type: 'success',
             });
             // Redirect to user profile page after checking user in
