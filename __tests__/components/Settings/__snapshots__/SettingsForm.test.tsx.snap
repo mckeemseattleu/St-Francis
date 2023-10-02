@@ -13,8 +13,10 @@ exports[`SettingsForm should match snapshot 1`] = `
   </label>
   <input
     id="daysEarlyThreshold"
+    min="0"
     name="daysEarlyThreshold"
     onChange={[Function]}
+    required={true}
     type="number"
     value="0"
   />
@@ -28,8 +30,10 @@ exports[`SettingsForm should match snapshot 1`] = `
   </label>
   <input
     id="backpackThreshold"
+    min="0"
     name="backpackThreshold"
     onChange={[Function]}
+    required={true}
     type="number"
     value="0"
   />
@@ -43,8 +47,10 @@ exports[`SettingsForm should match snapshot 1`] = `
   </label>
   <input
     id="sleepingBagThreshold"
+    min="0"
     name="sleepingBagThreshold"
     onChange={[Function]}
+    required={true}
     type="number"
     value="0"
   />

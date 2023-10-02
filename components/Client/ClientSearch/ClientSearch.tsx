@@ -1,6 +1,6 @@
 'use client';
 import { ClientList, ClientSearchForm } from '@/components/Client/index';
-import type { DocFilter } from '@/utils/index';
+import type { DocFilter, FilterObject } from '@/utils/index';
 import { CLIENTS_PATH, listClients } from '@/utils/index';
 import type { Client } from 'models';
 import { useEffect, useState } from 'react';
@@ -26,6 +26,11 @@ export default function ClientsSearch() {
                 filter.birthday = new Date(filter.birthday as string);
                 delete filter.filterByBirthday;
             }
+            if (!Object.keys(filter).length)
+                filter.updatedAt = {
+                    opStr: '>=',
+                    value: new Date(new Date().toDateString()),
+                } as FilterObject;
             clients = await listClients(filter);
             return { clients, fields };
         },

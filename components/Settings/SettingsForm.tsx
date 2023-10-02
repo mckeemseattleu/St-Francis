@@ -60,6 +60,8 @@ function SettingsForm(props: SettingsFormProps) {
                 id="daysEarlyThreshold"
                 value={settings.daysEarlyThreshold}
                 onChange={handleChange}
+                required
+                min="0"
             />
             <br />
 
@@ -72,6 +74,8 @@ function SettingsForm(props: SettingsFormProps) {
                 id="backpackThreshold"
                 value={settings.backpackThreshold}
                 onChange={handleChange}
+                required
+                min="0"
             />
             <br />
 
@@ -84,6 +88,8 @@ function SettingsForm(props: SettingsFormProps) {
                 id="sleepingBagThreshold"
                 value={settings.sleepingBagThreshold}
                 onChange={handleChange}
+                required
+                min="0"
             />
             <br />
 

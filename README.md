@@ -1,99 +1,152 @@
-# Setting up Development Environment
+# ST. FRANCIS HOUSE SEATTLE
 
-## Dependencies
+St. Francis House charity's web application project will provide an efficient and effective tool for managing client check-ins, improving the charity's operations and service delivery to those in need. The application will be designed to streamline the check-in process, reduce wait times, and provide better tracking and analysis of client data.
 
-### Node.js
+## Introduction
+The web-based application facilitates efficient client management by enabling staff members to locate existing clients in the database or create new client records for upcoming visits. Upon check-in, the system captures the client's demographic details, including their name, age, gender, dependents, and living conditions. Upon completion of essential services, such as obtaining clothing, household items, bus tickets, or financial assistance, the system records the services and products provided to the client. Additionally, the system stores client visit history, services received, and staff notes to generate a comprehensive report that can help ascertain if a client is arriving early for their next visit.
 
-You will need [Node.js](https://nodejs.org/en/) on your computer
+## Contributing
+This project uses [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)  workflow for branching.
+<img src="https://wac-cdn.atlassian.com/dam/jcr:34c86360-8dea-4be4-92f7-6597d4d5bfae" width="500"/>
+*(Feature Branches, [atlassian.com](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow))*
 
-### Project dependencies
+**Branching**
+- Branch naming convention: `main`, `dev` , `feature/*`, `hotfix/*`
+- Feature may branch off from:  `dev`
+- Hotfix may branch off from: `main`
 
-Once you have Node, navigate to the project folder and run the following to install dependencies used by the project
+**Merging**
+- Feature branches must merge back into:  `dev`
+- Hotfix branches must merge back into: `dev` and `main`
 
+> **Note:**
+> Release is currently done by merging `dev` into `main`. Going forward create a `release/*` from `dev` when new version is ready, then merge into `main` and back into `dev`.  - 05/10/2023
+
+**Pull Request Process**
+1. Ensure latest  `dev`  branch are merged in 
+2. Ensure all tests are passing `npm run test`.
+3. Ensure console logs are removed, and format code styling  `npm run format`
+4. Ensure no lint warning `npm run lint` and no build error `npm run build`
+5. Create a pull request and request at least one reviewer
+7. Pull Request may be merged once approved.
+
+# GETTING STARTED
+
+## Installation
+**Requirements:** [Node.js](https://nodejs.org/en/), [Git](https://git-scm.com/), [Yarn](https://yarnpkg.com/) (optional)
+*You will need to install these requirements on your local machine*
+
+**Clone St-Francis project**
 ```bash
-npm install
+	git clone https://github.com/Kevinjchang98/St-Francis.git
+	cd St-Francis
 ```
-
-Depending on when you do this, there may be issues with legacy peer dependencies as React went from 17 to 18. You can fix this by running
-
+Install St-Francis using `npm`
 ```bash
-npm install --legacy-peer-deps
+	npm install  [--legacy-peer-deps]
 ```
-
-### Environment variables
-
-Secret tokens for accessing and modifying the database from the frontend need to be in a `.env.local` file in the project root folder. It has the following format.
-
-```
-NEXT_PUBLIC_FIREBASE_API_KEY = your-key-here
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = your-domain-here
-NEXT_PUBLIC_FIREBASE_PROJECT_ID = your-project-id-here
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = your-link-here
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = your-id-here
-NEXT_PUBLIC_FIREBASE_APP_ID = your-id-here
-NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID = your-id-here
-```
-
-Don't push or expose these keys to GitHub or anywhere public. This file should be ignored by `.gitignore` already
-
-## Starting development server
-
-After installing all dependencies, you can start the development server:
-
+Start the development server
 ```bash
-npm run dev
+	npm  run  dev
 ```
+*You should then have a link that you can visit in your browser. 
+By default it will be* http://localhost:3000
 
-You should then have a link that you can visit in your browser. By default it will be
+## Environment Variables
+To run this project, you will need to add the following environment variables to your `.env.local` file
 
-```
-http://localhost:3000
-```
+    NEXT_PUBLIC_FIREBASE_API_KEY = your-key-here
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = your-domain-here
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID = your-project-id-here
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = your-link-here
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = your-id-here
+    NEXT_PUBLIC_FIREBASE_APP_ID = your-id-here
+    NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID = your-id-here
+    
+*Don't push or expose these keys to GitHub or anywhere public. This file should be ignored by `.gitignore` already*
 
-# Tech stack
+## Configuration
+### Path Mapping
 
-## Front end
+Path mapping is used to provide convenient module import and improve code readability.
 
-This currently uses [Next.js 13](https://nextjs.org/) with the experimental `app` directory routing structure
+	// tsconfig.json
+    "baseUrl":  ".",
+    "paths":  {    
+	    "@/firebase/*":  ["firebase/*"],
+	    "@/components/*":  ["components/*"],  
+	    "@/app/*":  ["app/*"],
+	    "@/hooks/*":  ["hooks/*"],
+	    "@/providers/*":  ["providers/*"],
+	    "@/styles/*":  ["styles/*"],
+	    "@/utils/*":  ["utils/*"],
+	    "@/models/*":  ["models/*"]
+    },
 
-The project uses [TypeScript](https://www.typescriptlang.org/)
+## Tech stack
 
-Unit testing is done with [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). [Babel](https://babeljs.io/) is used for compiling the TypeScript for the unit tests, but Next's Rust-based SWC is used for building the site
+<a href="https://github.com/Kevinjchang98/St-Francis">
+	<img src="https://skillicons.dev/icons?i=ts,next,jest,firebase,vercel" />
+</a>
 
-## Database
+### Front end
 
-Google's [Firestore](https://cloud.google.com/firestore) is used for the database. It's a NoSQL document database in structure
+[Next.js 13](https://nextjs.org/) with the `app` directory routing structure, and [TypeScript](https://www.typescriptlang.org/)
+[Jest](https://jestjs.io/), [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) and [ts-jest](https://kulshekhar.github.io/ts-jest/) is used for unit testing.
+[React Query](https://tanstack.com/query/v3/) is used for data fetching and caching
 
-## Authentication
-
-Google's [Firebase Authentication](https://firebase.google.com/products/auth) is used for authentication
-
-## Hosting
+### Backend
 
 [Vercel](https://vercel.com/) is used for hosting of the front-end
+[Firestore](https://cloud.google.com/firestore) is used for the database. 
+[Firebase Authentication](https://firebase.google.com/products/auth) is used for authentication
 
-# Opinionated Decisions
+## Design Decisions
 
-I'm (Kevin) not entirely sure about best practices for various decisions made in this project, and if there are known best practices that conflict with these it may be a good idea to refactor and change these in the future
+### Folder Structure
 
-## Provider & Context
+    .
+    ├── __tests__
+    ├── app					# next pages
+    ├── components			# ui components
+    ├── firebase			# firebase initialization
+    ├── hooks				# react custom hooks
+    ├── models				# database models
+    ├── providers			# global contexts
+    ├── styles				# global css
+    └── utils				# utilities such as data fetching, validation, etc.
 
-There are currently two different contexts, one for settings and one for Firebase's authentication (sign-in, sign-out, etc). These are found in the `providers` folder. The exported combined providers wraps the `<Main />` element in root layout `app/layout.tsx`
+### Providers & Contexts
 
-## Type Definitions
+There are currently four different providers, including settings, Firebase's authentication (sign-in, sign-out, etc), global alert, and react query client. These are found in the `providers` folder. The exported combined providers wraps the `<Main />` element in root layout `app/layout.tsx`
+```jsx
+// app/layout.tsx
+<Providers>
+	<Layout>{children}</Layout>
+</Providers>
+```
+```jsx
+// providers/index.ts
+ <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+          <AlertProvider>
+              <SettingsProvider>{children}</SettingsProvider>
+          </AlertProvider>
+      </QueryClientProvider>
+  </AuthProvider>
+```
+### Type Definitions
 
-There are no files that hold global type definitions for types that are used throughout the project. E.g., `ClientDoc` is defined in `app\profile\[userId]\page.tsx` and used in many other files as this is the Type for what the Firestore database expects. We could consider having a file just for these types for better organization
+`Client`, `Visit` and `Setting` type definitions are used throughout the project can be found in `models\index.d.ts`. These types are use for objects fetched from Firebase database and is immutable. Make a copy these objects for various purpose e.g., using forms  
 
-## Babel vs SWC
+### Queries, Mutations, and Data Fetching
 
-Due to Jest and Vercel the project currently uses both Babel and SWC. Ideally we'd only use SWC but I couldn't figure out how to make Jest work nicely without Babel
+TBA
 
-## Queries with no Filter
+### Default Settings
 
-Currently if the user searches with no filters (first name, last name, and/or birthday) then the first 50 clients will be returned. We should discuss if this functionality should even be allowed. If it is, ideally we paginate data so the user can eventually click through all users, but a limit should still be in place to prevent having too many document reads as one client returned is one document read
+TBA
 
-## Default settings behavior
+### Client Validation
 
-Settings are saved as temporary local state as well as on the database. This allows for behavior where if the site is open on computer A and B, they will both receive the database's values on load. If A modifies their settings without clicking "Save as default", then A and B will have different settings.
-
-Checks and validations for actions are performed against the local set of settings; this is to prevent A from changing settings on the database and B not knowing that validation settings have been changed while in the middle of performing an action
+TBA

@@ -163,4 +163,25 @@ describe('Profile page', () => {
         expect(screen.getByText('Checked In')).toBeInTheDocument();
         expect(screen.getByText('Unhoused')).toBeInTheDocument();
     });
+
+    it('displays birthday as UTC date', async () => {
+        const { Timestamp } = jest.requireActual('firebase/firestore');
+
+        const testBirthday = '01/15/1990';
+        const [month, day, year] = testBirthday.split('/');
+        const date = new Date(`${year}-${month}-${day}T00:00:00.000Z`);
+        const birthdayTimestamp = Timestamp.fromDate(date);
+
+        mockUseQueryData({
+            ...mockClient,
+            birthday: birthdayTimestamp,
+        });
+
+        await act(async () => {
+            render(<Profile params={{ userId: '1234' }} />);
+        });
+
+        const birthdayElement = screen.getByText(testBirthday);
+        expect(birthdayElement).toBeInTheDocument();
+    });
 });

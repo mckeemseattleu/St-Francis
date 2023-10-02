@@ -124,7 +124,7 @@ export default function Profile({ params }: ProfileProps) {
                     <Button onClick={() => setShow(true)}>Delete</Button>
                     {clientData.isCheckedIn ? (
                         <Link href={`/checkout/${params.userId}`}>
-                            <Button>Check in</Button>
+                            <Button>Check out</Button>
                         </Link>
                     ) : (
                         <Link href={`/checkin/${params.userId}`}>

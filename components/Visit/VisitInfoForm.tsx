@@ -9,6 +9,7 @@ interface VisitInfoFormProps {
     initialVisitData?: Visit;
     onSubmit?: (visitData: Visit) => void;
     submitLabel?: string;
+    onChange?: (visitData: Visit) => void;
 }
 
 const defaultVisitData = {
@@ -33,6 +34,7 @@ export default function VisitInfoForm({
     onSubmit,
     initialVisitData,
     submitLabel,
+    onChange,
 }: VisitInfoFormProps) {
     // Append boyAge and girlAge to notes
     let initialNotes = initialVisitData?.notes || '';
@@ -45,6 +47,7 @@ export default function VisitInfoForm({
         ...defaultVisitData,
         ...initialVisitData,
         busTicket: toString(initialVisitData?.busTicket),
+        orcaCard: toString(initialVisitData?.orcaCard),
         giftCard: toString(initialVisitData?.giftCard),
         diaper: toString(initialVisitData?.diaper),
         financialAssistance: toString(initialVisitData?.financialAssistance),
@@ -56,9 +59,14 @@ export default function VisitInfoForm({
 
     const handleSubmit = async (e: any) => {
         e.preventDefault(); // Prevent redirect
-        const transformedVisitData = {
+        onSubmit && onSubmit(transformData(visitData));
+    };
+
+    const transformData = (visitData: any) => {
+        return {
             ...visitData,
             busTicket: toInt(visitData.busTicket),
+            orcaCard: toInt(visitData.orcaCard),
             giftCard: toInt(visitData.giftCard),
             diaper: toInt(visitData.diaper),
             financialAssistance: toInt(visitData.financialAssistance),
@@ -73,7 +81,6 @@ export default function VisitInfoForm({
             boyAge: '',
             girlAge: '',
         };
-        onSubmit && onSubmit(transformedVisitData);
     };
 
     const handleChange = (key: string) => (e: any) => {
@@ -81,9 +88,10 @@ export default function VisitInfoForm({
         if (e.target.type === 'checkbox') {
             value = e.target.checked;
         } else value = e.target.value;
+        const data = transformData({ ...visitData, [key]: value });
+        onChange && onChange(data);
         setVisitData({ ...visitData, [key]: value });
     };
-
     return (
         <Form onSubmit={handleSubmit}>
             <h2>Clothing</h2>
@@ -160,6 +168,13 @@ export default function VisitInfoForm({
                 />
                 <FormItem
                     type="number"
+                    id="orcaCard"
+                    label="Orca Card"
+                    value={visitData.orcaCard}
+                    onChange={handleChange('orcaCard')}
+                />
+                <FormItem
+                    type="number"
                     id="giftCard"
                     label="Gift Card"
                     value={visitData.giftCard}
@@ -179,6 +194,8 @@ export default function VisitInfoForm({
                     value={visitData.financialAssistance}
                     onChange={handleChange('financialAssistance')}
                 />
+            </FormRow>
+            <FormRow>
                 <FormItem
                     type="checkbox"
                     id="backpack"
@@ -215,8 +232,7 @@ export default function VisitInfoForm({
                 onChange={handleChange('notes')}
             />
             <Button type="submit" className={styles.submitBtn}>
-                {submitLabel ||
-                    (initialVisitData ? 'Save Visit' : 'New Visit / Check-in')}
+                {submitLabel || 'Submit'}
             </Button>
         </Form>
     );

@@ -13,7 +13,9 @@ function ClientStatus(props: ClientStatusProps) {
             <span className={isCheckedIn ? styles.success : styles.error}>
                 {isCheckedIn ? 'Checked In' : 'Not Checked In'}
             </span>
-            {BPCResident && <span className={styles.success}>BPCResident</span>}
+            {BPCResident && (
+                <span className={styles.success}>BPC Resident</span>
+            )}
             {sheltered && <span className={styles.success}>Sheltered</span>}
             {unhoused && <span className={styles.warning}>Unhoused</span>}
             {isBanned && <span className={styles.error}>Banned</span>}
