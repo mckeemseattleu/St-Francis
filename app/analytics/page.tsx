@@ -53,19 +53,19 @@ export default function AnalyticsPage() {
 
     const shelterCount = (clients: Client[]) => {
         return clients.filter((client) => client.sheltered === true).length;
-    }
+    };
 
     const unhousedCount = (clients: Client[]) => {
         return clients.filter((client) => client.unhoused === true).length;
-    }
+    };
 
     const bannedCount = (clients: Client[]) => {
         return clients.filter((client) => client.isBanned === true).length;
-    }
+    };
 
     const bpcResidentCount = (clients: Client[]) => {
         return clients.filter((client) => client.BPCResident === true).length;
-    }
+    };
 
     const numKids = (clients: Client[]) => {
         let count = 0;
@@ -73,7 +73,7 @@ export default function AnalyticsPage() {
             count += client.numKids || 0;
         });
         return count;
-    }
+    };
 
     return (
         <div>
@@ -84,7 +84,7 @@ export default function AnalyticsPage() {
             ) : data?.clients ? (
                 <div>
                     {getGenderCounts(data.clients).map((count, i) => (
-                        <p>
+                        <p key={i}>
                             {genderList[i]}:{count}
                         </p>
                     ))}
@@ -94,13 +94,12 @@ export default function AnalyticsPage() {
                     <p>Banned: {bannedCount(data.clients)}</p>
                     <p>BPC Residents: {bpcResidentCount(data.clients)}</p>
                     {getRaceCounts(data.clients).map((count, i) => (
-                        <div>
+                        <div key={i}>
                             <p>
                                 {raceList[i]}: {count}
                             </p>
                         </div>
                     ))}
-
                 </div>
             ) : (
                 'No matching data within date range'
