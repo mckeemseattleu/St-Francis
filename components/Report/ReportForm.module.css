@@ -1,0 +1,59 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem auto;
+    width: 80vw;
+    max-width: 1000px;
+}
+
+.container h1 {
+    text-align: center;
+    margin-block: 0rem;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: auto;
+    align-items: center;
+}
+
+.formContainer label {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 10px;
+    flex: 1;
+    max-width: 250px;
+}
+
+.formContainer input {
+    font-size: 1em;
+}
+
+.formControls {
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.formControls button {
+    height: 50px;
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.birthdayControlsContainer {
+    display: flex;
+    align-items: center;
+}
+
+.birthdayControlsContainer input[type='date'] {
+    width: 100%;
+}
