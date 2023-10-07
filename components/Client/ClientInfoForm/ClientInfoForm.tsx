@@ -14,7 +14,7 @@ interface ClientInfoFormProps {
     actions?: { [actionType: string]: (clientData: DocFilter) => void };
 }
 
-const raceList = [
+export const raceList = [
     'Black or African American',
     'White',
     'Hispanic or Latino',
@@ -23,7 +23,7 @@ const raceList = [
     'Native Hawaiian or Other Pacific Islander',
     'Other',
 ];
-const genderList = ['Male', 'Female', 'Other'];
+export const genderList = ['Male', 'Female', 'Other'];
 
 /**
  * A form for creating or editing a client's document in the database.

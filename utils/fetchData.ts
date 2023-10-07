@@ -11,6 +11,7 @@ import {
     orderBy,
     deleteDoc,
     WhereFilterOp,
+    QueryFieldFilterConstraint,
 } from 'firebase/firestore';
 import { firestore } from '@/firebase/firebase';
 
@@ -33,7 +34,7 @@ const isFilterObject = (x: any): x is FilterObject => !!x?.opStr;
  * Could be used with QueryFieldFilterConstraint from firebase/firestore.
  */
 export type DocFilter = {
-    [key: string]: FilterValue | FilterObject;
+    [key: string]: FilterValue | FilterObject | Array<FilterObject>;
 };
 
 /**
@@ -67,11 +68,16 @@ export async function fetchData<DocType>(
     }
 
     const collectionRef = collection(firestore, path[0], ...path.slice(1));
-    const constraints = Object.entries(fields).map(([key, val]) =>
-        isFilterObject(val)
-            ? where(key, val.opStr, val.value)
-            : where(key, '==', val)
-    );
+    const constraints = [] as Array<QueryFieldFilterConstraint>;
+    Object.entries(fields).forEach(([key, val]) => {
+        if (Array.isArray(val)) {
+            val.forEach((v) => constraints.push(where(key, v.opStr, v.value)));
+        } else if (isFilterObject(val)) {
+            constraints.push(where(key, val.opStr, val.value));
+        } else {
+            constraints.push(where(key, '==', val));
+        }
+    });
 
     const orderContraints = [];
     if (order)
