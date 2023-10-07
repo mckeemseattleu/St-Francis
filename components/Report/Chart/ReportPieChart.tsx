@@ -1,5 +1,5 @@
 'use client';
-import { Pie, PieChart, Tooltip } from 'recharts';
+import { Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import styles from '../Report.module.css';
 
 type ReportPieChartProps = {
@@ -13,36 +13,34 @@ export default function ReportPieChart(props: ReportPieChartProps) {
     return (
         <div className={styles.outerPieChartContainer}>
             <h2>{title}</h2>
-            <div className={styles.innerPieChartContainer}>
-                <div>
-                    {filteredData.map(
-                        (dataPoint: { name: string; value: number }) => (
-                            <p
-                                key={dataPoint.name}
-                                data-testid={dataPoint.name}
-                            >
-                                {dataPoint.name}: {dataPoint.value}
-                            </p>
-                        )
-                    )}
-                </div>
-                <div>
-                    <PieChart width={250} height={250}>
-                        <Pie
-                            data={filteredData}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={40}
-                            outerRadius={80}
-                            fill="#8884d8"
-                            label
-                        />
-                        <Tooltip />
-                    </PieChart>
-                </div>
-            </div>
+            <ResponsiveContainer width="99%" aspect={3.5 / 1}>
+                <PieChart>
+                    <Pie
+                        data={filteredData}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={'40%'}
+                        outerRadius={'65%'}
+                        label={(data) =>
+                            `${data.name} (${Math.round(data.percent * 100)}%)`
+                        }
+                        style={{ fontSize: '0.9rem' }}
+                    />
+                    <Legend
+                        layout="vertical"
+                        verticalAlign="middle"
+                        align="left"
+                        payload={filteredData.map((dataPoint) => ({
+                            value: dataPoint.name + ': ' + dataPoint.value,
+                            type: 'line',
+                        }))}
+                        wrapperStyle={{ width: '200px', lineHeight: 2 }}
+                    />
+                    <Tooltip formatter={(value) => [value]} />
+                </PieChart>
+            </ResponsiveContainer>
         </div>
     );
 }

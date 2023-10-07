@@ -3,6 +3,7 @@ import {
     Bar,
     BarChart,
     CartesianGrid,
+    Legend,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -21,34 +22,25 @@ export default function ReportBarChart(props: ReportBarChartProps) {
     return (
         <div className={styles.outerBarChartContainer}>
             <h2>{title}</h2>
-            <div className={styles.innerBarChartContainer}>
-                <div>
-                    {filteredData.map((dataPoint: any) => (
-                        <p key={dataPoint.name}>
-                            {dataPoint.name}: {dataPoint.value}
-                        </p>
-                    ))}
-                </div>
-                <div style={{ flex: 1 }}>
-                    <ResponsiveContainer width="100%" aspect={2.0 / 1.0}>
-                        <BarChart
-                            data={filteredData}
-                            margin={{
-                                top: 5,
-                                right: 30,
-                                left: 20,
-                                bottom: 5,
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="value" barSize={40} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-            </div>
+            <ResponsiveContainer aspect={2.5 / 1}>
+                <BarChart data={filteredData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="value" barSize={40} />
+                    <Legend
+                        layout="vertical"
+                        verticalAlign="middle"
+                        align="left"
+                        payload={filteredData.map((dp) => ({
+                            value: dp.name + ': ' + dp.value,
+                            type: 'line',
+                        }))}
+                        wrapperStyle={{ width: '200px', lineHeight: 2 }}
+                    />
+                </BarChart>
+            </ResponsiveContainer>
         </div>
     );
 }

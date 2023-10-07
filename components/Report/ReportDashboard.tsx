@@ -10,6 +10,12 @@ import { colorPalette } from '@/styles/colorPalette';
 import ReportNumberBlock from './Chart/ReportDataBlock';
 import styles from './Report.module.css';
 
+const shortenRaceLabels = {
+    'Black or African American': 'Black',
+    'American Indian or Alaska Native': 'Native American',
+    'Native Hawaiian or Other Pacific Islander': 'Pacific Islander',
+} as Record<string, string>;
+
 export default function ReportDashboard(props: { clients: Array<Client> }) {
     const { clients } = props;
 
@@ -22,7 +28,7 @@ export default function ReportDashboard(props: { clients: Array<Client> }) {
                 : raceCountsMap['Other']++
         );
         return Object.entries(raceCountsMap).map((entry) => ({
-            name: entry[0],
+            name: shortenRaceLabels[entry[0]] || entry[0],
             value: entry[1],
             fill: getRandomColor(),
         }));
@@ -75,7 +81,7 @@ export default function ReportDashboard(props: { clients: Array<Client> }) {
     };
 
     return (
-        <div>
+        <div className={styles.container}>
             <div className={styles.dashboardContainer}>
                 <ReportNumberBlock
                     title="Clients"
@@ -95,6 +101,8 @@ export default function ReportDashboard(props: { clients: Array<Client> }) {
             </div>
             <div className={styles.dashboardContainer}>
                 <ReportPieChart title="Gender" data={getGenderData(clients)} />
+            </div>
+            <div className={styles.dashboardContainer}>
                 <ReportPieChart title="Race" data={getRaceData(clients)} />
             </div>
             <ReportBarChart

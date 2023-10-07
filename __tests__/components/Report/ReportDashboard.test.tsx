@@ -28,7 +28,7 @@ jest.mock('@/hooks/index', () => ({
     useAlert: jest.fn(() => [{}, jest.fn()]),
 }));
 
-describe('Client Info Form Component', () => {
+describe('Report Dashboard Component', () => {
     const mockClient = {
         id: '1',
         firstName: 'First',
@@ -48,17 +48,13 @@ describe('Client Info Form Component', () => {
         unhoused: false,
     } as Client;
 
-    it('renders Report Dashboard correctly', async () => {
+    it('should renders Report Dashboard correctly', async () => {
         render(<ReportDashboard clients={[mockClient]}/>);
         const kidCount = screen.getByTestId('kid-count')
         const clientCount = screen.getByTestId('client-count')
         const bpcResidentCount = screen.getByTestId('bpc-resident-count')
-        const maleGenderCount = screen.getByTestId('Male')    
-        const raceCount = screen.getByTestId('American Indian or Alaska Native')
         expect(kidCount.innerHTML).toBe('2');
         expect(clientCount.innerHTML).toBe('1');
         expect(bpcResidentCount.innerHTML).toBe('1');
-        expect(maleGenderCount.innerHTML).toBe('Male: 1');
-        expect(raceCount.innerHTML).toBe('American Indian or Alaska Native: 1');
     });
 });
