@@ -11,9 +11,10 @@ import ReportNumberBlock from './Chart/ReportDataBlock';
 import styles from './Report.module.css';
 
 const shortenRaceLabels = {
-    'Black or African American': 'Black',
+    'Black or African American': 'African American',
     'American Indian or Alaska Native': 'Native American',
     'Native Hawaiian or Other Pacific Islander': 'Pacific Islander',
+    'Hispanic or Latino': 'Hispanic',
 } as Record<string, string>;
 
 export default function ReportDashboard(props: { clients: Array<Client> }) {
@@ -101,9 +102,11 @@ export default function ReportDashboard(props: { clients: Array<Client> }) {
             </div>
             <div className={styles.dashboardContainer}>
                 <ReportPieChart title="Gender" data={getGenderData(clients)} />
-            </div>
-            <div className={styles.dashboardContainer}>
-                <ReportPieChart title="Race" data={getRaceData(clients)} />
+                <ReportPieChart
+                    title="Racial Group"
+                    data={getRaceData(clients)}
+                    className={styles.racePieChart}
+                />
             </div>
             <ReportBarChart
                 title="Other Stats"

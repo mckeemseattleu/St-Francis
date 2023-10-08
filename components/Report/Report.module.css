@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     margin: 1rem auto;
-    width: 80vw;
+    width: 95vw;
     max-width: 1000px;
 }
 
@@ -44,7 +44,15 @@
     padding: 1.5rem;
     margin: 1rem;
     width: fit-content;
+    min-width: 350px;
+    min-height: 350px;
+    max-height: 300px;
     background-color: var(--gray-0);
+}
+
+.racePieChart {
+    min-width: 500px;
+    flex: 1.4;
 }
 
 .outerPieChartContainer h2 {
@@ -52,12 +60,10 @@
 }
 
 .innerPieChartContainer {
-    flex: 1;
+    height: 100%;
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
 }
 
 .dataBlockContainer {

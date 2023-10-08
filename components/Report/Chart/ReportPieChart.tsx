@@ -5,16 +5,22 @@ import styles from '../Report.module.css';
 type ReportPieChartProps = {
     title: string;
     data: Array<{ name: string; value: number; fill: string }>;
-};
+    cx?: string;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 export default function ReportPieChart(props: ReportPieChartProps) {
-    const { title, data } = props;
+    const { title, data, ...rest } = props;
     const filteredData = data.filter((dataPoint) => dataPoint.value !== 0);
+
     return (
-        <div className={styles.outerPieChartContainer}>
+        <div
+            className={
+                styles.outerPieChartContainer + ` ${rest.className || ''}`
+            }
+        >
             <h2>{title}</h2>
-            <ResponsiveContainer width="99%" aspect={3.5 / 1}>
-                <PieChart>
+            <ResponsiveContainer height="90%" aspect={1.5} maxHeight={250}>
+                <PieChart className={styles.innerPieChartContainer}>
                     <Pie
                         data={filteredData}
                         dataKey="value"
@@ -23,10 +29,10 @@ export default function ReportPieChart(props: ReportPieChartProps) {
                         cy="50%"
                         innerRadius={'40%'}
                         outerRadius={'65%'}
-                        label={(data) =>
-                            `${data.name} (${Math.round(data.percent * 100)}%)`
-                        }
-                        style={{ fontSize: '0.9rem' }}
+                        label={(dataPoint) => dataPoint.name}
+                        fontSize={'0.9rem'}
+                        width={'100%'}
+                        paddingAngle={2}
                     />
                     <Legend
                         layout="vertical"
@@ -36,7 +42,7 @@ export default function ReportPieChart(props: ReportPieChartProps) {
                             value: dataPoint.name + ': ' + dataPoint.value,
                             type: 'line',
                         }))}
-                        wrapperStyle={{ width: '200px', lineHeight: 2 }}
+                        wrapperStyle={{ lineHeight: 2 }}
                     />
                     <Tooltip formatter={(value) => [value]} />
                 </PieChart>
