@@ -11,6 +11,7 @@ const menuItems: MenuItems = [
     { title: 'New Client', href: '/add-client' },
     { title: 'Checked in Clients', href: '/checkedin' },
     { title: 'Settings', href: '/settings' },
+    { title: 'Analytics', href: '/analytics' },
 ];
 
 export default function NavBar(props: React.HTMLAttributes<HTMLDivElement>) {

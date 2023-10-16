@@ -36,3 +36,19 @@ export function toLicenseDateString(timestamp: Timestamp | undefined | null) {
     const date = toUTCDateString(timestamp).split('-');
     return `${date[1]}/${date[2]}/${date[0]}`;
 }
+
+/**
+ * Converts a JavaScript date object to a date string in the format 'YYYY-MM-DD'
+ * @param date - JavaScript date object
+ * @returns - date string in the format 'YYYY-MM-DD'
+ */
+export function toDateString(date: Date) {
+    let dateStr = date
+        .toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        })
+        .split('/');
+    return `${dateStr[2]}-${dateStr[0]}-${dateStr[1]}`;
+}

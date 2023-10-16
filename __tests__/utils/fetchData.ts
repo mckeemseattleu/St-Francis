@@ -1,4 +1,4 @@
-import { fetchData, mutateData } from '@/utils/index';
+import { DocFilter, fetchData, mutateData } from '@/utils/index';
 import { act } from '@testing-library/react';
 import { doc, getDoc, getDocs } from 'firebase/firestore';
 
@@ -14,7 +14,7 @@ jest.mock('firebase/firestore', () => ({
     setDoc: jest.fn(),
     where: jest.fn(),
     Timestamp: jest.fn(),
-
+    orderBy: jest.fn(),
     getFirestore: jest.fn(),
 }));
 
@@ -61,6 +61,23 @@ describe('fetchData', () => {
         });
         const doc = await act(() => fetchData({ id: mockID }, mockPath));
         expect(doc).toBeNull();
+    });
+
+    it('should accept fields contains array of FilterObject', async function () {
+        (getDocs as jest.Mock).mockReturnValue({
+            docs: [{ data: () => ({}) }],
+        });
+        const fields = {
+            lastVisit: [
+                { opStr: '<=', value: new Date() },
+                { opStr: '>=', value: new Date() },
+            ],
+        } as DocFilter;
+        const docs = await act(() =>
+            fetchData(fields, mockPath, 10, { by: 'lastVisit', desc: true })
+        );
+        expect(docs).toBeInstanceOf(Array);
+        expect((docs as Array<any>).length).toEqual(1);
     });
 });
 

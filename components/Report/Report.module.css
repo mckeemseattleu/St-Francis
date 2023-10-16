@@ -1,0 +1,133 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem auto;
+    width: 95vw;
+    max-width: 1000px;
+}
+
+.container h1 {
+    text-align: center;
+    margin-block: 0rem;
+}
+
+.dashboardContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.innerBarChartContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+}
+
+.outerBarChartContainer {
+    border: 1px solid var(--gray-3);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1rem;
+    background-color: var(--gray-0);
+}
+
+.outerBarChartContainer h2 {
+    margin: 0;
+}
+
+.outerPieChartContainer {
+    flex: 1;
+    border: 1px solid var(--gray-3);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1rem;
+    width: fit-content;
+    min-width: 350px;
+    min-height: 350px;
+    max-height: 300px;
+    background-color: var(--gray-0);
+}
+
+.racePieChart {
+    min-width: 500px;
+    flex: 1.4;
+}
+
+.outerPieChartContainer h2 {
+    margin: 0;
+}
+
+.innerPieChartContainer {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dataBlockContainer {
+    border: 1px solid var(--gray-3);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1rem;
+    flex: 1;
+    min-width: 230px;
+    background-color: var(--gray-0);
+}
+
+.dataBlockContainer h2 {
+    margin: 0;
+}
+
+.dataBlockContainer p {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.formContainer label {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    flex: 1;
+    max-width: 250px;
+}
+
+.formContainer input {
+    font-size: 1em;
+}
+
+.formControls {
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.formControls button {
+    height: 50px;
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.dateControlsContainer {
+    display: flex;
+    align-items: center;
+}
+
+.dateControlsContainer input[type='date'] {
+    width: 100%;
+}
