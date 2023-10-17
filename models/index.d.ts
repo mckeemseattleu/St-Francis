@@ -57,6 +57,7 @@ export declare type Settings = {
     readonly backpackThreshold?: number;
     readonly sleepingBagThreshold?: number;
     readonly earlyOverride?: boolean;
+    readonly reportingQueryLimit?: number;
     readonly createdAt?: Timestamp | null;
     readonly updatedAt?: Timestamp | null;
 };
