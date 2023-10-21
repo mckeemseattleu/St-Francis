@@ -33,6 +33,7 @@ export default function Printout({ params }: PrintoutProps) {
             const specialRequestItemKeys = [
                 'backpack',
                 'sleepingBag',
+                'food',
                 'busTicket',
                 'orcaCard',
                 'giftCard',
@@ -47,6 +48,7 @@ export default function Printout({ params }: PrintoutProps) {
                 clothingGirl: 'Kids (Girl)',
                 backpack: 'Backpack',
                 sleepingBag: 'Sleeping Bag',
+                food: 'Food',
                 busTicket: 'Bus Ticket',
                 orcaCard: 'Orca Card',
                 giftCard: 'Gift Card',
