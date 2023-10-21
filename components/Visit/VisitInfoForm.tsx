@@ -22,6 +22,7 @@ const defaultVisitData = {
     notes: '',
     backpack: false,
     sleepingBag: false,
+    food: false,
     mensQ: '',
     womensQ: '',
     kidsQ: '',
@@ -209,6 +210,13 @@ export default function VisitInfoForm({
                     label="Sleeping Bag"
                     checked={!!visitData.sleepingBag}
                     onChange={handleChange('sleepingBag')}
+                />
+                <FormItem
+                    type="checkbox"
+                    id="food"
+                    label="Food"
+                    checked={!!visitData.food}
+                    onChange={handleChange('food')}
                 />
             </FormRow>
 
