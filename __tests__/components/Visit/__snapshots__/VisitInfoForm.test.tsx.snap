@@ -259,6 +259,22 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         type="checkbox"
       />
     </div>
+    <div
+      className="formItem"
+    >
+      <label
+        htmlFor="food"
+      >
+        Food
+      </label>
+      <input
+        checked={false}
+        id="food"
+        label="Food"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </div>
   </div>
   <h2>
     Household items
