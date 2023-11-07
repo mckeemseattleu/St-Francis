@@ -39,6 +39,7 @@ export default function Printout({ params }: PrintoutProps) {
                 'giftCard',
                 'financialAssistance',
                 'diaper',
+                'householdItem',
             ];
             // What we want the form to label each checkbox
             const itemLabels = {
@@ -54,6 +55,7 @@ export default function Printout({ params }: PrintoutProps) {
                 giftCard: 'Gift Card',
                 diaper: 'Diapers',
                 financialAssistance: 'Financial Assistance',
+                householdItem: 'Household Items',
             };
             let ans: typeof formData = [];
             // Get clothing items to show
