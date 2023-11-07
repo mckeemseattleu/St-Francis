@@ -27,6 +27,7 @@ function VisitDetail(props: VisitDetailProps) {
         financialAssistance,
         household,
         notes,
+        householdItem,
     } = visitData;
     return (
         <div>
@@ -53,12 +54,14 @@ function VisitDetail(props: VisitDetailProps) {
             orcaCard ||
             giftCard ||
             diaper ||
+            householdItem ||
             financialAssistance ? (
                 <div className={styles.rowContainer}>
                     <div className={styles.row}>
                         {backpack ? <p>{'Backpack ✔️'}</p> : ''}
                         {sleepingBag ? <p>{'Sleeping Bag ✔️'}</p> : ''}
                         {food ? <p>{'Food ✔️'}</p> : ''}
+                        {householdItem ? <p>{'Household Items ✔️'}</p> : ''}
                     </div>
                     <div className={styles.row}>
                         {busTicket ? <p>Bus Tickets: {busTicket}</p> : ''}
