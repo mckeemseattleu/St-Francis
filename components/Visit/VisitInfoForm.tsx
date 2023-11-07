@@ -26,6 +26,7 @@ const defaultVisitData = {
     mensQ: '',
     womensQ: '',
     kidsQ: '',
+    householdItem: false,
 };
 
 const toInt = (value: string) => parseInt(value) || 0;
@@ -89,9 +90,31 @@ export default function VisitInfoForm({
         if (e.target.type === 'checkbox') {
             value = e.target.checked;
         } else value = e.target.value;
-        const data = transformData({ ...visitData, [key]: value });
-        onChange && onChange(data);
-        setVisitData({ ...visitData, [key]: value });
+
+        if (key === 'householdItem') {
+            const booleanValue = Boolean(value);
+
+            setVisitData((visitData) => ({
+                ...visitData,
+                // reset household items notes if householdItem is unchecked
+                household: !booleanValue ? '' : visitData.household,
+                householdItem: booleanValue,
+            }));
+        } else {
+            setVisitData((visitData) => ({
+                ...visitData,
+                [key]: value,
+            }));
+        }
+
+        if (onChange) {
+            const updatedData = {
+                ...visitData,
+                [key]: value,
+                ...(key === 'householdItem' && !value && { household: '' }),
+            };
+            onChange(transformData(updatedData));
+        }
     };
     return (
         <Form onSubmit={handleSubmit}>
@@ -218,17 +241,26 @@ export default function VisitInfoForm({
                     checked={!!visitData.food}
                     onChange={handleChange('food')}
                 />
+                <FormItem
+                    type="checkbox"
+                    id="householdItem"
+                    label="Household Items"
+                    checked={!!visitData.householdItem}
+                    onChange={handleChange('householdItem')}
+                />
             </FormRow>
 
-            <h2>Household items</h2>
-
-            <FormItem
-                type="textarea"
-                id="household"
-                rows={3}
-                value={visitData.household || ''}
-                onChange={handleChange('household')}
-            />
+            <div hidden={!visitData.householdItem}>
+                <h2>Household items</h2>
+                <FormItem
+                    type="textarea"
+                    id="household"
+                    rows={3}
+                    value={visitData.household || ''}
+                    onChange={handleChange('household')}
+                    // hidden={!visitData.householdItem}
+                />
+            </div>
 
             <h2>Notes</h2>
 
