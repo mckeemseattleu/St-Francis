@@ -19,6 +19,7 @@ function VisitDetail(props: VisitDetailProps) {
         kidsQ,
         backpack,
         sleepingBag,
+        food,
         busTicket,
         orcaCard,
         diaper,
@@ -47,6 +48,7 @@ function VisitDetail(props: VisitDetailProps) {
             <h2>Special Requests</h2>
             {backpack ||
             sleepingBag ||
+            food ||
             busTicket ||
             orcaCard ||
             giftCard ||
@@ -56,6 +58,7 @@ function VisitDetail(props: VisitDetailProps) {
                     <div className={styles.row}>
                         {backpack ? <p>{'Backpack ✔️'}</p> : ''}
                         {sleepingBag ? <p>{'Sleeping Bag ✔️'}</p> : ''}
+                        {food ? <p>{'Food ✔️'}</p> : ''}
                     </div>
                     <div className={styles.row}>
                         {busTicket ? <p>Bus Tickets: {busTicket}</p> : ''}
