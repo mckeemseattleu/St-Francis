@@ -57,7 +57,10 @@ export default function VisitInfoForm({
         womensQ: toString(initialVisitData?.womensQ),
         kidsQ: toString(initialVisitData?.kidsQ),
         notes: initialNotes,
-        householdItem: initialVisitData?.household ? true : false,
+        householdItem:
+            initialVisitData?.householdItem || initialVisitData?.household
+                ? true
+                : false,
     });
 
     const handleSubmit = async (e: any) => {
@@ -83,6 +86,7 @@ export default function VisitInfoForm({
             // transfer boyAge and girlAge to notes with submit
             boyAge: '',
             girlAge: '',
+            household: visitData.householdItem ? visitData.household : '',
         };
     };
 
@@ -91,31 +95,9 @@ export default function VisitInfoForm({
         if (e.target.type === 'checkbox') {
             value = e.target.checked;
         } else value = e.target.value;
-
-        if (key === 'householdItem') {
-            const booleanValue = Boolean(value);
-
-            setVisitData((visitData) => ({
-                ...visitData,
-                // reset household items notes if householdItem is unchecked
-                household: !booleanValue ? '' : visitData.household,
-                householdItem: booleanValue,
-            }));
-        } else {
-            setVisitData((visitData) => ({
-                ...visitData,
-                [key]: value,
-            }));
-        }
-
-        if (onChange) {
-            const updatedData = {
-                ...visitData,
-                [key]: value,
-                ...(key === 'householdItem' && !value && { household: '' }),
-            };
-            onChange(transformData(updatedData));
-        }
+        const data = transformData({ ...visitData, [key]: value });
+        onChange && onChange(data);
+        setVisitData({ ...visitData, [key]: value });
     };
     return (
         <Form onSubmit={handleSubmit}>
