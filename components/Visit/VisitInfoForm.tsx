@@ -57,6 +57,7 @@ export default function VisitInfoForm({
         womensQ: toString(initialVisitData?.womensQ),
         kidsQ: toString(initialVisitData?.kidsQ),
         notes: initialNotes,
+        householdItem: initialVisitData?.household ? true : false,
     });
 
     const handleSubmit = async (e: any) => {
@@ -258,7 +259,6 @@ export default function VisitInfoForm({
                     rows={3}
                     value={visitData.household || ''}
                     onChange={handleChange('household')}
-                    // hidden={!visitData.householdItem}
                 />
             </div>
 
