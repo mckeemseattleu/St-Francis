@@ -190,28 +190,12 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           <label
             htmlFor="clothingBoy"
           >
-            Kids (Boy)
+            Kids
           </label>
           <input
             checked={false}
             id="clothingBoy"
-            label="Kids (Boy)"
-            onChange={[Function]}
-            type="checkbox"
-          />
-        </div>
-        <div
-          className="formItem"
-        >
-          <label
-            htmlFor="clothingGirl"
-          >
-            Kids (Girl)
-          </label>
-          <input
-            checked={false}
-            id="clothingGirl"
-            label="Kids (Girl)"
+            label="Kids"
             onChange={[Function]}
             type="checkbox"
           />
