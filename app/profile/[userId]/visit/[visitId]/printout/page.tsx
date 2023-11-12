@@ -45,7 +45,7 @@ export default function Printout({ params }: PrintoutProps) {
             const itemLabels = {
                 clothingMen: 'Mens',
                 clothingWomen: 'Womens',
-                clothingBoy: 'Kids (Boy)',
+                clothingBoy: 'Kids',
                 clothingGirl: 'Kids (Girl)',
                 backpack: 'Backpack',
                 sleepingBag: 'Sleeping Bag',
