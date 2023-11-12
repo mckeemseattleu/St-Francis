@@ -50,6 +50,7 @@ export declare type Visit = {
     readonly clothingWomen?: boolean | null;
     readonly financialAssistance?: number | null;
     readonly idv1?: string;
+    readonly householdItem?: boolean | null;
 };
 
 export declare type Settings = {

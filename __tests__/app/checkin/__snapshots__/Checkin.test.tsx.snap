@@ -376,23 +376,43 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           type="checkbox"
         />
       </div>
+      <div
+        className="formItem"
+      >
+        <label
+          htmlFor="householdItem"
+        >
+          Household Items
+        </label>
+        <input
+          checked={false}
+          id="householdItem"
+          label="Household Items"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
     </div>
-    <h2>
-      Household items
-    </h2>
     <div
-      className="formItem"
+      hidden={true}
     >
-      <label
-        htmlFor="household"
-      />
-      <textarea
-        id="household"
-        onChange={[Function]}
-        rows={3}
-        type="textarea"
-        value=""
-      />
+      <h2>
+        Household items
+      </h2>
+      <div
+        className="formItem"
+      >
+        <label
+          htmlFor="household"
+        />
+        <textarea
+          id="household"
+          onChange={[Function]}
+          rows={3}
+          type="textarea"
+          value=""
+        />
+      </div>
     </div>
     <h2>
       Notes

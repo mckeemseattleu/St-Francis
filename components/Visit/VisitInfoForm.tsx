@@ -26,6 +26,7 @@ const defaultVisitData = {
     mensQ: '',
     womensQ: '',
     kidsQ: '',
+    householdItem: false,
 };
 
 const toInt = (value: string) => parseInt(value) || 0;
@@ -56,6 +57,10 @@ export default function VisitInfoForm({
         womensQ: toString(initialVisitData?.womensQ),
         kidsQ: toString(initialVisitData?.kidsQ),
         notes: initialNotes,
+        householdItem:
+            initialVisitData?.householdItem || initialVisitData?.household
+                ? true
+                : false,
     });
 
     const handleSubmit = async (e: any) => {
@@ -81,6 +86,7 @@ export default function VisitInfoForm({
             // transfer boyAge and girlAge to notes with submit
             boyAge: '',
             girlAge: '',
+            household: visitData.householdItem ? visitData.household : '',
         };
     };
 
@@ -218,17 +224,25 @@ export default function VisitInfoForm({
                     checked={!!visitData.food}
                     onChange={handleChange('food')}
                 />
+                <FormItem
+                    type="checkbox"
+                    id="householdItem"
+                    label="Household Items"
+                    checked={!!visitData.householdItem}
+                    onChange={handleChange('householdItem')}
+                />
             </FormRow>
 
-            <h2>Household items</h2>
-
-            <FormItem
-                type="textarea"
-                id="household"
-                rows={3}
-                value={visitData.household || ''}
-                onChange={handleChange('household')}
-            />
+            <div hidden={!visitData.householdItem}>
+                <h2>Household items</h2>
+                <FormItem
+                    type="textarea"
+                    id="household"
+                    rows={3}
+                    value={visitData.household || ''}
+                    onChange={handleChange('household')}
+                />
+            </div>
 
             <h2>Notes</h2>
 
