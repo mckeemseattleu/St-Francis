@@ -157,16 +157,9 @@ export default function VisitInfoForm({
                     <FormItem
                         type="checkbox"
                         id="clothingBoy"
-                        label="Kids (Boy)"
+                        label="Kids"
                         checked={!!visitData.clothingBoy}
                         onChange={handleChange('clothingBoy')}
-                    />
-                    <FormItem
-                        type="checkbox"
-                        id="clothingGirl"
-                        label="Kids (Girl)"
-                        checked={!!visitData.clothingGirl}
-                        onChange={handleChange('clothingGirl')}
                     />
                     <FormItem
                         type="number"
