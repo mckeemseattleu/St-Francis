@@ -87,30 +87,14 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         className="formItem"
       >
         <label
-          htmlFor="clothingBoy"
+          htmlFor="clothingKids"
         >
-          Kids (Boy)
+          Kids
         </label>
         <input
           checked={false}
-          id="clothingBoy"
-          label="Kids (Boy)"
-          onChange={[Function]}
-          type="checkbox"
-        />
-      </div>
-      <div
-        className="formItem"
-      >
-        <label
-          htmlFor="clothingGirl"
-        >
-          Kids (Girl)
-        </label>
-        <input
-          checked={false}
-          id="clothingGirl"
-          label="Kids (Girl)"
+          id="clothingKids"
+          label="Kids"
           onChange={[Function]}
           type="checkbox"
         />
