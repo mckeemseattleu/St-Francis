@@ -27,6 +27,7 @@ const defaultVisitData = {
     womensQ: '',
     kidsQ: '',
     householdItem: false,
+    clothingKids: false,
 };
 
 const toInt = (value: string) => parseInt(value) || 0;
@@ -61,6 +62,14 @@ export default function VisitInfoForm({
             initialVisitData?.householdItem || initialVisitData?.household
                 ? true
                 : false,
+
+        // carry existed boy & girl clothing state to clothingKids
+        clothingKids:
+            initialVisitData?.clothingBoy ||
+            initialVisitData?.clothingGirl ||
+            initialVisitData?.clothingKids
+                ? true
+                : false,
     });
 
     const handleSubmit = async (e: any) => {
@@ -80,13 +89,21 @@ export default function VisitInfoForm({
             mensQ: visitData.clothingMen ? toInt(visitData.mensQ) : 0,
             womensQ: visitData.clothingWomen ? toInt(visitData.womensQ) : 0,
             kidsQ:
-                visitData.clothingBoy || visitData.clothingGirl
+                visitData.clothingBoy ||
+                visitData.clothingGirl ||
+                visitData.clothingKids
                     ? toInt(visitData.kidsQ)
                     : 0,
             // transfer boyAge and girlAge to notes with submit
             boyAge: '',
             girlAge: '',
+
+            // clear out household if householdItem is unchecked
             household: visitData.householdItem ? visitData.household : '',
+
+            // turn off boy & girl clothing since they've been merged to clothingKids
+            clothingBoy: false,
+            clothingGirl: false,
         };
     };
 
@@ -139,17 +156,10 @@ export default function VisitInfoForm({
                 <FormRow className={styles.rowItems}>
                     <FormItem
                         type="checkbox"
-                        id="clothingBoy"
-                        label="Kids (Boy)"
-                        checked={!!visitData.clothingBoy}
-                        onChange={handleChange('clothingBoy')}
-                    />
-                    <FormItem
-                        type="checkbox"
-                        id="clothingGirl"
-                        label="Kids (Girl)"
-                        checked={!!visitData.clothingGirl}
-                        onChange={handleChange('clothingGirl')}
+                        id="clothingKids"
+                        label="Kids"
+                        checked={!!visitData.clothingKids}
+                        onChange={handleChange('clothingKids')}
                     />
                     <FormItem
                         type="number"
@@ -157,7 +167,9 @@ export default function VisitInfoForm({
                         value={visitData.kidsQ}
                         onChange={handleChange('kidsQ')}
                         hidden={
-                            !visitData.clothingBoy && !visitData.clothingGirl
+                            !visitData.clothingBoy &&
+                            !visitData.clothingGirl &&
+                            !visitData.clothingKids
                         }
                     />
                 </FormRow>
