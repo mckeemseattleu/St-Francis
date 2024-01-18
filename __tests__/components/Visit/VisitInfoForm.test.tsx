@@ -46,8 +46,7 @@ describe('Visit Info Form Component', () => {
         render(<VisitInfoForm />);
         expect(screen.queryByText('Men')).toBeInTheDocument();
         expect(screen.queryByText('Women')).toBeInTheDocument();
-        expect(screen.queryByText('Kids (Boy)')).toBeInTheDocument();
-        expect(screen.queryByText('Kids (Girl)')).toBeInTheDocument();
+        expect(screen.queryByText('Kids')).toBeInTheDocument();
         expect(screen.queryByText('Backpack')).toBeInTheDocument();
         expect(screen.queryByText('Sleeping Bag')).toBeInTheDocument();
         expect(screen.queryByText('Bus Ticket')).toBeInTheDocument();
@@ -60,8 +59,7 @@ describe('Visit Info Form Component', () => {
         render(<VisitInfoForm initialVisitData={mockVisitData} />);
         expect(getInputField('Men')).toBe(true);
         expect(getInputField('Women')).toBe(true);
-        expect(getInputField('Kids (Boy)')).toBe(true);
-        expect(getInputField('Kids (Girl)')).toBe(true);
+        expect(getInputField('Kids')).toBe(true);
         expect(getInputField('Backpack')).toBe(true);
         expect(getInputField('Sleeping Bag')).toBe(true);
         expect(getInputField('Bus Ticket')).toBe('1');

@@ -47,6 +47,7 @@ export default function Printout({ params }: PrintoutProps) {
                 clothingWomen: 'Womens',
                 clothingBoy: 'Kids (Boy)',
                 clothingGirl: 'Kids (Girl)',
+                clothingKids: 'Kids',
                 backpack: 'Backpack',
                 sleepingBag: 'Sleeping Bag',
                 food: 'Food',
