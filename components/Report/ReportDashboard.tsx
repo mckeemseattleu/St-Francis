@@ -85,7 +85,7 @@ export default function ReportDashboard(props: { clients: Array<Client> }) {
         <div className={styles.container}>
             <div className={styles.dashboardContainer}>
                 <ReportNumberBlock
-                    title="Clients"
+                    title="Clients total"
                     data={clients.length}
                     data-testid="client-count"
                 />

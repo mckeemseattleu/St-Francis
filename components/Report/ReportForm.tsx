@@ -1,8 +1,11 @@
 'use client';
+
+import { useState } from 'react';
 import { Button } from '@/components/UI';
 import { toDateString } from '@/utils/formatDate';
 import { DocFilter } from '@/utils/index';
-import { useState } from 'react';
+import { useGenerateReport } from './hooks';
+import Spinner from '../Spinner/Spinner';
 import styles from './Report.module.css';
 
 type ReportFormProps = {
@@ -16,6 +19,8 @@ export const DEFAULT_DATE_RANGE = 30;
 export default function ReportForm(props: ReportFormProps) {
     const { onSubmit, onClear } = props;
 
+    const { mutateAsync: generateReport, isLoading } = useGenerateReport();
+
     const defaultData = {
         startDate: toDateString(
             new Date(new Date().getTime() - DEFAULT_DATE_RANGE * DAY_IN_MS)
@@ -27,6 +32,7 @@ export default function ReportForm(props: ReportFormProps) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (reportData.startDate === '' || reportData.endDate === '') return;
         const fields: DocFilter = {};
         const { startDate, endDate } = reportData;
         const start = new Date(startDate.split('-').join('/'));
@@ -52,11 +58,22 @@ export default function ReportForm(props: ReportFormProps) {
         setReportData({ ...reportData, [e.target.name]: value });
     };
 
+    const handleGenerateReport = async () => {
+        if (reportData.startDate === '' || reportData.endDate === '') return;
+        await generateReport(reportData);
+    };
+
+    const downloadCsvFileText = isLoading ? (
+        <Spinner variant="small" />
+    ) : (
+        'Download CSV'
+    );
+
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit}>
                 <div className={styles.formContainer}>
-                    <label>
+                    <label htmlFor="startDate">
                         Start Date
                         <input
                             type="date"
@@ -68,7 +85,7 @@ export default function ReportForm(props: ReportFormProps) {
                         />
                     </label>
 
-                    <label>
+                    <label htmlFor="endDate">
                         End Date
                         <input
                             type="date"
@@ -81,11 +98,17 @@ export default function ReportForm(props: ReportFormProps) {
                         />
                     </label>
                 </div>
-
                 <div className={styles.formControls}>
-                    <Button type="submit">Submit</Button>
+                    {/* <Button type="submit">Submit</Button> */}
                     <Button type="button" onClick={handleClear}>
-                        Clear
+                        Set to default
+                    </Button>
+                    <Button
+                        type="button"
+                        onClick={handleGenerateReport}
+                        disabled={isLoading}
+                    >
+                        {downloadCsvFileText}
                     </Button>
                 </div>
             </form>
