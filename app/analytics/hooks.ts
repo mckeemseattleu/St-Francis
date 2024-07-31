@@ -5,6 +5,8 @@ import { listClients } from '@/utils/queries';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
+const MAX_CLIENTS_PER_REQUEST = 9999;
+
 export const useGetDashboardData = () => {
     const [fields, setFields] = useState<DocFilter>();
 
@@ -12,7 +14,7 @@ export const useGetDashboardData = () => {
         queryKey: [CLIENTS_PATH, 'report'],
         queryFn: async () => {
             let clients: Array<Client> = [];
-            clients = await listClients(fields, 9999); //TODO: remove hardcoded limit
+            clients = await listClients(fields, MAX_CLIENTS_PER_REQUEST);
             return { clients, fields };
         },
         enabled: false,

@@ -19,7 +19,7 @@ export default function AnalyticsPage() {
             return (
                 <p>
                     Failed to load clients data. Please try again later or
-                    contact Administrator if error persist.
+                    contact an Administrator if the error persists.
                 </p>
             );
         }

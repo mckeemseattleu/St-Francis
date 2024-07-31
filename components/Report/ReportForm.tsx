@@ -99,7 +99,6 @@ export default function ReportForm(props: ReportFormProps) {
                     </label>
                 </div>
                 <div className={styles.formControls}>
-                    {/* <Button type="submit">Submit</Button> */}
                     <Button type="button" onClick={handleClear}>
                         Set to default
                     </Button>
