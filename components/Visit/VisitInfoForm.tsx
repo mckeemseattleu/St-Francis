@@ -132,6 +132,7 @@ export default function VisitInfoForm({
                     <FormItem
                         type="number"
                         id="mensQ"
+                        placeholder="Count"
                         value={visitData.mensQ}
                         onChange={handleChange('mensQ')}
                         hidden={!visitData.clothingMen}
@@ -148,6 +149,7 @@ export default function VisitInfoForm({
                     <FormItem
                         type="number"
                         id="womensQ"
+                        placeholder="Count"
                         value={visitData.womensQ}
                         onChange={handleChange('womensQ')}
                         hidden={!visitData.clothingWomen}
@@ -164,6 +166,7 @@ export default function VisitInfoForm({
                     <FormItem
                         type="number"
                         id="kidsQ"
+                        placeholder="Count"
                         value={visitData.kidsQ}
                         onChange={handleChange('kidsQ')}
                         hidden={
@@ -182,12 +185,14 @@ export default function VisitInfoForm({
                     type="number"
                     id="busTicket"
                     label="Bus Ticket"
+                    placeholder="Count"
                     value={visitData.busTicket}
                     onChange={handleChange('busTicket')}
                 />
                 <FormItem
                     type="number"
                     id="orcaCard"
+                    placeholder="Value in Dollars"
                     label="Orca Card"
                     value={visitData.orcaCard}
                     onChange={handleChange('orcaCard')}
@@ -196,6 +201,7 @@ export default function VisitInfoForm({
                     type="number"
                     id="giftCard"
                     label="Gift Card"
+                    placeholder="Value in Dollars"
                     value={visitData.giftCard}
                     onChange={handleChange('giftCard')}
                 />
@@ -203,6 +209,7 @@ export default function VisitInfoForm({
                     type="number"
                     id="diaper"
                     label="Diaper"
+                    placeholder="Count"
                     value={visitData.diaper}
                     onChange={handleChange('diaper')}
                 />
@@ -210,6 +217,7 @@ export default function VisitInfoForm({
                     type="number"
                     id="financialAssistance"
                     label="Financial Assistance"
+                    placeholder="Value in Dollars"
                     value={visitData.financialAssistance}
                     onChange={handleChange('financialAssistance')}
                 />

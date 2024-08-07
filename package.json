@@ -12,7 +12,9 @@
     "format": "prettier --write 'app/**/*' 'components/**/*' 'hooks/**/*' 'models/**/*' 'providers/**/*' 'utils/**/*'"
   },
   "dependencies": {
-    "firebase": "^9.17.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
+    "firebase": "^10.12.3",
     "next": "^13.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
