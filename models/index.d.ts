@@ -51,6 +51,7 @@ export declare type Visit = {
     readonly financialAssistance?: number | null;
     readonly idv1?: string;
     readonly householdItem?: boolean | null;
+    readonly householdItemQ?: number | null;
     readonly clothingKids?: boolean | null;
 };
 

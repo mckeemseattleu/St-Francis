@@ -26,4 +26,5 @@ export type VisitDataRow = {
     clothingMen: number;
     sleepingBag: number;
     financialAssistance: number;
+    householdItemQ: number;
 };

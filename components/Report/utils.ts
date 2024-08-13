@@ -152,6 +152,7 @@ const calculateVisitsCounts = (visitsOfMonth: Visit[]): VisitDataRow => {
     const sleepingBagCount = visitsOfMonth.filter(visit => visit.sleepingBag).length;
     const financialAssistanceCount = visitsOfMonth.reduce((acc, visit) => acc + (visit.financialAssistance || 0), 0);
     const clothingKidsCount = visitsOfMonth.reduce((acc, visit) => acc + (visit.kidsQ || 0), 0);
+    const householdItemQCount = visitsOfMonth.reduce((acc, visit) => acc + (visit.householdItemQ || 0), 0);
 
     const firstVisit = visitsOfMonth[0];
     const month = firstVisit?.createdAt ? format(firstVisit.createdAt.toDate(), 'MMMM-yy') : '';
@@ -168,6 +169,7 @@ const calculateVisitsCounts = (visitsOfMonth: Visit[]): VisitDataRow => {
         clothingMen: clothingMenCount,
         sleepingBag: sleepingBagCount,
         financialAssistance: financialAssistanceCount,
+        householdItemQ: householdItemQCount
     };
 };
 
@@ -293,6 +295,9 @@ const arrayToCSV = (data: ClientDataRow[] | VisitDataRow[]): string => {
             }
             if (el === 'financialAssistance') {
                 return 'financialAssistance ($)';
+            }
+            if (el === 'householdItemQ') {
+                return 'householdItems';
             }
             return el;
         })
