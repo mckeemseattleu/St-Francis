@@ -2,6 +2,7 @@
 
 import { Button, Form, FormItem, FormRow } from '@/components/UI';
 import { Visit } from '@/models/index';
+import clsx from 'clsx';
 import { useState } from 'react';
 import styles from './VisitInfoForm.module.css';
 
@@ -27,6 +28,7 @@ const defaultVisitData = {
     womensQ: '',
     kidsQ: '',
     householdItem: false,
+    householdItemQ: '',
     clothingKids: false,
 };
 
@@ -62,6 +64,7 @@ export default function VisitInfoForm({
             initialVisitData?.householdItem || initialVisitData?.household
                 ? true
                 : false,
+        householdItemQ: toString(initialVisitData?.householdItemQ),
 
         // carry existed boy & girl clothing state to clothingKids
         clothingKids:
@@ -100,6 +103,9 @@ export default function VisitInfoForm({
 
             // clear out household if householdItem is unchecked
             household: visitData.householdItem ? visitData.household : '',
+            householdItemQ: visitData.householdItem
+                ? toInt(visitData.householdItemQ)
+                : 0,
 
             // turn off boy & girl clothing since they've been merged to clothingKids
             clothingBoy: false,
@@ -244,13 +250,24 @@ export default function VisitInfoForm({
                     checked={!!visitData.food}
                     onChange={handleChange('food')}
                 />
-                <FormItem
-                    type="checkbox"
-                    id="householdItem"
-                    label="Household Items"
-                    checked={!!visitData.householdItem}
-                    onChange={handleChange('householdItem')}
-                />
+                <div className={clsx(styles.rowItems, styles.householdRow)}>
+                    <FormItem
+                        type="checkbox"
+                        id="householdItem"
+                        label="Household Items"
+                        checked={!!visitData.householdItem}
+                        onChange={handleChange('householdItem')}
+                    />
+
+                    <FormItem
+                        type="number"
+                        id="householdItemQ"
+                        placeholder="Count"
+                        value={visitData.householdItemQ}
+                        onChange={handleChange('householdItemQ')}
+                        hidden={!visitData.householdItem}
+                    />
+                </div>
             </FormRow>
 
             <div hidden={!visitData.householdItem}>

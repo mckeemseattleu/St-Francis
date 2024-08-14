@@ -369,20 +369,40 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
         />
       </div>
       <div
-        className="formItem"
+        className="rowItems householdRow"
       >
-        <label
-          htmlFor="householdItem"
+        <div
+          className="formItem"
         >
-          Household Items
-        </label>
-        <input
-          checked={false}
-          id="householdItem"
-          label="Household Items"
-          onChange={[Function]}
-          type="checkbox"
-        />
+          <label
+            htmlFor="householdItem"
+          >
+            Household Items
+          </label>
+          <input
+            checked={false}
+            id="householdItem"
+            label="Household Items"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </div>
+        <div
+          className="formItem"
+        >
+          <label
+            htmlFor="householdItemQ"
+          />
+          <input
+            hidden={true}
+            id="householdItemQ"
+            min={0}
+            onChange={[Function]}
+            placeholder="Count"
+            type="number"
+            value=""
+          />
+        </div>
       </div>
     </div>
     <div
