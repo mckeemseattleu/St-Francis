@@ -13,7 +13,7 @@ export default function Footer(props: FooterProps) {
             <a
                 href="https://goo.gl/maps/ifn9pJEydgeCJwGbA"
             >
-                testing_for_deployment
+                P.O. Box 22444 Seattle, WA 98122_test
             </a>
             <a
                 className={styles.footerLink}
