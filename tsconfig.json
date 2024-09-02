@@ -23,7 +23,8 @@
             "@/providers/*": ["providers/*"],
             "@/styles/*": ["styles/*"],
             "@/utils/*": ["utils/*"],
-            "@/models/*": ["models/*"]
+            "@/models/*": ["models/*"],
+            "@/types/*": ["types/*"]
         },
         "plugins": [
             {

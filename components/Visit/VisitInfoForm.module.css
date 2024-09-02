@@ -24,3 +24,7 @@
     height: 50px;
     padding-inline: 2rem;
 }
+
+.householdRow {
+    min-width: 280px;
+}

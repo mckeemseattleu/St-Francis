@@ -141,6 +141,7 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
             id="mensQ"
             min={0}
             onChange={[Function]}
+            placeholder="Count"
             type="number"
             value=""
           />
@@ -176,6 +177,7 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
             id="womensQ"
             min={0}
             onChange={[Function]}
+            placeholder="Count"
             type="number"
             value=""
           />
@@ -188,30 +190,14 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           className="formItem"
         >
           <label
-            htmlFor="clothingBoy"
+            htmlFor="clothingKids"
           >
-            Kids (Boy)
+            Kids
           </label>
           <input
             checked={false}
-            id="clothingBoy"
-            label="Kids (Boy)"
-            onChange={[Function]}
-            type="checkbox"
-          />
-        </div>
-        <div
-          className="formItem"
-        >
-          <label
-            htmlFor="clothingGirl"
-          >
-            Kids (Girl)
-          </label>
-          <input
-            checked={false}
-            id="clothingGirl"
-            label="Kids (Girl)"
+            id="clothingKids"
+            label="Kids"
             onChange={[Function]}
             type="checkbox"
           />
@@ -227,6 +213,7 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
             id="kidsQ"
             min={0}
             onChange={[Function]}
+            placeholder="Count"
             type="number"
             value=""
           />
@@ -252,6 +239,7 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           label="Bus Ticket"
           min={0}
           onChange={[Function]}
+          placeholder="Count"
           type="number"
           value=""
         />
@@ -269,6 +257,7 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           label="Orca Card"
           min={0}
           onChange={[Function]}
+          placeholder="Value in Dollars"
           type="number"
           value=""
         />
@@ -286,6 +275,7 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           label="Gift Card"
           min={0}
           onChange={[Function]}
+          placeholder="Value in Dollars"
           type="number"
           value=""
         />
@@ -303,6 +293,7 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           label="Diaper"
           min={0}
           onChange={[Function]}
+          placeholder="Count"
           type="number"
           value=""
         />
@@ -320,6 +311,7 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           label="Financial Assistance"
           min={0}
           onChange={[Function]}
+          placeholder="Value in Dollars"
           type="number"
           value=""
         />
@@ -360,23 +352,79 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           type="checkbox"
         />
       </div>
+      <div
+        className="formItem"
+      >
+        <label
+          htmlFor="food"
+        >
+          Food
+        </label>
+        <input
+          checked={false}
+          id="food"
+          label="Food"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+      <div
+        className="rowItems householdRow"
+      >
+        <div
+          className="formItem"
+        >
+          <label
+            htmlFor="householdItem"
+          >
+            Household Items
+          </label>
+          <input
+            checked={false}
+            id="householdItem"
+            label="Household Items"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </div>
+        <div
+          className="formItem"
+        >
+          <label
+            htmlFor="householdItemQ"
+          />
+          <input
+            hidden={true}
+            id="householdItemQ"
+            min={0}
+            onChange={[Function]}
+            placeholder="Count"
+            type="number"
+            value=""
+          />
+        </div>
+      </div>
     </div>
-    <h2>
-      Household items
-    </h2>
     <div
-      className="formItem"
+      hidden={true}
     >
-      <label
-        htmlFor="household"
-      />
-      <textarea
-        id="household"
-        onChange={[Function]}
-        rows={3}
-        type="textarea"
-        value=""
-      />
+      <h2>
+        Household items
+      </h2>
+      <div
+        className="formItem"
+      >
+        <label
+          htmlFor="household"
+        />
+        <textarea
+          id="household"
+          onChange={[Function]}
+          rows={3}
+          type="textarea"
+          value=""
+        />
+      </div>
     </div>
     <h2>
       Notes

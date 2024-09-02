@@ -14,11 +14,13 @@ function VisitDetail(props: VisitDetailProps) {
         clothingMen,
         clothingWomen,
         clothingGirl,
+        clothingKids,
         mensQ,
         womensQ,
         kidsQ,
         backpack,
         sleepingBag,
+        food,
         busTicket,
         orcaCard,
         diaper,
@@ -26,17 +28,23 @@ function VisitDetail(props: VisitDetailProps) {
         financialAssistance,
         household,
         notes,
+        householdItem,
     } = visitData;
     return (
         <div>
             <h2>Clothing</h2>
-            {clothingMen || clothingWomen || clothingBoy || clothingGirl ? (
+            {clothingMen ||
+            clothingWomen ||
+            clothingBoy ||
+            clothingGirl ||
+            clothingKids ? (
                 <div className={styles.rowContainer}>
                     <div className={styles.row}>
                         <p>{clothingMen && `Men: ${mensQ}`}</p>
                         <p>{clothingWomen && `Women: ${womensQ}`}</p>
                         <p>
-                            {(clothingGirl || clothingBoy) && `Kids: ${kidsQ}`}
+                            {(clothingGirl || clothingBoy || clothingKids) &&
+                                `Kids: ${kidsQ}`}
                         </p>
                     </div>
                 </div>
@@ -47,15 +55,19 @@ function VisitDetail(props: VisitDetailProps) {
             <h2>Special Requests</h2>
             {backpack ||
             sleepingBag ||
+            food ||
             busTicket ||
             orcaCard ||
             giftCard ||
             diaper ||
+            householdItem ||
             financialAssistance ? (
                 <div className={styles.rowContainer}>
                     <div className={styles.row}>
                         {backpack ? <p>{'Backpack ✔️'}</p> : ''}
                         {sleepingBag ? <p>{'Sleeping Bag ✔️'}</p> : ''}
+                        {food ? <p>{'Food ✔️'}</p> : ''}
+                        {householdItem ? <p>{'Household Items ✔️'}</p> : ''}
                     </div>
                     <div className={styles.row}>
                         {busTicket ? <p>Bus Tickets: {busTicket}</p> : ''}

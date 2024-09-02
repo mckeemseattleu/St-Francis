@@ -1,9 +1,20 @@
+import clsx from 'clsx';
 import styles from './Spinner.module.css';
 
-export default function Spinner(props: React.HTMLAttributes<HTMLDivElement>) {
+type SpinnerProps = {
+    variant?: 'small';
+};
+
+export default function Spinner(
+    props: SpinnerProps & React.HTMLAttributes<HTMLDivElement>
+) {
     return (
         <div {...props}>
-            <div className={styles.spinner}>
+            <div
+                className={clsx(styles.spinner, {
+                    [styles.secondary]: props.variant === 'small',
+                })}
+            >
                 <div></div>
             </div>
         </div>

@@ -39,7 +39,7 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
         const { firstName, lastName, birthday, filterByBirthday } = clientData;
         if (firstName) fields['firstNameLower'] = firstName.toLowerCase();
         if (lastName) fields['lastNameLower'] = lastName.toLowerCase();
-        if (filterByBirthday) {
+        if (birthday) {
             fields['birthday'] = birthday;
             fields['filterByBirthday'] = filterByBirthday;
         }
@@ -53,9 +53,18 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value: string | boolean = e.target.value;
-        if (e.target.type === 'checkbox') value = e.target.checked;
-        setClientData({ ...clientData, [e.target.name]: value });
+        let value = e.target.value;
+
+        // set filterByBirthday based on birthday input
+        if (e.target.name === 'birthday') {
+            setClientData({
+                ...clientData,
+                birthday: value,
+                filterByBirthday: value !== '',
+            });
+        } else {
+            setClientData({ ...clientData, [e.target.name]: value });
+        }
     };
 
     return (
@@ -94,16 +103,7 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                                 id="birthday"
                                 value={clientData.birthday}
                                 onChange={handleChange}
-                                required={!!clientData.filterByBirthday}
                                 max={new Date().toISOString().split('T')[0]}
-                            />
-                            <input
-                                type="checkbox"
-                                title="Check to search with birthday"
-                                name="filterByBirthday"
-                                id="filterByBirthday"
-                                checked={clientData.filterByBirthday}
-                                onChange={handleChange}
                             />
                         </div>
                     </label>

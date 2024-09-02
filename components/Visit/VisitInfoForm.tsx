@@ -2,6 +2,7 @@
 
 import { Button, Form, FormItem, FormRow } from '@/components/UI';
 import { Visit } from '@/models/index';
+import clsx from 'clsx';
 import { useState } from 'react';
 import styles from './VisitInfoForm.module.css';
 
@@ -22,9 +23,13 @@ const defaultVisitData = {
     notes: '',
     backpack: false,
     sleepingBag: false,
+    food: false,
     mensQ: '',
     womensQ: '',
     kidsQ: '',
+    householdItem: false,
+    householdItemQ: '',
+    clothingKids: false,
 };
 
 const toInt = (value: string) => parseInt(value) || 0;
@@ -55,6 +60,19 @@ export default function VisitInfoForm({
         womensQ: toString(initialVisitData?.womensQ),
         kidsQ: toString(initialVisitData?.kidsQ),
         notes: initialNotes,
+        householdItem:
+            initialVisitData?.householdItem || initialVisitData?.household
+                ? true
+                : false,
+        householdItemQ: toString(initialVisitData?.householdItemQ),
+
+        // carry existed boy & girl clothing state to clothingKids
+        clothingKids:
+            initialVisitData?.clothingBoy ||
+            initialVisitData?.clothingGirl ||
+            initialVisitData?.clothingKids
+                ? true
+                : false,
     });
 
     const handleSubmit = async (e: any) => {
@@ -74,12 +92,24 @@ export default function VisitInfoForm({
             mensQ: visitData.clothingMen ? toInt(visitData.mensQ) : 0,
             womensQ: visitData.clothingWomen ? toInt(visitData.womensQ) : 0,
             kidsQ:
-                visitData.clothingBoy || visitData.clothingGirl
+                visitData.clothingBoy ||
+                visitData.clothingGirl ||
+                visitData.clothingKids
                     ? toInt(visitData.kidsQ)
                     : 0,
             // transfer boyAge and girlAge to notes with submit
             boyAge: '',
             girlAge: '',
+
+            // clear out household if householdItem is unchecked
+            household: visitData.householdItem ? visitData.household : '',
+            householdItemQ: visitData.householdItem
+                ? toInt(visitData.householdItemQ)
+                : 0,
+
+            // turn off boy & girl clothing since they've been merged to clothingKids
+            clothingBoy: false,
+            clothingGirl: false,
         };
     };
 
@@ -108,6 +138,7 @@ export default function VisitInfoForm({
                     <FormItem
                         type="number"
                         id="mensQ"
+                        placeholder="Count"
                         value={visitData.mensQ}
                         onChange={handleChange('mensQ')}
                         hidden={!visitData.clothingMen}
@@ -124,6 +155,7 @@ export default function VisitInfoForm({
                     <FormItem
                         type="number"
                         id="womensQ"
+                        placeholder="Count"
                         value={visitData.womensQ}
                         onChange={handleChange('womensQ')}
                         hidden={!visitData.clothingWomen}
@@ -132,25 +164,21 @@ export default function VisitInfoForm({
                 <FormRow className={styles.rowItems}>
                     <FormItem
                         type="checkbox"
-                        id="clothingBoy"
-                        label="Kids (Boy)"
-                        checked={!!visitData.clothingBoy}
-                        onChange={handleChange('clothingBoy')}
-                    />
-                    <FormItem
-                        type="checkbox"
-                        id="clothingGirl"
-                        label="Kids (Girl)"
-                        checked={!!visitData.clothingGirl}
-                        onChange={handleChange('clothingGirl')}
+                        id="clothingKids"
+                        label="Kids"
+                        checked={!!visitData.clothingKids}
+                        onChange={handleChange('clothingKids')}
                     />
                     <FormItem
                         type="number"
                         id="kidsQ"
+                        placeholder="Count"
                         value={visitData.kidsQ}
                         onChange={handleChange('kidsQ')}
                         hidden={
-                            !visitData.clothingBoy && !visitData.clothingGirl
+                            !visitData.clothingBoy &&
+                            !visitData.clothingGirl &&
+                            !visitData.clothingKids
                         }
                     />
                 </FormRow>
@@ -163,12 +191,14 @@ export default function VisitInfoForm({
                     type="number"
                     id="busTicket"
                     label="Bus Ticket"
+                    placeholder="Count"
                     value={visitData.busTicket}
                     onChange={handleChange('busTicket')}
                 />
                 <FormItem
                     type="number"
                     id="orcaCard"
+                    placeholder="Value in Dollars"
                     label="Orca Card"
                     value={visitData.orcaCard}
                     onChange={handleChange('orcaCard')}
@@ -177,6 +207,7 @@ export default function VisitInfoForm({
                     type="number"
                     id="giftCard"
                     label="Gift Card"
+                    placeholder="Value in Dollars"
                     value={visitData.giftCard}
                     onChange={handleChange('giftCard')}
                 />
@@ -184,6 +215,7 @@ export default function VisitInfoForm({
                     type="number"
                     id="diaper"
                     label="Diaper"
+                    placeholder="Count"
                     value={visitData.diaper}
                     onChange={handleChange('diaper')}
                 />
@@ -191,6 +223,7 @@ export default function VisitInfoForm({
                     type="number"
                     id="financialAssistance"
                     label="Financial Assistance"
+                    placeholder="Value in Dollars"
                     value={visitData.financialAssistance}
                     onChange={handleChange('financialAssistance')}
                 />
@@ -210,17 +243,43 @@ export default function VisitInfoForm({
                     checked={!!visitData.sleepingBag}
                     onChange={handleChange('sleepingBag')}
                 />
+                <FormItem
+                    type="checkbox"
+                    id="food"
+                    label="Food"
+                    checked={!!visitData.food}
+                    onChange={handleChange('food')}
+                />
+                <div className={clsx(styles.rowItems, styles.householdRow)}>
+                    <FormItem
+                        type="checkbox"
+                        id="householdItem"
+                        label="Household Items"
+                        checked={!!visitData.householdItem}
+                        onChange={handleChange('householdItem')}
+                    />
+
+                    <FormItem
+                        type="number"
+                        id="householdItemQ"
+                        placeholder="Count"
+                        value={visitData.householdItemQ}
+                        onChange={handleChange('householdItemQ')}
+                        hidden={!visitData.householdItem}
+                    />
+                </div>
             </FormRow>
 
-            <h2>Household items</h2>
-
-            <FormItem
-                type="textarea"
-                id="household"
-                rows={3}
-                value={visitData.household || ''}
-                onChange={handleChange('household')}
-            />
+            <div hidden={!visitData.householdItem}>
+                <h2>Household items</h2>
+                <FormItem
+                    type="textarea"
+                    id="household"
+                    rows={3}
+                    value={visitData.household || ''}
+                    onChange={handleChange('household')}
+                />
+            </div>
 
             <h2>Notes</h2>
 
