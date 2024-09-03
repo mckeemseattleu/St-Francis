@@ -68,6 +68,14 @@ export default function ClientInfoForm({
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
+
+        // Validate postal code
+        const postalCodeValid = /^\d{5}$/.test(clientData.postalCode);
+        if (!postalCodeValid) {
+            console.error("Postal code must be exactly 5 digits.");
+            return;
+        }
+
         const data = {
             ...clientData,
             numKids: parseInt(clientData.numKids) || 0,
