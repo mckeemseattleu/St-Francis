@@ -77,6 +77,16 @@ export default function ClientInfoForm({
 
     const handleChange = (key: any) => (e: any) => {
         let value = e.target.value;
+
+        // Validate for first name, middle initial and last name
+        if (key === 'firstName' || key === 'lastName' || key === 'middleInitial') {
+            const isValid = /^[a-zA-Z\-]*$/.test(value);
+            if (!isValid) {
+                console.error("Names can only contain letters and hyphens.");
+                return;
+            }
+        }
+
         if (e.target.type === 'checkbox') value = e.target.checked;
         if (key === 'firstName')
             clientData.firstNameLower = value.toLowerCase();
