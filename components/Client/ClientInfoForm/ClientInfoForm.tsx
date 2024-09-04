@@ -66,6 +66,7 @@ export default function ClientInfoForm({
     const [actionType, setActionType] = useState('');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [isFormValid, setIsFormValid] = useState(true);
+    const [formErrorMessage, setFormErrorMessage] = useState('');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -142,7 +143,19 @@ export default function ClientInfoForm({
             !clientData.birthday || 
             !clientData.gender
         );
-        setIsFormValid(!hasErrors && !requiredFieldsMissing);
+        const isValid = !hasErrors && !requiredFieldsMissing;
+        setIsFormValid(isValid);
+
+        // Set error message
+        if (!isValid) {
+            if (hasErrors) {
+                setFormErrorMessage('Please correct the errors in the form.');
+            } else if (requiredFieldsMissing) {
+                setFormErrorMessage('Please fill in all required fields.');
+            }
+        } else {
+            setFormErrorMessage('');
+        }
     }, [errors, clientData, required]);
 
     return (
@@ -302,21 +315,28 @@ export default function ClientInfoForm({
                             <span />
                         </>
                     )}
-                    {actions &&
-                        Object.keys(actions).map((label) => (
-                            <Button
-                                key={label}
-                                className={styles.saveButton}
-                                onClick={() => {
-                                    setActionType(label);
-                                    setRequired(true);
-                                }}
-                                type="submit"
-                                disabled={!isFormValid}
-                            >
-                                {label}
-                            </Button>
-                        ))}
+                    <div className={styles.saveButtonGroup}>
+                        {actions &&
+                            Object.keys(actions).map((label) => (
+                                <Button
+                                    key={label}
+                                    className={styles.saveButton}
+                                    onClick={() => {
+                                        setActionType(label);
+                                        setRequired(true);
+                                    }}
+                                    type="submit"
+                                    disabled={!isFormValid}
+                                >
+                                    {label}
+                                </Button>
+                            ))}
+                        {!isFormValid && (
+                            <span className={styles.formErrorMessage}>
+                                {formErrorMessage}
+                            </span>
+                        )}
+                    </div>
                 </div>
             </Form>
         </div>
