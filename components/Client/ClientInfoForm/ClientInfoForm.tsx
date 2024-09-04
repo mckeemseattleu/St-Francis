@@ -225,6 +225,7 @@ export default function ClientInfoForm({
                         list="genderList"
                         value={clientData.gender}
                         onChange={handleChange('gender')}
+                        required={required}
                     />
                     <datalist id="genderList">
                         {genderList.map((gender) => (
