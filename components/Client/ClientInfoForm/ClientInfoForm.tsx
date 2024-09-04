@@ -3,8 +3,9 @@ import { Button, Form, FormItem, FormRow, FormTitle } from '@/components/UI';
 import { Client } from '@/models/index';
 import { DocFilter } from '@/utils/index';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './ClientInfoForm.module.css';
+
 interface ClientInfoFormProps {
     id?: string;
     initialData?: Omit<Client, 'birthday'> & { birthday?: string };
@@ -66,9 +67,16 @@ export default function ClientInfoForm({
     const [required, setRequired] = useState(false);
     const [actionType, setActionType] = useState('');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [isFormValid, setIsFormValid] = useState(true);
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!isFormValid) {
+            // Optionally, you can show a message to the user here
+            console.log("Form has errors. Please correct them before submitting.");
+            return;
+        }
 
         const data = {
             ...clientData,
@@ -127,6 +135,17 @@ export default function ClientInfoForm({
     
     const getFullName = () =>
         `${clientData.firstName} ${clientData.middleInitial} ${clientData.lastName}`;
+
+    useEffect(() => {
+        const hasErrors = Object.values(errors).some(error => error !== '');
+        const requiredFieldsMissing = required && (
+            !clientData.firstName || 
+            !clientData.lastName || 
+            !clientData.birthday || 
+            !clientData.gender
+        );
+        setIsFormValid(!hasErrors && !requiredFieldsMissing);
+    }, [errors, clientData, required]);
 
     return (
         <div className={styles.container}>
@@ -295,6 +314,7 @@ export default function ClientInfoForm({
                                     setRequired(true);
                                 }}
                                 type="submit"
+                                disabled={!isFormValid}
                             >
                                 {label}
                             </Button>
