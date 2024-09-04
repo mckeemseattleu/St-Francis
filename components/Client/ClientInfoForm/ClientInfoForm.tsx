@@ -80,28 +80,30 @@ export default function ClientInfoForm({
     const handleChange = (key: any) => (e: any) => {
         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         
+        if (key === 'postalCode') {
+            value = value.replace(/\D/g, '').slice(0, 5);
+        }
+
+        // Update the state immediately
+        if (key === 'firstName') {
+            setClientData(prev => ({
+                ...prev,
+                firstName: value,
+                firstNameLower: value.toLowerCase()
+            }));
+        } else if (key === 'lastName') {
+            setClientData(prev => ({
+                ...prev,
+                lastName: value,
+                lastNameLower: value.toLowerCase()
+            }));
+        } else {
+            setClientData(prev => ({ ...prev, [key]: value }));
+        }
+    
         // Validate the field
         const error = validateField(key, value.toString());
         setErrors(prev => ({ ...prev, [key]: error }));
-    
-        // Update the state only if there's no error
-        if (!error) {
-            if (key === 'firstName') {
-                setClientData(prev => ({
-                    ...prev,
-                    firstName: value,
-                    firstNameLower: value.toLowerCase()
-                }));
-            } else if (key === 'lastName') {
-                setClientData(prev => ({
-                    ...prev,
-                    lastName: value,
-                    lastNameLower: value.toLowerCase()
-                }));
-            } else {
-                setClientData(prev => ({ ...prev, [key]: value }));
-            }
-        }
     };
 
     const validateField = (key: string, value: string): string => {
@@ -113,8 +115,9 @@ export default function ClientInfoForm({
                     ? '' 
                     : 'Names can only contain letters and hyphens';
             case 'postalCode':
-                return /^\d{5}$/.test(value) 
-                    ? '' 
+                if (value === '') return ''; // Allow empty input
+                return /^\d{5}$/.test(value)
+                    ? ''
                     : 'Postal code must be exactly 5 digits';
             // placeholder for other validations
             default:
