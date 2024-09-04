@@ -40,8 +40,6 @@ export default function ClientInfoForm({
     title = 'Client Form',
     actions,
 }: ClientInfoFormProps) {
-    //TODO: Add Validation
-
     // Use default values if no initial data was passed in
     const defaultData = {
         id: initialData.id || '',
@@ -73,7 +71,7 @@ export default function ClientInfoForm({
         e.preventDefault();
 
         if (!isFormValid) {
-            // Optionally, you can show a message to the user here
+            // TODO: Add error message to user
             console.log("Form has errors. Please correct them before submitting.");
             return;
         }
