@@ -65,16 +65,10 @@ export default function ClientInfoForm({
     const [clientData, setClientData] = useState(defaultData);
     const [required, setRequired] = useState(false);
     const [actionType, setActionType] = useState('');
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-
-        // Validate postal code
-        const postalCodeValid = /^\d{5}$/.test(clientData.postalCode);
-        if (!postalCodeValid) {
-            console.error("Postal code must be exactly 5 digits.");
-            return;
-        }
 
         const data = {
             ...clientData,
@@ -84,23 +78,50 @@ export default function ClientInfoForm({
     };
 
     const handleChange = (key: any) => (e: any) => {
-        let value = e.target.value;
-
-        // Validate for first name, middle initial and last name
-        if (key === 'firstName' || key === 'lastName' || key === 'middleInitial') {
-            const isValid = /^[a-zA-Z\-]*$/.test(value);
-            if (!isValid) {
-                console.error("Names can only contain letters and hyphens.");
-                return;
+        let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        
+        // Validate the field
+        const error = validateField(key, value.toString());
+        setErrors(prev => ({ ...prev, [key]: error }));
+    
+        // Update the state only if there's no error
+        if (!error) {
+            if (key === 'firstName') {
+                setClientData(prev => ({
+                    ...prev,
+                    firstName: value,
+                    firstNameLower: value.toLowerCase()
+                }));
+            } else if (key === 'lastName') {
+                setClientData(prev => ({
+                    ...prev,
+                    lastName: value,
+                    lastNameLower: value.toLowerCase()
+                }));
+            } else {
+                setClientData(prev => ({ ...prev, [key]: value }));
             }
         }
-
-        if (e.target.type === 'checkbox') value = e.target.checked;
-        if (key === 'firstName')
-            clientData.firstNameLower = value.toLowerCase();
-        if (key === 'lastName') clientData.lastNameLower = value.toLowerCase();
-        setClientData({ ...clientData, [key]: value });
     };
+
+    const validateField = (key: string, value: string): string => {
+        switch (key) {
+            case 'firstName':
+            case 'lastName':
+            case 'middleInitial':
+                return /^[a-zA-Z\-]*$/.test(value) 
+                    ? '' 
+                    : 'Names can only contain letters and hyphens';
+            case 'postalCode':
+                return /^\d{5}$/.test(value) 
+                    ? '' 
+                    : 'Postal code must be exactly 5 digits';
+            // placeholder for other validations
+            default:
+                return '';
+        }
+    };
+    
     const getFullName = () =>
         `${clientData.firstName} ${clientData.middleInitial} ${clientData.lastName}`;
 
@@ -164,6 +185,7 @@ export default function ClientInfoForm({
                         id="firstName"
                         onChange={handleChange('firstName')}
                         required={required}
+                        error={errors.firstName}
                     />
 
                     <FormItem
@@ -171,6 +193,7 @@ export default function ClientInfoForm({
                         id="middleInitial"
                         value={clientData.middleInitial}
                         onChange={handleChange('middleInitial')}
+                        error={errors.middleInitial}
                     />
 
                     <FormItem
@@ -178,6 +201,7 @@ export default function ClientInfoForm({
                         id="lastName"
                         value={clientData.lastName}
                         onChange={handleChange('lastName')}
+                        error={errors.lastName}
                     />
 
                     <FormItem
@@ -223,6 +247,7 @@ export default function ClientInfoForm({
                         id="postalCode"
                         value={clientData.postalCode}
                         onChange={handleChange('postalCode')}
+                        error={errors.postalCode}
                     />
 
                     <FormItem
