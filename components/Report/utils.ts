@@ -6,9 +6,105 @@ import {
     where,
     getDocs,
     Timestamp,
+    collectionGroup,
+    documentId,
 } from 'firebase/firestore';
 import { ClientDataRow, ReportDateRange, VisitDataRow } from './types';
 import { Client, Visit } from '@/models/index';
+import { CLIENTS_PATH, VISITS_PATH } from '@/utils/index';
+
+const CHUNK_SIZE = 30;
+
+type VisitWithClientId = Visit & { clientId: string };
+
+/**
+ * Retrieves visits within a specified date range and includes associated client IDs.
+ *
+ * @param dateRange - The date range for which to retrieve visits.
+ * @returns An object containing a list of visits with client IDs and an array of client IDs.
+ *
+ */
+export const getVisitsWithClientIds = async (dateRange: ReportDateRange) => {
+    const { startDate, endDate } = dateRange;
+    const { start, end } = parseDateRange(startDate, endDate);
+
+    const visitRef = collectionGroup(firestore, VISITS_PATH);
+
+    const q = query(
+        visitRef,
+        where('createdAt', '>=', start),
+        where('createdAt', '<=', end)
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    const listVisits: VisitWithClientId[] = [];
+    const clientIds: string[] = [];
+
+    querySnapshot.forEach((doc) => {
+        const fullPath = doc.ref.path;
+        const segments = fullPath.split('/');
+        const clientId = segments[1];
+        clientIds.push(clientId);
+        listVisits.push({ ...(doc.data() as Visit), clientId });
+    });
+
+    return { listVisits, clientIds };
+};
+
+/**
+ * Splits an array into chunks of a specified size.
+ *
+ * @param array - The array to be split into chunks.
+ * @param size - The size of each chunk.
+ * @returns An array containing the chunks.
+ */
+const chunkArray = (array: string[], size: number) => {
+    const result = [];
+    for (let i = 0; i < array.length; i += size) {
+        result.push(array.slice(i, i + size));
+    }
+    return result;
+};
+
+/**
+ * Fetches clients from Firestore based on an array of user IDs.
+ * The function splits the array of user IDs into chunks of a specified size
+ *
+ * @param userIds - An array of user IDs to fetch clients for.
+ * @returns A promise that resolves to an array of clients.
+ *
+ * @example
+ * ```typescript
+ * const userIds = ['id1', 'id2', 'id3'];
+ * const clients = await getClientsByIds(userIds);
+ * ```
+ */
+export const getClientsByIds = async (userIds: string[]) => {
+    const clientsRef = collection(firestore, CLIENTS_PATH);
+
+    // Split the array of user IDs into chunks of 30
+    const userChunks = chunkArray(userIds, CHUNK_SIZE);
+
+    // Map over chunks and return promises for each query
+    const promises = userChunks.map(async (chunk) => {
+        try {
+            const q = query(clientsRef, where(documentId(), 'in', chunk));
+            const querySnapshot = await getDocs(q);
+
+            // Collect users from the querySnapshot
+            return querySnapshot.docs.map((doc) => doc.data() as Client);
+        } catch (error) {
+            return [];
+        }
+    });
+
+    // Resolve all promises and flatten the results
+    const results = await Promise.all(promises);
+    const clients = results.flat(); // Flatten the array of arrays into a single array
+
+    return clients;
+};
 
 /**
  * Parses the start and end dates and returns an object with the parsed dates.
@@ -25,100 +121,46 @@ const parseDateRange = (startDate: string, endDate: string) => {
     return { start, end };
 };
 
-/**
- * Prepares a Firestore query to retrieve visits for a specific client within a given date range.
- * @param clientId - The ID of the client.
- * @param dateRange - The date range for the visits.
- * @returns A Firestore query object.
- */
-const prepareVisitQuery = (clientId: string, dateRange: ReportDateRange) => {
-    const { startDate, endDate } = dateRange;
-    const { start, end } = parseDateRange(startDate, endDate);
-
-    return query(
-        collection(firestore, 'clients', clientId, 'visits'),
-        where('createdAt', '>=', start),
-        where('createdAt', '<=', end)
-    );
-};
-
-/**
- * Prepares a Firestore query to retrieve clients based on a given date range.
- *
- * @param reportData - The report date range.
- * @returns The Firestore query to retrieve clients.
- */
-const prepareClientQuery = (reportData: ReportDateRange) => {
-    const { startDate, endDate } = reportData;
-    const { start, end } = parseDateRange(startDate, endDate);
-
-    return query(
-        collection(firestore, 'clients'),
-        where('lastVisit', '!=', null),
-        where('lastVisit', '>=', start),
-        where('lastVisit', '<=', end)
-    );
-};
-
-/**
- * Retrieves the visits for the given clients within the specified date range.
- * @param clients - An array of client objects.
- * @param dateRange - The date range for which to retrieve the visits.
- * @returns An array of visit objects.
- */
-export const getClientsVisits = async (
-    clients: Client[],
-    dateRange: ReportDateRange
-) => {
-    const visits: Visit[] = [];
-
-    // get all visits for each client in the date range
-    const promises = clients.map(async (client) => {
-        const query = prepareVisitQuery(client.id, dateRange);
-        const querySnapshot = await getDocs(query);
-        querySnapshot.forEach((doc) => {
-            const visit = doc.data();
-            visits.push(visit as Visit);
-        });
-    });
-
-    await Promise.all(promises);
-    return visits;
-};
-
-/**
- * Retrieves a list of clients based on the provided report date range.
- * @param reportDateRange - The date range for the report.
- * @returns A Promise that resolves to an array of clients.
- */
-export const getClients = async (reportDateRange: ReportDateRange) => {
-    const query = prepareClientQuery(reportDateRange);
-    const querySnapshot = await getDocs(query);
-    const listClients: Client[] = [];
-    querySnapshot.forEach((doc) => {
-        const client = doc.data();
-        listClients.push(client as Client);
-    });
-
-    return listClients;
-};
-
 // Generic grouping function by client or visit
+/**
+ * Groups an array of data items by month.
+ *
+ * @template T - The type of the data items.
+ * @param data - The array of data items to be grouped.
+ * @param (item: T) => Date} getDate - A function that extracts the date from a data item.
+ * @param clients - An optional array of clients to be included in the grouping.
+ * @returns {Map<string, (T | Client)[]>} A map where the keys are month strings (formatted as 'MMMM-yy') and the values are arrays of data items or clients.
+ */
 const groupByMonth = <T>(
     data: T[],
-    getDate: (item: T) => Date
-): Map<string, T[]> => {
+    getDate: (item: T) => Date,
+    clients?: Client[]
+): Map<string, (T | Client)[]> => {
     return data.reduce((acc, item) => {
         const date = getDate(item);
         const month = format(date, 'MMMM-yy');
 
+        // If the month key doesn't exist, create it
         if (!acc.has(month)) {
             acc.set(month, []);
         }
 
-        acc.get(month)?.push(item);
+        // find client by id
+        const client = clients?.find(
+            (client) => client.id === (item as VisitWithClientId).clientId
+        );
+
+        const currentMonth = acc.get(month);
+        if (client && currentMonth) {
+            currentMonth.push(client);
+
+            // for groups visits by month
+        } else if (!clients && currentMonth) {
+            currentMonth.push(item);
+        }
+
         return acc;
-    }, new Map<string, T[]>());
+    }, new Map<string, (T | Client)[]>());
 };
 
 // Specific function for visits
@@ -129,9 +171,21 @@ const groupVisitsByMonth = (visits: Visit[]): Map<string, Visit[]> => {
 };
 
 // Specific function for clients
-const groupClientsByMonth = (clients: Client[]): Map<string, Client[]> => {
-    return groupByMonth(clients, (client) =>
-        (client.lastVisit as Timestamp).toDate()
+/**
+ * Groups clients by the month of their visits.
+ *
+ * @param clients - An array of clients.
+ * @param visitsWithClientId - An array of visits, each associated with a client ID.
+ * @returns A Map where the keys are month strings and the values are arrays of clients who had visits in those months.
+ */
+const groupClientsByMonth = (
+    clients: Client[],
+    visitsWithClientId: VisitWithClientId[]
+): Map<string, Client[]> => {
+    return groupByMonth(
+        visitsWithClientId,
+        (visit) => (visit.createdAt as Timestamp).toDate(),
+        clients
     );
 };
 
@@ -178,7 +232,9 @@ const calculateVisitsCounts = (visitsOfMonth: Visit[]): VisitDataRow => {
  * @param visits - An array of Visit objects.
  * @returns An array of VisitDataRow objects representing the calculated counts for each month.
  */
-export const generateVisitData = (visits: Visit[]): VisitDataRow[] => {
+export const generateVisitData = (
+    visits: VisitWithClientId[]
+): VisitDataRow[] => {
     const data: VisitDataRow[] = [];
     const groupedVisits = groupVisitsByMonth(visits);
 
@@ -238,7 +294,7 @@ const isNewClient = (client: Client): boolean => {
  */
 // prettier-ignore
 const calculateClientsMonthlyData = (
-    clientsOfMonth: Client[],
+    clientsOfMonth: Client[] ,
     month: string
 ): ClientDataRow => {
     const genderData = getGenderData(clientsOfMonth);
@@ -246,18 +302,16 @@ const calculateClientsMonthlyData = (
     const womenCount = genderData.find((g) => g.name === 'Female')?.value || 0;
     const otherCount = genderData.find((g) => g.name === 'Other')?.value || 0;
     const kidsCount = clientsOfMonth.reduce((acc, client) => acc + (client.numKids || 0), 0);
-    const sumCount = menCount + womenCount + otherCount + kidsCount;
+    const sumCount = menCount + womenCount + otherCount;
     const newClientsCount = clientsOfMonth.filter((client) => isNewClient(client)).length;
-    const daysCount = new Set(clientsOfMonth.map((client) => client.lastVisit?.toDate().getDate())).size;
 
     return {
         month,
         men: menCount,
         women: womenCount,
         other: otherCount,
-        kids: kidsCount,
         clientsTotal: sumCount,
-        days: daysCount,
+        kids: kidsCount,
         newClients: newClientsCount,
     };
 };
@@ -268,16 +322,19 @@ const calculateClientsMonthlyData = (
  * @param clients - An array of client objects.
  * @returns An array of client data rows.
  */
-export const generateClientData = (clients: Client[]): ClientDataRow[] => {
-    const data: ClientDataRow[] = [];
-    const groupedClients = groupClientsByMonth(clients);
+export const generateClientData = (
+    clients: Client[],
+    visitsWithClientId: VisitWithClientId[]
+): ClientDataRow[] => {
+    const clientDataRow: ClientDataRow[] = [];
+    const groupedClients = groupClientsByMonth(clients, visitsWithClientId);
 
     groupedClients.forEach((clientsOfMonth, month) => {
         const monthlyData = calculateClientsMonthlyData(clientsOfMonth, month);
-        data.push(monthlyData);
+        clientDataRow.push(monthlyData);
     });
 
-    return data;
+    return clientDataRow;
 };
 
 // Helper function to convert an array of objects to CSV format
@@ -287,9 +344,6 @@ const arrayToCSV = (data: ClientDataRow[] | VisitDataRow[]): string => {
     const headers = Object.keys(data[0])
         // custom header names for specific fields in dollars
         .map((el) => {
-            if (el === 'orcaCard') {
-                return 'orcaCard ($)';
-            }
             if (el === 'giftcard') {
                 return 'giftcard ($)';
             }

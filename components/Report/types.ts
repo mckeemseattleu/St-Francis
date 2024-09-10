@@ -10,7 +10,6 @@ export type ClientDataRow = {
     other: number;
     kids: number;
     clientsTotal: number;
-    days: number;
     newClients: number;
 };
 

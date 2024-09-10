@@ -21,7 +21,7 @@ export const useGetDashboardData = () => {
     });
 
     useEffect(() => {
-        if (fields) refetch();
+        // if (fields) refetch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fields]);
 
