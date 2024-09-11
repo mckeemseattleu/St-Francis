@@ -156,7 +156,7 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         label="Orca Card"
         min={0}
         onChange={[Function]}
-        placeholder="Value in Dollars"
+        placeholder="Count"
         type="number"
         value=""
       />

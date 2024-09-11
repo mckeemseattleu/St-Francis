@@ -198,7 +198,7 @@ export default function VisitInfoForm({
                 <FormItem
                     type="number"
                     id="orcaCard"
-                    placeholder="Value in Dollars"
+                    placeholder="Count"
                     label="Orca Card"
                     value={visitData.orcaCard}
                     onChange={handleChange('orcaCard')}
