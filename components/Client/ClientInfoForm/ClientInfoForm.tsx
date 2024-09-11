@@ -24,7 +24,7 @@ export const raceList = [
     'Native Hawaiian or Other Pacific Islander',
     'Other',
 ];
-export const genderList = ['Male', 'Female', 'Other'];
+export const genderList = ['Male', 'Female', 'Other','Prefer not to say'];
 
 /**
  * A form for creating or editing a client's document in the database.
