@@ -16,17 +16,19 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       <div
         className="formItem"
       >
+        <input
+          checked={false}
+          id="clothingMen"
+          onChange={[Function]}
+          type="checkbox"
+        />
         <label
           htmlFor="clothingMen"
         >
           Men
         </label>
-        <input
-          checked={false}
-          id="clothingMen"
-          label="Men"
-          onChange={[Function]}
-          type="checkbox"
+        <div
+          className="errorMessage"
         />
       </div>
       <div
@@ -44,6 +46,9 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
           type="number"
           value=""
         />
+        <div
+          className="errorMessage"
+        />
       </div>
     </div>
     <div
@@ -52,17 +57,19 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       <div
         className="formItem"
       >
+        <input
+          checked={false}
+          id="clothingWomen"
+          onChange={[Function]}
+          type="checkbox"
+        />
         <label
           htmlFor="clothingWomen"
         >
           Women
         </label>
-        <input
-          checked={false}
-          id="clothingWomen"
-          label="Women"
-          onChange={[Function]}
-          type="checkbox"
+        <div
+          className="errorMessage"
         />
       </div>
       <div
@@ -80,6 +87,9 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
           type="number"
           value=""
         />
+        <div
+          className="errorMessage"
+        />
       </div>
     </div>
     <div
@@ -88,17 +98,19 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       <div
         className="formItem"
       >
+        <input
+          checked={false}
+          id="clothingKids"
+          onChange={[Function]}
+          type="checkbox"
+        />
         <label
           htmlFor="clothingKids"
         >
           Kids
         </label>
-        <input
-          checked={false}
-          id="clothingKids"
-          label="Kids"
-          onChange={[Function]}
-          type="checkbox"
+        <div
+          className="errorMessage"
         />
       </div>
       <div
@@ -115,6 +127,9 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
           placeholder="Count"
           type="number"
           value=""
+        />
+        <div
+          className="errorMessage"
         />
       </div>
     </div>
@@ -135,12 +150,14 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       </label>
       <input
         id="busTicket"
-        label="Bus Ticket"
         min={0}
         onChange={[Function]}
         placeholder="Count"
         type="number"
         value=""
+      />
+      <div
+        className="errorMessage"
       />
     </div>
     <div
@@ -153,12 +170,14 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       </label>
       <input
         id="orcaCard"
-        label="Orca Card"
         min={0}
         onChange={[Function]}
         placeholder="Value in Dollars"
         type="number"
         value=""
+      />
+      <div
+        className="errorMessage"
       />
     </div>
     <div
@@ -171,12 +190,14 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       </label>
       <input
         id="giftCard"
-        label="Gift Card"
         min={0}
         onChange={[Function]}
         placeholder="Value in Dollars"
         type="number"
         value=""
+      />
+      <div
+        className="errorMessage"
       />
     </div>
     <div
@@ -189,12 +210,14 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       </label>
       <input
         id="diaper"
-        label="Diaper"
         min={0}
         onChange={[Function]}
         placeholder="Count"
         type="number"
         value=""
+      />
+      <div
+        className="errorMessage"
       />
     </div>
     <div
@@ -207,12 +230,14 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       </label>
       <input
         id="financialAssistance"
-        label="Financial Assistance"
         min={0}
         onChange={[Function]}
         placeholder="Value in Dollars"
         type="number"
         value=""
+      />
+      <div
+        className="errorMessage"
       />
     </div>
   </div>
@@ -222,49 +247,55 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
     <div
       className="formItem"
     >
+      <input
+        checked={false}
+        id="backpack"
+        onChange={[Function]}
+        type="checkbox"
+      />
       <label
         htmlFor="backpack"
       >
         Backpack
       </label>
-      <input
-        checked={false}
-        id="backpack"
-        label="Backpack"
-        onChange={[Function]}
-        type="checkbox"
+      <div
+        className="errorMessage"
       />
     </div>
     <div
       className="formItem"
     >
+      <input
+        checked={false}
+        id="sleepingBag"
+        onChange={[Function]}
+        type="checkbox"
+      />
       <label
         htmlFor="sleepingBag"
       >
         Sleeping Bag
       </label>
-      <input
-        checked={false}
-        id="sleepingBag"
-        label="Sleeping Bag"
-        onChange={[Function]}
-        type="checkbox"
+      <div
+        className="errorMessage"
       />
     </div>
     <div
       className="formItem"
     >
+      <input
+        checked={false}
+        id="food"
+        onChange={[Function]}
+        type="checkbox"
+      />
       <label
         htmlFor="food"
       >
         Food
       </label>
-      <input
-        checked={false}
-        id="food"
-        label="Food"
-        onChange={[Function]}
-        type="checkbox"
+      <div
+        className="errorMessage"
       />
     </div>
     <div
@@ -273,17 +304,19 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       <div
         className="formItem"
       >
+        <input
+          checked={false}
+          id="householdItem"
+          onChange={[Function]}
+          type="checkbox"
+        />
         <label
           htmlFor="householdItem"
         >
           Household Items
         </label>
-        <input
-          checked={false}
-          id="householdItem"
-          label="Household Items"
-          onChange={[Function]}
-          type="checkbox"
+        <div
+          className="errorMessage"
         />
       </div>
       <div
@@ -300,6 +333,9 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
           placeholder="Count"
           type="number"
           value=""
+        />
+        <div
+          className="errorMessage"
         />
       </div>
     </div>
@@ -320,8 +356,10 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         id="household"
         onChange={[Function]}
         rows={3}
-        type="textarea"
         value=""
+      />
+      <div
+        className="errorMessage"
       />
     </div>
   </div>
@@ -338,8 +376,10 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
       id="notes"
       onChange={[Function]}
       rows={3}
-      type="textarea"
       value=""
+    />
+    <div
+      className="errorMessage"
     />
   </div>
   <button
