@@ -3,8 +3,9 @@ import { Button, Form, FormItem, FormRow, FormTitle } from '@/components/UI';
 import { Client } from '@/models/index';
 import { DocFilter } from '@/utils/index';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './ClientInfoForm.module.css';
+
 interface ClientInfoFormProps {
     id?: string;
     initialData?: Omit<Client, 'birthday'> & { birthday?: string };
@@ -39,8 +40,6 @@ export default function ClientInfoForm({
     title = 'Client Form',
     actions,
 }: ClientInfoFormProps) {
-    //TODO: Add Validation
-
     // Use default values if no initial data was passed in
     const defaultData = {
         id: initialData.id || '',
@@ -65,9 +64,19 @@ export default function ClientInfoForm({
     const [clientData, setClientData] = useState(defaultData);
     const [required, setRequired] = useState(false);
     const [actionType, setActionType] = useState('');
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [isFormValid, setIsFormValid] = useState(true);
+    const [formErrorMessage, setFormErrorMessage] = useState('');
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!isFormValid) {
+            // TODO: Add error message to user
+            console.log("Form has errors. Please correct them before submitting.");
+            return;
+        }
+
         const data = {
             ...clientData,
             numKids: parseInt(clientData.numKids) || 0,
@@ -76,15 +85,78 @@ export default function ClientInfoForm({
     };
 
     const handleChange = (key: any) => (e: any) => {
-        let value = e.target.value;
-        if (e.target.type === 'checkbox') value = e.target.checked;
-        if (key === 'firstName')
-            clientData.firstNameLower = value.toLowerCase();
-        if (key === 'lastName') clientData.lastNameLower = value.toLowerCase();
-        setClientData({ ...clientData, [key]: value });
+        let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        
+        if (key === 'postalCode') {
+            value = value.replace(/\D/g, '').slice(0, 5);
+        }
+
+        // Update the state immediately
+        if (key === 'firstName') {
+            setClientData(prev => ({
+                ...prev,
+                firstName: value,
+                firstNameLower: value.toLowerCase()
+            }));
+        } else if (key === 'lastName') {
+            setClientData(prev => ({
+                ...prev,
+                lastName: value,
+                lastNameLower: value.toLowerCase()
+            }));
+        } else {
+            setClientData(prev => ({ ...prev, [key]: value }));
+        }
+    
+        // Validate the field
+        const error = validateField(key, value.toString());
+        setErrors(prev => ({ ...prev, [key]: error }));
     };
+
+    const validateField = (key: string, value: string): string => {
+        switch (key) {
+            case 'firstName':
+            case 'lastName':
+            case 'middleInitial':
+                return /^[a-zA-Z\-]*$/.test(value) 
+                    ? '' 
+                    : 'Names can only contain letters and hyphens';
+            case 'postalCode':
+                if (value === '') return ''; // Allow empty input
+                return /^\d{5}$/.test(value)
+                    ? ''
+                    : 'Postal code must be exactly 5 digits';
+            // placeholder for other validations
+            default:
+                return '';
+        }
+    };
+    
     const getFullName = () =>
         `${clientData.firstName} ${clientData.middleInitial} ${clientData.lastName}`;
+
+    useEffect(() => {
+        const hasErrors = Object.values(errors).some(error => error !== '');
+        const requiredFieldsMissing = required && (
+            !clientData.firstName || 
+            !clientData.lastName || 
+            !clientData.birthday || 
+            !clientData.gender
+        );
+        const isValid = !hasErrors && !requiredFieldsMissing;
+        setIsFormValid(isValid);
+
+        // Set error message
+        if (!isValid) {
+            if (hasErrors) {
+                setFormErrorMessage('Please correct the errors in the form.');
+            } else if (requiredFieldsMissing) {
+                setFormErrorMessage('Please fill in all required fields.');
+            }
+        } else {
+            setFormErrorMessage('');
+        }
+    }, [errors, clientData, required]);
 
     return (
         <div className={styles.container}>
@@ -146,6 +218,7 @@ export default function ClientInfoForm({
                         id="firstName"
                         onChange={handleChange('firstName')}
                         required={required}
+                        error={errors.firstName}
                     />
 
                     <FormItem
@@ -153,6 +226,7 @@ export default function ClientInfoForm({
                         id="middleInitial"
                         value={clientData.middleInitial}
                         onChange={handleChange('middleInitial')}
+                        error={errors.middleInitial}
                     />
 
                     <FormItem
@@ -160,6 +234,7 @@ export default function ClientInfoForm({
                         id="lastName"
                         value={clientData.lastName}
                         onChange={handleChange('lastName')}
+                        error={errors.lastName}
                     />
 
                     <FormItem
@@ -180,6 +255,7 @@ export default function ClientInfoForm({
                         list="genderList"
                         value={clientData.gender}
                         onChange={handleChange('gender')}
+                        required={required}
                     />
                     <datalist id="genderList">
                         {genderList.map((gender) => (
@@ -205,6 +281,7 @@ export default function ClientInfoForm({
                         id="postalCode"
                         value={clientData.postalCode}
                         onChange={handleChange('postalCode')}
+                        error={errors.postalCode}
                     />
 
                     <FormItem
@@ -238,20 +315,28 @@ export default function ClientInfoForm({
                             <span />
                         </>
                     )}
-                    {actions &&
-                        Object.keys(actions).map((label) => (
-                            <Button
-                                key={label}
-                                className={styles.saveButton}
-                                onClick={() => {
-                                    setActionType(label);
-                                    setRequired(true);
-                                }}
-                                type="submit"
-                            >
-                                {label}
-                            </Button>
-                        ))}
+                    <div className={styles.saveButtonGroup}>
+                        {actions &&
+                            Object.keys(actions).map((label) => (
+                                <Button
+                                    key={label}
+                                    className={styles.saveButton}
+                                    onClick={() => {
+                                        setActionType(label);
+                                        setRequired(true);
+                                    }}
+                                    type="submit"
+                                    disabled={!isFormValid}
+                                >
+                                    {label}
+                                </Button>
+                            ))}
+                        {!isFormValid && (
+                            <span className={styles.formErrorMessage}>
+                                {formErrorMessage}
+                            </span>
+                        )}
+                    </div>
                 </div>
             </Form>
         </div>

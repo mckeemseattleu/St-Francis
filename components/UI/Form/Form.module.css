@@ -13,8 +13,42 @@
     flex-basis: calc(20% - 10px);
     margin: 5px;
     padding-block: 5px;
-    justify-content: center;
     display: flex;
     flex-direction: column;
     gap: 5px;
+    min-height: 80px; /* Adjust this value based on your design needs */
+    position: relative;
+}
+
+.formItem label {
+    margin-bottom: 2px;
+}
+
+.formItem input,
+.formItem textarea {
+    margin-bottom: 20px; /* Space for error message */
+}
+
+.errorMessage {
+    color: red;
+    font-size: 0.8em;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: 20px; /* Fixed height for error message */
+    display: flex;
+    align-items: center;
+}
+
+/* New styles to ensure proper spacing */
+.formItem input,
+.formItem textarea,
+.formItem select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.formItem {
+    padding-bottom: 25px; /* Increased padding to accommodate error message */
 }
