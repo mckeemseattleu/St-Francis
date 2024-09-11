@@ -257,7 +257,7 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
           label="Orca Card"
           min={0}
           onChange={[Function]}
-          placeholder="Value in Dollars"
+          placeholder="Count"
           type="number"
           value=""
         />
