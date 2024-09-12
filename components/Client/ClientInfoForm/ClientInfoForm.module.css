@@ -56,3 +56,14 @@
     gap: 5px;
     padding-block: 5px;
 }
+
+.saveButtonGroup {
+    display: flex;
+    align-items: center;
+}
+
+.formErrorMessage {
+    margin-left: 1rem;
+    color: red;
+    font-size: 0.9rem;
+}
