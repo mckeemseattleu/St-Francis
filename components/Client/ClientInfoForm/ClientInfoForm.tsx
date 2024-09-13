@@ -86,7 +86,7 @@ export default function ClientInfoForm({
         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         
         if (key === 'postalCode') {
-            value = value.replace(/\D/g, '').slice(0, 5);
+            value = formatPostalCode(value);
         }
 
         // Update the state immediately
@@ -111,6 +111,12 @@ export default function ClientInfoForm({
         setErrors(prev => ({ ...prev, [key]: error }));
     };
 
+    const formatPostalCode = (value: string): string => {
+        const digits = value.replace(/\D/g, '');
+        if (digits.length <= 5) return digits;
+        return `${digits.slice(0, 5)}-${digits.slice(5, 9)}`;
+    };
+
     const validateField = (key: string, value: string): string => {
         switch (key) {
             case 'firstName':
@@ -121,9 +127,10 @@ export default function ClientInfoForm({
                     : 'Name contains forbidden characters';
             case 'postalCode':
                 if (value === '') return ''; // Allow empty input
-                return /^\d{5}$/.test(value)
-                    ? ''
-                    : 'Postal code must be exactly 5 digits';
+                const digits = value.replace(/\D/g, '');
+                if (digits.length < 5) return 'Postal code must be at least 5 digits';
+                if (digits.length > 5 && digits.length < 9) return 'Please complete the 4-digit extension';
+                return '';
             // placeholder for other validations
             default:
                 return '';
