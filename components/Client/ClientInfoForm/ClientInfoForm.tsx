@@ -116,9 +116,9 @@ export default function ClientInfoForm({
             case 'firstName':
             case 'lastName':
             case 'middleInitial':
-                return /^[a-zA-Z\s\-]*$/.test(value) 
+                return /^[a-zA-Z\s\-'.,()À-ÿ]*$/.test(value) 
                     ? '' 
-                    : 'Names can only contain letters, spaces, and hyphens';
+                    : 'Name contains forbidden characters';
             case 'postalCode':
                 if (value === '') return ''; // Allow empty input
                 return /^\d{5}$/.test(value)
