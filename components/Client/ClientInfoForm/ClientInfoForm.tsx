@@ -72,8 +72,6 @@ export default function ClientInfoForm({
         e.preventDefault();
 
         if (!isFormValid) {
-            // TODO: Add error message to user
-            console.log("Form has errors. Please correct them before submitting.");
             return;
         }
 
@@ -118,9 +116,9 @@ export default function ClientInfoForm({
             case 'firstName':
             case 'lastName':
             case 'middleInitial':
-                return /^[a-zA-Z\-]*$/.test(value) 
+                return /^[a-zA-Z\s\-]*$/.test(value) 
                     ? '' 
-                    : 'Names can only contain letters and hyphens';
+                    : 'Names can only contain letters, spaces, and hyphens';
             case 'postalCode':
                 if (value === '') return ''; // Allow empty input
                 return /^\d{5}$/.test(value)
