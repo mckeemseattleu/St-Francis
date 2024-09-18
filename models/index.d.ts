@@ -46,6 +46,8 @@ export declare type Visit = {
     readonly clothingMen?: boolean | null;
     readonly clothingOther?: boolean | null;
     readonly otherQ?: number | null;
+    readonly boyQ?: number | null;
+    readonly girlQ?: number | null;
     readonly sleepingBag?: boolean | null;
     readonly food?: boolean | null;
     readonly clothingGirl?: boolean | null;
