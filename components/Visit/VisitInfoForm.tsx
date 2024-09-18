@@ -17,6 +17,7 @@ const defaultVisitData = {
     id: '',
     clothingMen: false,
     clothingWomen: false,
+    clothingOther: false,
     clothingBoy: false,
     clothingGirl: false,
     household: '',
@@ -26,6 +27,7 @@ const defaultVisitData = {
     food: false,
     mensQ: '',
     womensQ: '',
+    OtherQ: '',
     kidsQ: '',
     householdItem: false,
     householdItemQ: '',
@@ -58,6 +60,7 @@ export default function VisitInfoForm({
         financialAssistance: toString(initialVisitData?.financialAssistance),
         mensQ: toString(initialVisitData?.mensQ),
         womensQ: toString(initialVisitData?.womensQ),
+        otherQ: toString(initialVisitData?.otherQ),
         kidsQ: toString(initialVisitData?.kidsQ),
         notes: initialNotes,
         householdItem:
@@ -91,6 +94,7 @@ export default function VisitInfoForm({
             // default to 0 if unchecked before submit
             mensQ: visitData.clothingMen ? toInt(visitData.mensQ) : 0,
             womensQ: visitData.clothingWomen ? toInt(visitData.womensQ) : 0,
+            OtherQ: visitData.clothingOther ? toInt(visitData.OtherQ) : 0,
             kidsQ:
                 visitData.clothingBoy ||
                 visitData.clothingGirl ||
@@ -159,6 +163,23 @@ export default function VisitInfoForm({
                         value={visitData.womensQ}
                         onChange={handleChange('womensQ')}
                         hidden={!visitData.clothingWomen}
+                    />
+                </FormRow>
+                <FormRow className={styles.rowItems}>
+                    <FormItem
+                        type="checkbox"
+                        id="clothingOther"
+                        label="Other"
+                        checked={!!visitData.clothingOther}
+                        onChange={handleChange('clothingOther')}
+                    />
+                    <FormItem
+                        type="number"
+                        id="otherQ"
+                        placeholder="Count"
+                        value={visitData.otherQ}
+                        onChange={handleChange('otherQ')}
+                        hidden={!visitData.clothingOther}
                     />
                 </FormRow>
                 <FormRow className={styles.rowItems}>

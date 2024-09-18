@@ -18,7 +18,7 @@ function VisitDetail(props: VisitDetailProps) {
         clothingKids,
         mensQ,
         womensQ,
-        OtherQ,
+        otherQ,
         kidsQ,
         backpack,
         sleepingBag,
@@ -45,7 +45,7 @@ function VisitDetail(props: VisitDetailProps) {
                     <div className={styles.row}>
                         <p>{clothingMen && `Men: ${mensQ}`}</p>
                         <p>{clothingWomen && `Women: ${womensQ}`}</p>
-                        <p>{clothingOther && `Women: ${OtherQ}`}</p>
+                        <p>{clothingOther && `Women: ${otherQ}`}</p>
                         <p>
                             {(clothingGirl || clothingBoy || clothingKids) &&
                                 `Kids: ${kidsQ}`}
