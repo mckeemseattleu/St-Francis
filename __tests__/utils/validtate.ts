@@ -23,15 +23,15 @@ describe('validateClient', () => {
         earlyOverride: false,
     };
     (getSettings as jest.Mock).mockReturnValue(mockSettings);
-    it('should validate eligible client', () => {
-        const result = validateClient(mockClient, mockSettings);
+    it('should validate eligible client', async () => {
+        const result = await validateClient(mockClient, mockSettings, []);
         expect(result?.data?.daysVisitLeft).toBe(0);
         expect(result?.data?.daysBackpackLeft).toBe(0);
         expect(result?.data?.daysSleepingBagLeft).toBe(0);
         expect(result.validated).toBe(true);
     });
-    it('shoudld validate ineligible client', () => {
-        const result = validateClient(
+    it('shoudld validate ineligible client', async () => {
+        const result = await validateClient(
             {
                 ...mockClient,
                 lastVisit: Timestamp.fromDate(new Date()),
@@ -43,23 +43,28 @@ describe('validateClient', () => {
                 daysEarlyThreshold: 10,
                 backpackThreshold: 10,
                 sleepingBagThreshold: 10,
-            }
+            },
+            []
         );
-        expect(result?.data?.daysVisitLeft).toBe(10);
+        expect(result?.data?.daysVisitLeft).toBe(0);
         expect(result?.data?.daysBackpackLeft).toBe(10);
         expect(result?.data?.daysSleepingBagLeft).toBe(10);
         expect(result.validated).toBe(false);
     });
-    it('should validate failed if no client', () => {
-        const result = validateClient(null, mockSettings);
+    it('should validate failed if no client', async () => {
+        const result = await validateClient(null, mockSettings, []);
         expect(result.validated).toBe(false);
     });
 
-    it('should bypass validation if earlyOverride is true', () => {
-        const result = validateClient(mockClient, {
-            ...mockSettings,
-            earlyOverride: true,
-        });
+    it('should bypass validation if earlyOverride is true', async () => {
+        const result = await validateClient(
+            mockClient,
+            {
+                ...mockSettings,
+                earlyOverride: true,
+            },
+            []
+        );
         expect(result.validated).toBe(true);
     });
 });

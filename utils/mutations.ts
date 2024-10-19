@@ -39,12 +39,23 @@ export const reviseClient = async (clientID: string) => {
     const lastSleepingBag =
         (await listVisits(clientID, { sleepingBag: true }, 1))[0]?.createdAt ||
         null;
+    const lastOrcaCard =
+        (
+            await listVisits(
+                clientID,
+                {
+                    orcaCard: [{ opStr: '>', value: 0 }],
+                },
+                1
+            )
+        )[0]?.createdAt || null;
 
     return await updateClient({
         id: clientID,
         lastBackpack,
         lastSleepingBag,
         lastVisit,
+        lastOrcaCard,
     });
 };
 

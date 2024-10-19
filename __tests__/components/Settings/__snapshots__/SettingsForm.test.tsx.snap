@@ -56,6 +56,23 @@ exports[`SettingsForm should match snapshot 1`] = `
   />
   <br />
   <label
+    htmlFor="orcaCardTheshold"
+  >
+    <h2>
+      Orca Card Threshold
+    </h2>
+  </label>
+  <input
+    id="orcaCardThreshold"
+    min="0"
+    name="orcaCardThreshold"
+    onChange={[Function]}
+    required={true}
+    type="number"
+    value="0"
+  />
+  <br />
+  <label
     htmlFor="earlyOverride"
   >
     <h2>

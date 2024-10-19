@@ -2,14 +2,24 @@
 import Spinner from '@/components/Spinner/Spinner';
 import { Button } from '@/components/UI';
 import { useSettings } from '@/hooks/index';
+import type { VisitWithClientId } from '@/types/index';
 import { toLicenseDateString, validateClient } from '@/utils/index';
 import type { Client } from 'models';
 import Link from 'next/link';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './ClientCard.module.css';
 
-export default function ClientCard({ client }: { client: Client }) {
+type PropsType = {
+    client: Client;
+    clientVisits: VisitWithClientId[] | undefined;
+};
+
+export default function ClientCard({ client, clientVisits }: PropsType) {
     const { id, firstName, lastName, birthday, notes, isBanned } = client;
     const { settings } = useSettings();
+
+    const [data, setData] = useState<any>(null);
+    const [validated, setValidated] = useState<boolean>(false);
 
     const createField = (label: string, value?: string | number | null) => {
         return (
@@ -27,8 +37,22 @@ export default function ClientCard({ client }: { client: Client }) {
 
     if (!settings) return <Spinner />;
 
-    const { data, validated } = validateClient(client, settings);
-    const { daysVisitLeft, daysBackpackLeft, daysSleepingBagLeft } = data || {};
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await validateClient(client, settings, clientVisits);
+            setData(result.data);
+            setValidated(result.validated);
+        };
+
+        fetchData();
+    }, [client, settings, clientVisits]);
+
+    const {
+        daysVisitLeft,
+        daysBackpackLeft,
+        daysSleepingBagLeft,
+        daysOrcaCardLeft,
+    } = data || {};
 
     return (
         <div className={styles.card}>
@@ -61,6 +85,12 @@ export default function ClientCard({ client }: { client: Client }) {
                     createField(
                         'Sleeping Bag ',
                         daysSleepingBagLeft + ' days remaining'
+                    )}
+                {!!daysOrcaCardLeft &&
+                    !client.isCheckedIn &&
+                    createField(
+                        'Orca Card ',
+                        daysOrcaCardLeft + ' days remaining'
                     )}
                 {notes && (
                     <>

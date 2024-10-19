@@ -27,7 +27,7 @@ export default function SettingsPage() {
             <SettingsForm
                 onSubmit={handleSubmit}
                 initialSettings={settings}
-                key={settings?.backpackThreshold}
+                key={settings?.backpackThreshold} // TODO: remove this when form is refactored
             />
         </div>
     );
