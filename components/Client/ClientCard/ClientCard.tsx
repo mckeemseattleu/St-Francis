@@ -4,7 +4,7 @@ import { Button } from '@/components/UI';
 import { useSettings } from '@/hooks/index';
 import type { VisitWithClientId } from '@/types/index';
 import { toLicenseDateString, validateClient } from '@/utils/index';
-import type { Client } from 'models';
+import type { Client, Settings } from 'models';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './ClientCard.module.css';
@@ -17,9 +17,6 @@ type PropsType = {
 export default function ClientCard({ client, clientVisits }: PropsType) {
     const { id, firstName, lastName, birthday, notes, isBanned } = client;
     const { settings } = useSettings();
-
-    const [data, setData] = useState<any>(null);
-    const [validated, setValidated] = useState<boolean>(false);
 
     const createField = (label: string, value?: string | number | null) => {
         return (
@@ -37,15 +34,7 @@ export default function ClientCard({ client, clientVisits }: PropsType) {
 
     if (!settings) return <Spinner />;
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await validateClient(client, settings, clientVisits);
-            setData(result.data);
-            setValidated(result.validated);
-        };
-
-        fetchData();
-    }, [client, settings, clientVisits]);
+    const { validated, data } = validateClient(client, settings, clientVisits);
 
     const {
         daysVisitLeft,

@@ -8,7 +8,7 @@ import { subDays, isAfter } from 'date-fns';
  * @param settings Settings document
  * @returns validated result and validation data (days left)
  */
-export const validateClient = async (
+export const validateClient = (
     client: Client | null = null,
     settings: Settings,
     clientVisits: Visit[] | undefined
@@ -26,7 +26,7 @@ export const validateClient = async (
     const { lastBackpack, lastSleepingBag, lastOrcaCard } = client;
 
     // Calculate days duration
-    const daysVisit = daysBetween(await findShoppingWithDate(clientVisits));
+    const daysVisit = daysBetween(findShoppingWithDate(clientVisits, settings));
     const daysBackpack = daysBetween(lastBackpack?.toDate());
     const daysSleepingBag = daysBetween(lastSleepingBag?.toDate());
     const daysOrcaCard = daysBetween(
@@ -63,8 +63,11 @@ const daysBetween = (from: Date | undefined, to: Date = new Date()) => {
 
 const toUint = (value: number) => Math.round(value > 0 ? value : 0);
 
-const findShoppingWithDate = async (clientVisits: Visit[] | undefined) => {
-    const shopping_theshold = (await getSettings())?.daysEarlyThreshold;
+const findShoppingWithDate = (
+    clientVisits: Visit[] | undefined,
+    settings: Settings
+) => {
+    const shopping_theshold = settings.daysEarlyThreshold;
     if (!shopping_theshold) return;
     const treshholdDate = subDays(new Date(), shopping_theshold);
     const visitWithShopping = clientVisits?.find((visit) => {
