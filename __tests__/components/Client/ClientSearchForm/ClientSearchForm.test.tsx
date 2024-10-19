@@ -23,7 +23,7 @@ describe('Client Info Form Component', () => {
 
     it('renders correctly without initial data', async () => {
         await act(async () => {
-            render(<ClientSearchForm onSubmit={() => {}} />);
+            render(<ClientSearchForm onSubmit={() => {}} isLoading={false} />);
         });
         const title = screen.queryByRole('heading', {
             name: 'Lookup Client',
@@ -44,22 +44,27 @@ describe('Client Info Form Component', () => {
                 <ClientSearchForm
                     onSubmit={mockSubmit}
                     onClear={mockOnClear}
-                    initialFields={{ filterByBirthday: true,  ...mockClient}}
+                    isLoading={false}
                 />
             );
         });
         const searchBtn = screen.queryByText('Search') as HTMLButtonElement;
         const clearBtn = screen.queryByText('Clear') as HTMLButtonElement;
-        const birthdayInput = screen.queryByLabelText('Birthday') as HTMLInputElement;
-        
+        const birthdayInput = screen.queryByLabelText(
+            'Birthday'
+        ) as HTMLInputElement;
+
+        // Simulate user input
+        fireEvent.change(birthdayInput, {
+            target: { value: mockClient.birthday },
+        });
+
         fireEvent.click(searchBtn);
         expect(mockSubmit).toHaveBeenCalledTimes(1);
         expect(birthdayInput.value).toBe(mockClient.birthday);
-        
+
         fireEvent.click(clearBtn);
         expect(mockOnClear).toHaveBeenCalledTimes(1);
         expect(birthdayInput.value).toBe('');
     });
-
-    //TODO: test checkbox
 });

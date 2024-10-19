@@ -132,7 +132,10 @@ export default function Profile({ params }: ProfileProps) {
                         </Link>
                     )}
                 </div>
-                <ClientProfileInfo client={clientData} />
+                <ClientProfileInfo
+                    client={clientData}
+                    visitsData={visitsData}
+                />
             </div>
 
             <div>

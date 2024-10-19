@@ -1,22 +1,19 @@
 'use client';
+
+import { useState } from 'react';
 import { Button } from '@/components/UI';
 import type { DocFilter } from '@/utils/index';
 import Image from 'next/image';
-import { useState } from 'react';
+import Spinner from '@/components/Spinner/Spinner';
 import styles from './ClientSearchForm.module.css';
 
 type ClientSearchFormProps = {
     onSubmit: (fields: DocFilter) => void;
+    isLoading: boolean;
     onClear?: () => void;
-    initialFields?: {
-        firstNameLower?: string;
-        lastNameLower?: string;
-        birthday?: string;
-        filterByBirthday?: boolean;
-    };
 };
 export default function ClientSearchForm(props: ClientSearchFormProps) {
-    const { onSubmit, onClear, initialFields } = props;
+    const { onSubmit, onClear, isLoading } = props;
 
     const defaultData = {
         firstName: '',
@@ -26,11 +23,10 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
     };
 
     const [clientData, setClientData] = useState({
-        birthday: initialFields?.birthday || defaultData.birthday,
-        filterByBirthday:
-            initialFields?.filterByBirthday || defaultData.filterByBirthday,
-        firstName: initialFields?.firstNameLower || '',
-        lastName: initialFields?.lastNameLower || '',
+        birthday: defaultData.birthday,
+        filterByBirthday: defaultData.filterByBirthday,
+        firstName: '',
+        lastName: '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -64,6 +60,28 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
             });
         } else {
             setClientData({ ...clientData, [e.target.name]: value });
+        }
+    };
+
+    const renderSubmitButton = () => {
+        if (isLoading) {
+            return (
+                <Button disabled>
+                    <Spinner variant="small" />
+                </Button>
+            );
+        } else {
+            return (
+                <Button type="submit">
+                    Search
+                    <Image
+                        src="/search.svg"
+                        alt="client-search-icon"
+                        width="20"
+                        height="20"
+                    />
+                </Button>
+            );
         }
     };
 
@@ -110,15 +128,7 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
                 </div>
 
                 <div className={styles.formControls}>
-                    <Button type="submit">
-                        Search
-                        <Image
-                            src="/search.svg"
-                            alt="client-search-icon"
-                            width="20"
-                            height="20"
-                        />
-                    </Button>
+                    {renderSubmitButton()}
                     <Button type="button" onClick={handleClear}>
                         Clear
                     </Button>

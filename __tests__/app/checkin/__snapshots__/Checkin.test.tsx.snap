@@ -529,6 +529,15 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
            day(s) left
         </span>
       </h4>
+      <h4>
+        Last Orca Card:
+         
+        <span>
+           
+          | 
+           day(s) left
+        </span>
+      </h4>
       <div
         className="rowContainer"
       >

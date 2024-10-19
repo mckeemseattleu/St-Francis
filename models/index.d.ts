@@ -24,6 +24,7 @@ export declare type Client = {
     readonly lastNameLower?: string | null;
     readonly firstNameLower?: string | null;
     readonly lastSleepingBag?: Timestamp | null;
+    readonly lastOrcaCard?: Timestamp | null;
     readonly idv1?: string;
 };
 
@@ -60,6 +61,7 @@ export declare type Settings = {
     readonly daysEarlyThreshold?: number;
     readonly backpackThreshold?: number;
     readonly sleepingBagThreshold?: number;
+    readonly orcaCardThreshold?: number;
     readonly earlyOverride?: boolean;
     readonly createdAt?: Timestamp | null;
     readonly updatedAt?: Timestamp | null;
