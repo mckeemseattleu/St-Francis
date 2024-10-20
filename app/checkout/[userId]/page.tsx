@@ -47,8 +47,9 @@ export default function CheckOut({ params }: CheckOutProps) {
     // Sets isCheckedIn status to false then gets updated client data
     const checkOut = async (visitData: Visit) => {
         await updateVisit(visitData, params.userId);
+
         const client = await updateClient({
-            ...clientData,
+            id: params.userId,
             isCheckedIn: false,
         });
         updateVisitCache(params.userId, visitData);

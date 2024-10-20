@@ -1,9 +1,11 @@
 import { ClientCard, ClientCardSkeleton } from '@/components/Client/index';
 import type { Client } from '@/models/index';
+import type { VisitWithClientId } from '@/types/index';
 import styles from './ClientList.module.css';
 
 type ClientListProps = {
     clients: Array<Client>;
+    visits: VisitWithClientId[] | undefined;
     noDataMessage?: string;
     title?: string;
     isLoading?: boolean;
@@ -14,6 +16,7 @@ export default function ClientList(props: ClientListProps) {
         clients,
         noDataMessage = 'No Clients',
         title,
+        visits,
         isLoading = false,
     } = props;
 
@@ -32,7 +35,13 @@ export default function ClientList(props: ClientListProps) {
         clientList = (
             <>
                 {clients.map((client) => (
-                    <ClientCard client={client} key={client.id} />
+                    <ClientCard
+                        client={client}
+                        key={client.id}
+                        clientVisits={visits?.filter(
+                            (el) => el.clientId == client.id
+                        )}
+                    />
                 ))}
             </>
         );

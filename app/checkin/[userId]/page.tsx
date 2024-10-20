@@ -10,8 +10,10 @@ import {
     CLIENTS_PATH,
     createVisit,
     getClient,
+    listVisits,
     updateClient,
     validateClient,
+    VISITS_PATH,
 } from '@/utils/index';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -35,6 +37,7 @@ export default function Checkin({ params }: CheckinProps) {
               daysBackpackLeft: number;
               daysSleepingBagLeft: number;
               daysVisitLeft: number;
+              daysOrcaCardLeft: number;
           }
         | undefined
     >();
@@ -45,10 +48,19 @@ export default function Checkin({ params }: CheckinProps) {
         () => getClient(params.userId)
     );
 
+    const { isLoading: isVisitsloading, data: visitsData } = useQuery(
+        [CLIENTS_PATH, params.userId, VISITS_PATH],
+        () => listVisits(params.userId, undefined, 10)
+    );
+
     // Checkin process, handles validate eligibility
     const handleSubmit = async (visitData: Visit) => {
         if (!clientData || !visitData || !settings) return;
-        const { validated, data } = validateClient(clientData, settings);
+        const { validated, data } = await validateClient(
+            clientData,
+            settings,
+            visitsData
+        );
         if (!show && !validated) {
             setShow(true);
             setVisitData(visitData);
@@ -87,7 +99,7 @@ export default function Checkin({ params }: CheckinProps) {
         visitFormData && handleSubmit(visitFormData);
     };
 
-    if (isLoading) return <Spinner />;
+    if (isLoading || isVisitsloading) return <Spinner />;
     if (!clientData) return <h1>Client not found</h1>;
     return (
         <div className={styles.container}>
@@ -99,6 +111,7 @@ export default function Checkin({ params }: CheckinProps) {
                 <ClientStatus client={clientData} />
             </div>
             <hr />
+
             <div className={styles.rowContainer}>
                 <Link href={`/update/${params.userId}`}>
                     <Button>Edit</Button>
@@ -148,6 +161,15 @@ export default function Checkin({ params }: CheckinProps) {
                         | {validatedData?.daysSleepingBagLeft} day(s) left
                     </span>
                 </h4>
+                <h4>
+                    Last Orca Card:{' '}
+                    {clientData?.lastOrcaCard?.toDate()?.toLocaleString()}
+                    <span>
+                        {' '}
+                        | {validatedData?.daysOrcaCardLeft} day(s) left
+                    </span>
+                </h4>
+
                 <div className={styles.rowContainer}>
                     <Button onClick={() => setShow(false)}>Cancel</Button>
                     <Button

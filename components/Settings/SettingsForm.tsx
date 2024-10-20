@@ -12,6 +12,7 @@ type SettingsForm = {
     daysEarlyThreshold: string;
     backpackThreshold: string;
     sleepingBagThreshold: string;
+    orcaCardThreshold: string;
     earlyOverride: boolean;
 };
 
@@ -27,6 +28,8 @@ function SettingsForm(props: SettingsFormProps) {
         sleepingBagThreshold:
             initialSettings?.sleepingBagThreshold?.toString() || '0',
         earlyOverride: !!initialSettings?.earlyOverride,
+        orcaCardThreshold:
+            initialSettings?.orcaCardThreshold?.toString() || '0',
     } as SettingsForm;
     const [settings, setSettings] = useState(defaultSettings);
 
@@ -45,6 +48,7 @@ function SettingsForm(props: SettingsFormProps) {
             daysEarlyThreshold: parseInt(settings.daysEarlyThreshold),
             backpackThreshold: parseInt(settings.backpackThreshold),
             sleepingBagThreshold: parseInt(settings.sleepingBagThreshold),
+            orcaCardThreshold: parseInt(settings.orcaCardThreshold),
         };
         onSubmit && onSubmit(settingsData);
     };
@@ -87,6 +91,20 @@ function SettingsForm(props: SettingsFormProps) {
                 name="sleepingBagThreshold"
                 id="sleepingBagThreshold"
                 value={settings.sleepingBagThreshold}
+                onChange={handleChange}
+                required
+                min="0"
+            />
+            <br />
+
+            <label htmlFor="orcaCardTheshold">
+                <h2>Orca Card Threshold</h2>
+            </label>
+            <input
+                type="number"
+                name="orcaCardThreshold"
+                id="orcaCardThreshold"
+                value={settings.orcaCardThreshold}
                 onChange={handleChange}
                 required
                 min="0"

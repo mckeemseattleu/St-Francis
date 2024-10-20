@@ -1,15 +1,18 @@
 'use client';
 
-import { Client } from '@/models/index';
+import { Client, Visit } from '@/models/index';
 import { toLicenseDateString, formatDate } from '@/utils/index';
+import { Timestamp } from 'firebase/firestore';
 import { format } from 'path';
 import styles from './ClientProfileInfo.module.css';
 
 type ClientProfileInfoProps = {
     client?: Client;
+    visitsData?: Visit[];
 };
+
 const ClientProfileInfo = (props: ClientProfileInfoProps) => {
-    const { client } = props;
+    const { client, visitsData } = props;
     if (!client) return null;
     const {
         birthday,
@@ -21,6 +24,7 @@ const ClientProfileInfo = (props: ClientProfileInfoProps) => {
         lastBackpack,
         lastSleepingBag,
         notes,
+        lastOrcaCard,
     } = client;
 
     const createField = (label: string, value?: string | number | null) => {
@@ -33,6 +37,19 @@ const ClientProfileInfo = (props: ClientProfileInfoProps) => {
             )) ||
             null
         );
+    };
+
+    const getLastOrcaCardVisit = () => {
+        if (lastOrcaCard) return lastOrcaCard;
+        if (visitsData) {
+            const orcaCardVisits = visitsData.filter(
+                (visit) => visit.orcaCard && visit.orcaCard > 0
+            );
+
+            return orcaCardVisits.length > 0
+                ? orcaCardVisits[0].createdAt
+                : null;
+        }
     };
 
     return (
@@ -54,6 +71,11 @@ const ClientProfileInfo = (props: ClientProfileInfoProps) => {
                 {createField(
                     'Last sleeping bag',
                     lastSleepingBag && formatDate(lastSleepingBag)
+                )}
+                {createField(
+                    'Last Orca Card',
+                    getLastOrcaCardVisit() &&
+                        formatDate(getLastOrcaCardVisit() as Timestamp)
                 )}
             </div>
             {createField('Notes', notes)}

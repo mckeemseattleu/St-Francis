@@ -16,6 +16,7 @@ export default function CheckedIn() {
             noDataMessage="No clients are currently checked in"
             title="Checked in clients"
             isLoading={isLoading}
+            visits={undefined}
         />
     );
 }

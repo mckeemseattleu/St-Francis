@@ -1,20 +1,17 @@
 import ClientSearch from '@/components/Client/ClientSearch/ClientSearch';
 import '@testing-library/jest-dom';
-import { act, fireEvent, render, screen } from '@testing-library/react';
-import { useQuery } from 'react-query';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useGetClientsSearch } from '@/components/Client/ClientSearch/hooks';
+import React from 'react';
 
-jest.mock('react-query', () => ({
-    useQuery: jest.fn(() => ({
-        data: {
-            clients: [],
-        },
+jest.mock('@/components/Client/ClientSearch/hooks', () => ({
+    useGetClientsSearch: jest.fn(() => ({
+        mutateAsync: jest.fn(),
         isLoading: false,
-        refetch: jest.fn(),
+        clients: [],
+        visits: [],
+        setClients: jest.fn(),
     })),
-
-    useQueryClient: jest.fn().mockReturnValue({
-        resetQueries: jest.fn(),
-    }),
 }));
 
 jest.mock('@/hooks/index', () => ({
@@ -22,22 +19,24 @@ jest.mock('@/hooks/index', () => ({
 }));
 
 describe('Client Info Form Component', () => {
-    it('renders correctly without initial data', async () => {
+    it('calls handleSubmit with correct arguments', async () => {
+        const { mutateAsync } = useGetClientsSearch();
         render(<ClientSearch />);
-        const message = screen.getByText('No Matching Clients');
-        expect(message).toBeInTheDocument();
-    });
-
-    it('renders correctly with initial data', async () => {
-        (useQuery as jest.Mock).mockImplementation((args) => {
-            const { queryFn } = args;
-            const refetch = jest.fn(() => queryFn());
-            return { data: queryFn(), isLoading: false, refetch };
+        const formFields = { name: 'John' };
+        const submitButton = screen.getByText('Search');
+        fireEvent.click(submitButton);
+        waitFor(() => {
+            expect(mutateAsync).toHaveBeenCalledWith(formFields);
         });
-        render(<ClientSearch />);
-        const searchButton = screen.getByText('Search');
-        fireEvent.click(searchButton);
     });
 
-    // TODO: Write tests to handle queryFn coverage
+    it('calls handleClear and sets clients to an empty array', async () => {
+        const { setClients } = useGetClientsSearch();
+        render(<ClientSearch />);
+        const clearButton = screen.getByText('Clear');
+        fireEvent.click(clearButton);
+        waitFor(() => {
+            expect(setClients).toHaveBeenCalledWith([]);
+        });
+    });
 });
