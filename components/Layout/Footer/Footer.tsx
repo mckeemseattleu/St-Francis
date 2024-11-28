@@ -9,7 +9,7 @@ export default function Footer(props: FooterProps) {
     if (!enabled) return null;
     return (
         <footer {...rest} className={`${className} ${styles.footer} noprint`}>
-            <h1 className={styles.footerHeading}>ST. FRANCIS HOUSE</h1>
+            <h1 className={styles.footerHeading}>St. Francis House</h1>
             <a
                 className={styles.footerLink}
                 href="https://goo.gl/maps/ifn9pJEydgeCJwGbA"
