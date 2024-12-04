@@ -10,7 +10,6 @@ export const useGetClientsSearch = () => {
     const { mutateAsync, isLoading } = useMutation({
         mutationFn: async (fields: DocFilter) => {
             const filter = { ...fields };
-            // ... (existing filter logic)
 
             const fetchedClients = await listClients(filter);
 
@@ -32,7 +31,6 @@ export const useGetClientsSearch = () => {
             }));
 
             setClients(clientsWithDuplicateFlag);
-            // ... (existing visit fetching logic)
         },
     });
 
