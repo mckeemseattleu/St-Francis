@@ -3,6 +3,7 @@ import { Button } from '@/components/UI';
 import styles from './PrintoutForm.module.css';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+
 interface PrintoutFormProps {
     // TODO: We can ask for form title instead of clientData and update
     // component doc
@@ -39,67 +40,136 @@ export default function PrintoutForm({
     data,
 }: PrintoutFormProps) {
     const router = useRouter();
-    const bodyItems = data.map((section: any, i: number) => {
-        const content =
-            // TODO: Refactor from tertiary to switch case in case we have more
-            // than 2 possible values for section.type in the future
-            section.type === 'checkbox'
-                ? section.items
-                      .sort((a: any, b: any) => a.length - b.length)
-                      .map((item: any, i: number) => (
-                          <div key={i} className={styles.item}>
-                              <label>{item}</label>
-                              <span />
-                          </div>
-                      ))
-                : section.items.map((item: any, i: number) => (
-                      <div key={i} className={styles.item}>
-                          <p>{item}</p>
-                      </div>
-                  ));
-        return (
-            <div key={i}>
-                <h1>{section.title}</h1>
-                <hr />
-                <div className={styles.section}>{content}</div>
-            </div>
-        );
-    });
 
-    useEffect(() => {
-        // immediately print the page when it loads
-        window.print();
-    }, []);
+    // Convert Firestore Timestamp to JavaScript Date
+    const formattedDate = visitData.createdAt ? new Date(visitData.createdAt.seconds * 1000).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    }) : '';
+    
+    const {
+        clothingMen, clothingWomen, clothingKids, mensQ, womensQ, kidsQ,
+        backpack, sleepingBag, food, busTicket, orcaCard, 
+        giftCard, financialAssistance, diaper, householdItem,
+        household, notes
+    } = visitData;
 
     return (
         <div className={styles.container}>
-            <div className={styles.title}>
-                <h1>{`${clientData?.firstName} ${clientData?.lastName}'s Shopping List`}</h1>
-                <h1>
-                    {
-                        // Uses timestamp, if undefined uses today's date
-                        visitData?.createdAt?.toDate()?.toDateString() ||
-                            new Date().toDateString()
-                    }
-                </h1>
+            <div className={styles.headerInfo}> 
+                <h1>{clientData.firstName} {clientData.lastName}</h1>
+                <h3>{formattedDate}</h3>
             </div>
-            <div className={styles.buttons}>
+            <div className={styles.title}>
+                <h1>Shopping List</h1>
+            </div>
+
+            {/* Clothing Section */}
+            {(clothingMen || clothingWomen || clothingKids) && (
+                <div className={styles.section}>
+                    <h2 className={styles.sectionTitle}>CLOTHING</h2>
+                    <div className={styles.sectionContent}>
+                        {clothingMen && (
+                            <div className={styles.itemContainer}>
+                                <span className={styles.itemText}>Men: {mensQ}</span>
+                            </div>
+                        )}
+                        {clothingWomen && (
+                            <div className={styles.itemContainer}>
+                                <span className={styles.itemText}>Women: {womensQ}</span>
+                            </div>
+                        )}
+                        {clothingKids && (
+                            <div className={styles.itemContainer}>
+                                <span className={styles.itemText}>Kids: {kidsQ}</span>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Special Requests Section */}
+            <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>SPECIAL REQUESTS</h2>
+                <div className={styles.sectionContent}>
+                    {backpack && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Backpack ✓</span>
+                        </div>
+                    )}
+                    {sleepingBag && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Sleeping Bag ✓</span>
+                        </div>
+                    )}
+                    {food && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Food ✓</span>
+                        </div>
+                    )}
+                    {busTicket && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Bus Tickets: {busTicket}</span>
+                        </div>
+                    )}
+                    {orcaCard && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Orca Cards: {orcaCard}</span>
+                        </div>
+                    )}
+                    {giftCard && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Gift Card: {giftCard}</span>
+                        </div>
+                    )}
+                    {diaper && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Diapers: {diaper}</span>
+                        </div>
+                    )}
+                    {financialAssistance && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Financial Assistance: ${financialAssistance}</span>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Household Items Section */}
+            {household && (
+                <div className={styles.section}>
+                    <h2 className={styles.sectionTitle}>HOUSEHOLD ITEMS</h2>
+                    <div className={styles.textContent}>{household}</div>
+                </div>
+            )}
+
+            {/* Notes Section */}
+            {notes && (
+                <div className={styles.section}>
+                    <h2 className={styles.sectionTitle}>NOTES</h2>
+                    <div className={styles.textContent}>{notes}</div>
+                </div>
+            )}
+
+            <div className={styles.printFooter}>
                 <Button
-                    className={`noprint ${styles.printBtn}`}
-                    onClick={() => {
-                        router.push(`/checkout/${clientData.id}`);
-                    }}
+                    className={styles.printBtn}
+                    onClick={() => router.push(`/checkout/${clientData.id}`)}
                 >
                     Checkout
                 </Button>
                 <Button
-                    className={`noprint ${styles.printBtn}`}
+                    className={styles.printBtn}
                     onClick={window.print}
                 >
                     Print 🖨️
                 </Button>
             </div>
-            <div className={styles.items}>{bodyItems}</div>
         </div>
     );
 }
+
+
