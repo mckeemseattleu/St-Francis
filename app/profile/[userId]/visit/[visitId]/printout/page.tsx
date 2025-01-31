@@ -28,8 +28,9 @@ export default function Printout({ params }: PrintoutProps) {
     useEffect(() => {
         // Formats the data into a form <PrintoutForm /> expects
         function formatData() {
+            console.log("Starting formatData with visitData:", visitData);
             if (!visitData) return;
-            // Keys we consider "Special Requests"
+
             const specialRequestItemKeys = [
                 'backpack',
                 'sleepingBag',
@@ -41,7 +42,7 @@ export default function Printout({ params }: PrintoutProps) {
                 'diaper',
                 'householdItem',
             ];
-            // What we want the form to label each checkbox
+
             const itemLabels = {
                 clothingMen: 'Mens',
                 clothingWomen: 'Womens',
@@ -58,69 +59,45 @@ export default function Printout({ params }: PrintoutProps) {
                 financialAssistance: 'Financial Assistance',
                 householdItem: 'Household Items',
             };
-            let ans: typeof formData = [];
-            // Get clothing items to show
-            let clothingItems: Array<string> = [];
-            Object.keys(visitData).forEach((key) => {
-                if (
-                    key.startsWith('clothing') &&
-                    visitData[key as keyof typeof visitData]
-                ) {
-                    clothingItems.push(
-                        itemLabels[key as keyof typeof itemLabels]
-                    );
-                }
-            });
-            // Get special request items to show
+
             let specialRequestItems: Array<string> = [];
-            Object.keys(visitData).forEach((key) => {
-                if (
-                    specialRequestItemKeys.includes(key) &&
-                    visitData[key as keyof typeof visitData] != 0
-                ) {
-                    specialRequestItems.push(
-                        itemLabels[key as keyof typeof itemLabels]
-                    );
+            
+            // Debug each special request check
+            specialRequestItemKeys.forEach(key => {
+                const value = visitData[key as keyof typeof visitData];
+                console.log(`Checking ${key}:`, value);
+                if (value && value !== 0) {
+                    specialRequestItems.push(itemLabels[key as keyof typeof itemLabels]);
+                    console.log(`Added ${key} to special requests`);
                 }
             });
-            // Add clothing items
-            if (clothingItems.length != 0) {
-                ans.push({
-                    title: 'Clothing',
-                    type: 'checkbox',
-                    items: clothingItems,
-                });
-            }
-            // Add special request items
-            if (specialRequestItems.length != 0) {
+
+            console.log("Final specialRequestItems:", specialRequestItems);
+
+            let ans: Array<FormItem> = [];
+            
+            if (specialRequestItems.length > 0) {
                 ans.push({
                     title: 'Special Requests',
                     type: 'checkbox',
                     items: specialRequestItems,
                 });
             }
-            // Add household items if present
-            if (visitData?.household?.length) {
-                ans.push({
-                    title: 'Household',
-                    type: 'text',
-                    items: [visitData?.household],
-                });
-            }
-            // Add notes if present
-            if (visitData?.notes?.length) {
-                ans.push({
-                    title: 'Notes',
-                    type: 'text',
-                    items: [visitData.notes],
-                });
-            }
 
+            console.log("Final formData:", ans);
             setFormData(ans);
         }
         formatData();
     }, [visitData, clientData]);
     if (isClientloading || isVisitLoading || !formData) return <Spinner />;
+
+    // Add this log right before the return statement
+    console.log("DEBUG - Data being passed to PrintoutForm:", {
+        clientData,
+        visitData,
+        formData
+    });
+
     return clientData && visitData && formData ? (
         <PrintoutForm
             clientData={clientData}

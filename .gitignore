@@ -40,3 +40,6 @@ next-env.d.ts
 
 # jetbrains settings
 .idea
+
+# firebase
+firebase/firebase.ts

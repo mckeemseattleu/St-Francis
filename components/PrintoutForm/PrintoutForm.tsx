@@ -3,6 +3,7 @@ import { Button } from '@/components/UI';
 import styles from './PrintoutForm.module.css';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+
 interface PrintoutFormProps {
     // TODO: We can ask for form title instead of clientData and update
     // component doc
@@ -39,67 +40,89 @@ export default function PrintoutForm({
     data,
 }: PrintoutFormProps) {
     const router = useRouter();
-    const bodyItems = data.map((section: any, i: number) => {
-        const content =
-            // TODO: Refactor from tertiary to switch case in case we have more
-            // than 2 possible values for section.type in the future
-            section.type === 'checkbox'
-                ? section.items
-                      .sort((a: any, b: any) => a.length - b.length)
-                      .map((item: any, i: number) => (
-                          <div key={i} className={styles.item}>
-                              <label>{item}</label>
-                              <span />
-                          </div>
-                      ))
-                : section.items.map((item: any, i: number) => (
-                      <div key={i} className={styles.item}>
-                          <p>{item}</p>
-                      </div>
-                  ));
-        return (
-            <div key={i}>
-                <h1>{section.title}</h1>
-                <hr />
-                <div className={styles.section}>{content}</div>
-            </div>
-        );
-    });
-
-    useEffect(() => {
-        // immediately print the page when it loads
-        window.print();
-    }, []);
+    
+    const {
+        backpack, sleepingBag, food, busTicket, orcaCard, 
+        giftCard, financialAssistance, diaper, householdItem
+    } = visitData;
 
     return (
         <div className={styles.container}>
+            {/* Title Section */}
             <div className={styles.title}>
-                <h1>{`${clientData?.firstName} ${clientData?.lastName}'s Shopping List`}</h1>
-                <h1>
-                    {
-                        // Uses timestamp, if undefined uses today's date
-                        visitData?.createdAt?.toDate()?.toDateString() ||
-                            new Date().toDateString()
-                    }
-                </h1>
+                <h1>Shopping List</h1>
             </div>
-            <div className={styles.buttons}>
-                <Button
-                    className={`noprint ${styles.printBtn}`}
-                    onClick={() => {
-                        router.push(`/checkout/${clientData.id}`);
-                    }}
-                >
-                    Checkout
-                </Button>
-                <Button
-                    className={`noprint ${styles.printBtn}`}
-                    onClick={window.print}
-                >
-                    Print 🖨️
-                </Button>
+
+            <div className={styles.body} style={{ border: 'none' }}>
+                {/* Special Requests Section */}
+                <div>
+                    <h1 style={{
+                        fontSize: '24px',
+                        textTransform: 'uppercase',
+                        borderBottom: '2px solid black',
+                        marginBottom: '20px'
+                    }}>Special Requests</h1>
+
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        gap: '20px',
+                        padding: '20px'
+                    }}>
+                        {busTicket && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span>Bus Tickets: {busTicket}</span>
+                                <div style={{ width: '25px', height: '25px', border: '1px solid black' }} />
+                            </div>
+                        )}
+                        {orcaCard && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span>Orca Cards: {orcaCard}</span>
+                                <div style={{ width: '25px', height: '25px', border: '1px solid black' }} />
+                            </div>
+                        )}
+                        {giftCard && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span>Gift Card: {giftCard}</span>
+                                <div style={{ width: '25px', height: '25px', border: '1px solid black' }} />
+                            </div>
+                        )}
+                        {diaper && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span>Diapers: {diaper}</span>
+                                <div style={{ width: '25px', height: '25px', border: '1px solid black' }} />
+                            </div>
+                        )}
+                        {financialAssistance && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span>Financial Assistance: {financialAssistance}</span>
+                                <div style={{ width: '25px', height: '25px', border: '1px solid black' }} />
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
-            <div className={styles.items}>{bodyItems}</div>
+
+            {/* Buttons */}
+            <div className={styles.printFooter}>
+                <div className={styles.buttons}>
+                    <Button
+                        className={styles.printBtn}
+                        onClick={() => router.push(`/checkout/${clientData.id}`)}
+                    >
+                        Checkout
+                    </Button>
+                    <Button
+                        className={styles.printBtn}
+                        onClick={window.print}
+                    >
+                        Print 🖨️
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 }
+
+
