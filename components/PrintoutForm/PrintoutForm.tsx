@@ -40,6 +40,15 @@ export default function PrintoutForm({
     data,
 }: PrintoutFormProps) {
     const router = useRouter();
+
+    // Convert Firestore Timestamp to JavaScript Date
+    const formattedDate = visitData.createdAt ? new Date(visitData.createdAt.seconds * 1000).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    }) : '';
     
     const {
         clothingMen, clothingWomen, clothingKids, mensQ, womensQ, kidsQ,
@@ -50,6 +59,10 @@ export default function PrintoutForm({
 
     return (
         <div className={styles.container}>
+            <div className={styles.headerInfo}> 
+                <h1>{clientData.firstName} {clientData.lastName}</h1>
+                <h3>{formattedDate}</h3>
+            </div>
             <div className={styles.title}>
                 <h1>Shopping List</h1>
             </div>
