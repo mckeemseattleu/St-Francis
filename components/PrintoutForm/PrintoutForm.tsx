@@ -42,84 +42,118 @@ export default function PrintoutForm({
     const router = useRouter();
     
     const {
+        clothingMen, clothingWomen, clothingKids, mensQ, womensQ, kidsQ,
         backpack, sleepingBag, food, busTicket, orcaCard, 
-        giftCard, financialAssistance, diaper, householdItem
+        giftCard, financialAssistance, diaper, householdItem,
+        household, notes
     } = visitData;
 
     return (
         <div className={styles.container}>
-            {/* Title Section */}
             <div className={styles.title}>
                 <h1>Shopping List</h1>
             </div>
 
-            <div className={styles.body} style={{ border: 'none' }}>
-                {/* Special Requests Section */}
-                <div>
-                    <h1 style={{
-                        fontSize: '24px',
-                        textTransform: 'uppercase',
-                        borderBottom: '2px solid black',
-                        marginBottom: '20px'
-                    }}>Special Requests</h1>
-
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        gap: '20px',
-                        padding: '20px'
-                    }}>
-                        {busTicket && (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span>Bus Tickets: {busTicket}</span>
-                                <div style={{ width: '25px', height: '25px', border: '1px solid black' }} />
+            {/* Clothing Section */}
+            {(clothingMen || clothingWomen || clothingKids) && (
+                <div className={styles.section}>
+                    <h2 className={styles.sectionTitle}>CLOTHING</h2>
+                    <div className={styles.sectionContent}>
+                        {clothingMen && (
+                            <div className={styles.itemContainer}>
+                                <span className={styles.itemText}>Men: {mensQ}</span>
                             </div>
                         )}
-                        {orcaCard && (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span>Orca Cards: {orcaCard}</span>
-                                <div style={{ width: '25px', height: '25px', border: '1px solid black' }} />
+                        {clothingWomen && (
+                            <div className={styles.itemContainer}>
+                                <span className={styles.itemText}>Women: {womensQ}</span>
                             </div>
                         )}
-                        {giftCard && (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span>Gift Card: {giftCard}</span>
-                                <div style={{ width: '25px', height: '25px', border: '1px solid black' }} />
-                            </div>
-                        )}
-                        {diaper && (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span>Diapers: {diaper}</span>
-                                <div style={{ width: '25px', height: '25px', border: '1px solid black' }} />
-                            </div>
-                        )}
-                        {financialAssistance && (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span>Financial Assistance: {financialAssistance}</span>
-                                <div style={{ width: '25px', height: '25px', border: '1px solid black' }} />
+                        {clothingKids && (
+                            <div className={styles.itemContainer}>
+                                <span className={styles.itemText}>Kids: {kidsQ}</span>
                             </div>
                         )}
                     </div>
                 </div>
+            )}
+
+            {/* Special Requests Section */}
+            <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>SPECIAL REQUESTS</h2>
+                <div className={styles.sectionContent}>
+                    {backpack && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Backpack ✓</span>
+                        </div>
+                    )}
+                    {sleepingBag && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Sleeping Bag ✓</span>
+                        </div>
+                    )}
+                    {food && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Food ✓</span>
+                        </div>
+                    )}
+                    {busTicket && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Bus Tickets: {busTicket}</span>
+                        </div>
+                    )}
+                    {orcaCard && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Orca Cards: {orcaCard}</span>
+                        </div>
+                    )}
+                    {giftCard && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Gift Card: {giftCard}</span>
+                        </div>
+                    )}
+                    {diaper && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Diapers: {diaper}</span>
+                        </div>
+                    )}
+                    {financialAssistance && (
+                        <div className={styles.itemContainer}>
+                            <span className={styles.itemText}>Financial Assistance: ${financialAssistance}</span>
+                        </div>
+                    )}
+                </div>
             </div>
 
-            {/* Buttons */}
-            <div className={styles.printFooter}>
-                <div className={styles.buttons}>
-                    <Button
-                        className={styles.printBtn}
-                        onClick={() => router.push(`/checkout/${clientData.id}`)}
-                    >
-                        Checkout
-                    </Button>
-                    <Button
-                        className={styles.printBtn}
-                        onClick={window.print}
-                    >
-                        Print 🖨️
-                    </Button>
+            {/* Household Items Section */}
+            {household && (
+                <div className={styles.section}>
+                    <h2 className={styles.sectionTitle}>HOUSEHOLD ITEMS</h2>
+                    <div className={styles.textContent}>{household}</div>
                 </div>
+            )}
+
+            {/* Notes Section */}
+            {notes && (
+                <div className={styles.section}>
+                    <h2 className={styles.sectionTitle}>NOTES</h2>
+                    <div className={styles.textContent}>{notes}</div>
+                </div>
+            )}
+
+            <div className={styles.printFooter}>
+                <Button
+                    className={styles.printBtn}
+                    onClick={() => router.push(`/checkout/${clientData.id}`)}
+                >
+                    Checkout
+                </Button>
+                <Button
+                    className={styles.printBtn}
+                    onClick={window.print}
+                >
+                    Print 🖨️
+                </Button>
             </div>
         </div>
     );

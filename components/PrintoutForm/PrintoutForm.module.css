@@ -1,75 +1,149 @@
-/* Deviating from website theme colors for pure black for better printability */
+@media print {
+    .container {
+        padding: 20px;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .title {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+        border-bottom: 3px double black;
+    }
+
+    .title h1 {
+        font-size: 24px;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: black;
+        background: none;
+    }
+
+    .section {
+        margin-bottom: 25px;
+        page-break-inside: avoid;
+        color: black;
+        background: none;
+    }
+
+    .sectionTitle {
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-bottom: 1px solid black;
+        width: fit-content;
+        margin-bottom: 15px;
+        letter-spacing: 1px;
+        color: black;
+        background: none;
+    }
+
+    .sectionContent {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-left: 30px;
+        line-height: 1.8;
+        font-size: 14px;
+        color: black;
+        background: none;
+    }
+
+    .itemContainer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .itemText {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .textContent {
+        margin-left: 30px;
+        white-space: pre-line;
+        font-size: 14px;
+        color: black;
+        background: none;
+    }
+
+    /* Hide buttons when printing */
+    .printFooter {
+        display: none;
+    }
+
+    /* Add page numbers */
+    @page {
+        margin: 0.5in;
+        @bottom-right {
+            content: counter(page);
+        }
+    }
+}
+
+/* Screen styles */
 .container {
     color: black;
 }
+
 .title {
-    /* width: 95vw; */
-    display: flex;
-    flex-direction: row;
-    border-bottom: 1px solid black;
+    text-align: center;
+    border-bottom: 2px solid black;
+    margin-bottom: 30px;
 }
 
 .title h1 {
-    margin: auto;
-    font-size: 1.4rem;
-    color: black;
-}
-
-.body {
-    padding-left: 25px;
-    padding-right: 25px;
-    display: flex;
-    flex-direction: column;
-    border: solid 1px red;
-    color: black;
+    font-size: 24px;
+    margin: 10px 0;
 }
 
 .section {
+    margin-bottom: 30px;
+}
+
+.sectionTitle {
+    font-size: 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid black;
+    width: fit-content;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.sectionContent {
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-left: 20px;
 }
 
-.items h1 {
-    margin-block: 20px 0;
-    font-size: 1.6rem;
-}
-
-.items hr {
-    margin-block: 0 10px;
-    border: solid 1px var(--gray-3);
-}
-
-.item {
-    margin-right: 25px;
+.itemContainer {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
-.section span {
-    width: 50px;
-    height: 50px;
-    margin-top: 5px;
-    border: solid 1px black;
+.itemText {
+    font-size: 16px;
 }
 
-.printBtn {
-    margin-top: 10px;
-    width: 100px;
-    border-radius: 5px;
+.textContent {
+    margin-left: 20px;
 }
 
 .printFooter {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
 }
 
-.buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+.printBtn {
+    min-width: 100px;
+    padding: 8px 16px;
+    border-radius: 4px;
 }
