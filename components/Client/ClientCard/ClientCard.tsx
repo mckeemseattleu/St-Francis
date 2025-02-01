@@ -14,7 +14,7 @@ type PropsType = {
     clientVisits: VisitWithClientId[] | undefined;
     isDuplicate?: boolean;
 };
-
+// trigger new checks
 export default function ClientCard({ client, clientVisits, isDuplicate }: PropsType) {
     const { id, firstName, lastName, birthday, notes, isBanned } = client;
     const { settings } = useSettings();
