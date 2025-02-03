@@ -24,13 +24,29 @@ export default function Printout({ params }: PrintoutProps) {
         queryFn: () => getVisit(params.userId, params.visitId),
     });
 
-    // TODO: Convert to waiting for both to finish using Promises to prevent doing this twice
     useEffect(() => {
-        // Formats the data into a form <PrintoutForm /> expects
         function formatData() {
-            console.log("Starting formatData with visitData:", visitData);
             if (!visitData) return;
 
+            let ans: Array<FormItem> = [];
+            
+            // 1. Add Clothing Section
+            const clothingItems: Array<string> = [];
+            if (visitData.clothingMen) clothingItems.push('Men');
+            if (visitData.clothingWomen) clothingItems.push('Women');
+            if (visitData.clothingBoy || visitData.clothingGirl || visitData.clothingKids) {
+                clothingItems.push('Kids');
+            }
+            
+            if (clothingItems.length > 0) {
+                ans.push({
+                    title: 'Clothing',
+                    type: 'checkbox',
+                    items: clothingItems,
+                });
+            }
+
+            // 2. Add Special Requests Section
             const specialRequestItemKeys = [
                 'backpack',
                 'sleepingBag',
@@ -40,15 +56,9 @@ export default function Printout({ params }: PrintoutProps) {
                 'giftCard',
                 'financialAssistance',
                 'diaper',
-                'householdItem',
             ];
 
             const itemLabels = {
-                clothingMen: 'Mens',
-                clothingWomen: 'Womens',
-                clothingBoy: 'Kids (Boy)',
-                clothingGirl: 'Kids (Girl)',
-                clothingKids: 'Kids',
                 backpack: 'Backpack',
                 sleepingBag: 'Sleeping Bag',
                 food: 'Food',
@@ -57,30 +67,40 @@ export default function Printout({ params }: PrintoutProps) {
                 giftCard: 'Gift Card',
                 diaper: 'Diapers',
                 financialAssistance: 'Financial Assistance',
-                householdItem: 'Household Items',
             };
 
             let specialRequestItems: Array<string> = [];
             
-            // Debug each special request check
             specialRequestItemKeys.forEach(key => {
                 const value = visitData[key as keyof typeof visitData];
-                console.log(`Checking ${key}:`, value);
                 if (value && value !== 0) {
                     specialRequestItems.push(itemLabels[key as keyof typeof itemLabels]);
-                    console.log(`Added ${key} to special requests`);
                 }
             });
 
-            console.log("Final specialRequestItems:", specialRequestItems);
-
-            let ans: Array<FormItem> = [];
-            
             if (specialRequestItems.length > 0) {
                 ans.push({
                     title: 'Special Requests',
                     type: 'checkbox',
                     items: specialRequestItems,
+                });
+            }
+
+            // 3. Add Household Items Section (if selected)
+            if (visitData.householdItem) {
+                ans.push({
+                    title: 'Household Items',
+                    type: 'text',
+                    items: [''],
+                });
+            }
+
+            // 4. Add Notes Section (if visitData has notes)
+            if (visitData.notes) {
+                ans.push({
+                    title: 'Notes',
+                    type: 'text',
+                    items: [visitData.notes],
                 });
             }
 
