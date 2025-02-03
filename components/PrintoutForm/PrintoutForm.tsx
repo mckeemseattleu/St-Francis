@@ -86,9 +86,7 @@ export default function PrintoutForm({
             <div className={styles.buttons}>
                 <Button
                     className={`noprint ${styles.printBtn}`}
-                    onClick={() => {
-                        router.push(`/checkout/${clientData.id}`);
-                    }}
+                    onClick={() => router.push(`/checkout/${clientData.id}`)}
                 >
                     Checkout
                 </Button>
@@ -97,6 +95,12 @@ export default function PrintoutForm({
                     onClick={window.print}
                 >
                     Print 🖨️
+                </Button>
+                <Button
+                    className={`noprint ${styles.printBtn}`}
+                    onClick={() => router.push(`/profile/${clientData.id}/visit/${visitData.id}`)}
+                >
+                    Visit Details
                 </Button>
             </div>
             <div className={styles.items}>{bodyItems}</div>
