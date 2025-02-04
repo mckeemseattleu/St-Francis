@@ -12,9 +12,10 @@ import styles from './ClientCard.module.css';
 type PropsType = {
     client: Client;
     clientVisits: VisitWithClientId[] | undefined;
+    isDuplicate?: boolean;
 };
-
-export default function ClientCard({ client, clientVisits }: PropsType) {
+// trigger new checks
+export default function ClientCard({ client, clientVisits, isDuplicate }: PropsType) {
     const { id, firstName, lastName, birthday, notes, isBanned } = client;
     const { settings } = useSettings();
 
@@ -44,9 +45,9 @@ export default function ClientCard({ client, clientVisits }: PropsType) {
     } = data || {};
 
     return (
-        <div className={styles.card}>
+        <div className={`${styles.card} ${isDuplicate ? styles.duplicate : ''}`}>
             <Link href={`/profile/${id}`}>
-                <h1>{`${firstName} ${lastName}`}</h1>
+                <h1>{`${firstName ?? ''} ${lastName ?? ''}`}</h1>
             </Link>
 
             <div className={styles.detailsContainer}>
@@ -55,6 +56,7 @@ export default function ClientCard({ client, clientVisits }: PropsType) {
                         <h3 className={styles.early}>Early</h3>
                     )}
                     {!!isBanned && <h3 className={styles.banned}>Banned</h3>}
+                    {isDuplicate && <h3 className={styles.duplicate}>Duplicate</h3>}
                 </div>
                 {createField(
                     'Birthday',

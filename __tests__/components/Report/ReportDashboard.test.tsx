@@ -3,6 +3,7 @@ import { Client } from '@/models/index';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { Timestamp } from 'firebase/firestore';
+import { ReactNode } from 'react';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
@@ -26,6 +27,19 @@ jest.mock('react-query', () => ({
 
 jest.mock('@/hooks/index', () => ({
     useAlert: jest.fn(() => [{}, jest.fn()]),
+}));
+
+// Mock Recharts with proper typing
+jest.mock('recharts', () => ({
+    ...jest.requireActual('recharts'),
+    ResponsiveContainer: ({ children }: { children: ReactNode }) => children,
+    BarChart: () => <div data-testid="bar-chart" />,
+    Bar: () => null,
+    XAxis: () => null,
+    YAxis: () => null,
+    CartesianGrid: () => null,
+    Tooltip: () => null,
+    Legend: () => null,
 }));
 
 describe('Report Dashboard Component', () => {

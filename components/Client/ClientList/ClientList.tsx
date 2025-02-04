@@ -4,7 +4,7 @@ import type { VisitWithClientId } from '@/types/index';
 import styles from './ClientList.module.css';
 
 type ClientListProps = {
-    clients: Array<Client>;
+    clients: Array<Client & { isDuplicate?: boolean }>;
     visits: VisitWithClientId[] | undefined;
     noDataMessage?: string;
     title?: string;
@@ -41,6 +41,7 @@ export default function ClientList(props: ClientListProps) {
                         clientVisits={visits?.filter(
                             (el) => el.clientId == client.id
                         )}
+                        isDuplicate={client.isDuplicate}
                     />
                 ))}
             </>

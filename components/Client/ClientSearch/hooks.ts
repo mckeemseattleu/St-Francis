@@ -1,78 +1,50 @@
 import { useMutation } from 'react-query';
 import { useState } from 'react';
-import { subDays } from 'date-fns';
-import useAlert from '@/hooks/useAlert';
-import type { Client } from '@/models/index';
-import { DocFilter, FilterObject, listVisits } from '@/utils/index';
-import { listClients, getSettings } from '@/utils/index';
-import type { VisitWithClientId } from '@/types/visits';
+import { Client, Visit } from 'models';
+import { DocFilter, listClients } from '@/utils/index';
 
 export const useGetClientsSearch = () => {
-    const [, setAlert] = useAlert();
-    const [clients, setClients] = useState<Client[]>([]);
-    const [visits, setVisits] = useState<VisitWithClientId[]>([]);
+    const [clients, setClients] = useState<(Client & { isDuplicate?: boolean })[]>([]);
+    const [visits, setVisits] = useState<Visit[]>([]);
 
     const { mutateAsync, isLoading } = useMutation({
         mutationFn: async (fields: DocFilter) => {
             const filter = { ...fields };
-            if (filter?.filterByBirthday && !filter.birthday) {
-                setAlert({
-                    message: 'invalid date of birth',
-                    type: 'error',
-                });
-            }
-            if (filter?.filterByBirthday && filter?.birthday) {
-                filter.birthday = new Date(filter.birthday as string);
-                delete filter.filterByBirthday;
-            }
-            if (!Object.keys(filter).length)
-                filter.updatedAt = {
-                    opStr: '>=',
-                    value: new Date(new Date().toDateString()),
-                } as FilterObject;
-            const clients = await listClients(filter);
+            const fetchedClients = await listClients(filter);
 
-            // fetch visit by clients
-            const userIds = clients.map((client) => client.id);
-            const visits = await getVisitsByClientIds(userIds);
-            setVisits(visits);
-            setClients(clients);
+            // Convert birthday from Timestamp to string for comparison
+            const normalizeBirthday = (client: Client) => {
+                if (client.birthday && client.birthday.seconds) {
+                    return new Date(client.birthday.seconds * 1000).toISOString().split('T')[0]; // Format as YYYY-MM-DD
+                }
+                return null; // Handle cases where birthday might be missing
+            };
+
+            // Identify duplicates
+            const duplicateClients = fetchedClients.filter((client, index, self) => {
+                const normalizedBirthday = normalizeBirthday(client);
+                const isDuplicate = index !== self.findIndex((t) => 
+                    t.firstName?.toLowerCase() === client.firstName?.toLowerCase() && 
+                    t.lastName?.toLowerCase() === client.lastName?.toLowerCase() &&
+                    normalizeBirthday(t) === normalizedBirthday // Compare normalized birthdays
+                );
+
+                return isDuplicate;
+            });
+
+            // Flag duplicates in the clients array
+            const clientsWithDuplicateFlag = fetchedClients.map(client => ({
+                ...client,
+                isDuplicate: duplicateClients.some(d => 
+                    d.firstName?.toLowerCase() === client.firstName?.toLowerCase() && 
+                    d.lastName?.toLowerCase() === client.lastName?.toLowerCase() &&
+                    normalizeBirthday(d) === normalizeBirthday(client) // Compare normalized birthdays
+                )
+            }));
+
+            setClients(clientsWithDuplicateFlag);
         },
     });
 
     return { mutateAsync, isLoading, clients, visits, setClients };
-};
-
-const VISITS_LIMIT = 10; //  visit limit per client
-
-export const getVisitsByClientIds = async (userIds: string[]) => {
-    const ORCA_CARD_TRESHOLD = (await getSettings()).orcaCardThreshold;
-    if (!ORCA_CARD_TRESHOLD) {
-        return [];
-    }
-
-    const pastDate = subDays(new Date(), ORCA_CARD_TRESHOLD);
-
-    const promises = userIds.map(async (userId) => {
-        try {
-            const visits = await listVisits(
-                userId,
-                {
-                    createdAt: { opStr: '>=', value: pastDate },
-                },
-                VISITS_LIMIT
-            );
-
-            // Add the clientId to each visit
-            return visits.map((visit) => ({ ...visit, clientId: userId }));
-        } catch (error) {
-            return [];
-        }
-    });
-
-    // Resolve all promises and flatten the results
-    const results = await Promise.all(promises);
-    const visits = results.flat();
-
-    return visits;
 };
