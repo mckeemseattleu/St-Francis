@@ -264,19 +264,17 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
       <div
         className="formItem"
       >
+        <input
+          checked={false}
+          id="orcaCard"
+          onChange={[Function]}
+          type="checkbox"
+        />
         <label
           htmlFor="orcaCard"
         >
           Orca Card
         </label>
-        <input
-          id="orcaCard"
-          min={0}
-          onChange={[Function]}
-          placeholder="Count"
-          type="number"
-          value=""
-        />
         <div
           className="errorMessage"
         />
@@ -284,19 +282,17 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
       <div
         className="formItem"
       >
+        <input
+          checked={false}
+          id="giftCard"
+          onChange={[Function]}
+          type="checkbox"
+        />
         <label
           htmlFor="giftCard"
         >
           Gift Card
         </label>
-        <input
-          id="giftCard"
-          min={0}
-          onChange={[Function]}
-          placeholder="Value in Dollars"
-          type="number"
-          value=""
-        />
         <div
           className="errorMessage"
         />
@@ -304,19 +300,17 @@ exports[`CheckedIn should match snapshot when clientData fetched 1`] = `
       <div
         className="formItem"
       >
+        <input
+          checked={false}
+          id="diaper"
+          onChange={[Function]}
+          type="checkbox"
+        />
         <label
           htmlFor="diaper"
         >
           Diaper
         </label>
-        <input
-          id="diaper"
-          min={0}
-          onChange={[Function]}
-          placeholder="Count"
-          type="number"
-          value=""
-        />
         <div
           className="errorMessage"
         />

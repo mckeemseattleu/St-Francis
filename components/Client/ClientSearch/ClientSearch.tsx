@@ -3,10 +3,23 @@
 import { ClientList, ClientSearchForm } from '@/components/Client/index';
 import type { DocFilter } from '@/utils/index';
 import { useGetClientsSearch } from './hooks';
+import { VisitWithClientId } from '@/types/index';
+import { useState, useEffect } from 'react';
 
 export default function ClientsSearch() {
-    const { mutateAsync, isLoading, clients, visits, setClients } =
-        useGetClientsSearch();
+    const { mutateAsync, isLoading, clients, visits, setClients } = useGetClientsSearch();
+    const [visitsWithClientId, setVisitsWithClientId] = useState<VisitWithClientId[]>([]);
+
+    useEffect(() => {
+        // Transform visits to include clientId
+        const transformedVisits = visits.flatMap(visit => 
+            clients.filter(client => client.id === visit.id).map(client => ({
+                ...visit,
+                clientId: client.id
+            }))
+        );
+        setVisitsWithClientId(transformedVisits);
+    }, [visits, clients]);
 
     const handleSubmit = (formFields: DocFilter) => {
         mutateAsync(formFields);
@@ -14,6 +27,7 @@ export default function ClientsSearch() {
 
     const handleClear = () => {
         setClients([]);
+        setVisitsWithClientId([]);
     };
 
     return (
@@ -25,7 +39,7 @@ export default function ClientsSearch() {
             />
             <ClientList
                 clients={clients}
-                visits={visits}
+                visits={visitsWithClientId}
                 noDataMessage="No Matching Clients"
                 isLoading={isLoading}
             />

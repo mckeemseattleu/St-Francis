@@ -11,6 +11,7 @@ interface VisitInfoFormProps {
     onSubmit?: (visitData: Visit) => void;
     submitLabel?: string;
     onChange?: (visitData: Visit) => void;
+    isCheckIn?: boolean;
 }
 
 const defaultVisitData = {
@@ -33,13 +34,17 @@ const defaultVisitData = {
 };
 
 const toInt = (value: string) => parseInt(value) || 0;
-const toString = (value: number | undefined | null) => value?.toString() || '';
+const toString = (value: number | undefined | null) => {
+    if (value === 0) return '';
+    return value?.toString() || '';
+};
 
 export default function VisitInfoForm({
     onSubmit,
     initialVisitData,
     submitLabel,
     onChange,
+    isCheckIn,
 }: VisitInfoFormProps) {
     // Append boyAge and girlAge to notes
     let initialNotes = initialVisitData?.notes || '';
@@ -81,43 +86,43 @@ export default function VisitInfoForm({
     };
 
     const transformData = (visitData: any) => {
+        if (isCheckIn) {
+            // During check-in, don't set any numerical values
+            return {
+                ...visitData,
+                orcaCard: visitData.orcaCard ? true : null,
+                giftCard: visitData.giftCard ? true : null,
+                diaper: visitData.diaper ? true : null,
+                // ... other transformations
+            };
+        }
+        
+        // During checkout, handle the actual values
         return {
             ...visitData,
-            busTicket: toInt(visitData.busTicket),
             orcaCard: toInt(visitData.orcaCard),
             giftCard: toInt(visitData.giftCard),
             diaper: toInt(visitData.diaper),
-            financialAssistance: toInt(visitData.financialAssistance),
-            // default to 0 if unchecked before submit
-            mensQ: visitData.clothingMen ? toInt(visitData.mensQ) : 0,
-            womensQ: visitData.clothingWomen ? toInt(visitData.womensQ) : 0,
-            kidsQ:
-                visitData.clothingBoy ||
-                visitData.clothingGirl ||
-                visitData.clothingKids
-                    ? toInt(visitData.kidsQ)
-                    : 0,
-            // transfer boyAge and girlAge to notes with submit
-            boyAge: '',
-            girlAge: '',
-
-            // clear out household if householdItem is unchecked
-            household: visitData.householdItem ? visitData.household : '',
-            householdItemQ: visitData.householdItem
-                ? toInt(visitData.householdItemQ)
-                : 0,
-
-            // turn off boy & girl clothing since they've been merged to clothingKids
-            clothingBoy: false,
-            clothingGirl: false,
+            // ... other transformations
         };
     };
 
     const handleChange = (key: string) => (e: any) => {
-        let value = '';
-        if (e.target.type === 'checkbox') {
+        let value: string | number | boolean = '';
+        
+        if (isCheckIn && ['orcaCard', 'giftCard', 'diaper'].includes(key)) {
             value = e.target.checked;
-        } else value = e.target.value;
+        } else {
+            // Normal handling for other fields and checkout mode
+            if (e.target.type === 'checkbox') {
+                value = e.target.checked;
+            } else if (e.target.type === 'number') {
+                value = e.target.value;
+            } else {
+                value = e.target.value;
+            }
+        }
+        
         const data = transformData({ ...visitData, [key]: value });
         onChange && onChange(data);
         setVisitData({ ...visitData, [key]: value });
@@ -195,30 +200,60 @@ export default function VisitInfoForm({
                     value={visitData.busTicket}
                     onChange={handleChange('busTicket')}
                 />
-                <FormItem
-                    type="number"
-                    id="orcaCard"
-                    placeholder="Count"
-                    label="Orca Card"
-                    value={visitData.orcaCard}
-                    onChange={handleChange('orcaCard')}
-                />
-                <FormItem
-                    type="number"
-                    id="giftCard"
-                    label="Gift Card"
-                    placeholder="Value in Dollars"
-                    value={visitData.giftCard}
-                    onChange={handleChange('giftCard')}
-                />
-                <FormItem
-                    type="number"
-                    id="diaper"
-                    label="Diaper"
-                    placeholder="Count"
-                    value={visitData.diaper}
-                    onChange={handleChange('diaper')}
-                />
+                {isCheckIn ? (
+                    // Show checkboxes during check-in
+                    <>
+                        <FormItem
+                            type="checkbox"
+                            id="orcaCard"
+                            label="Orca Card"
+                            checked={!!visitData.orcaCard}
+                            onChange={handleChange('orcaCard')}
+                        />
+                        <FormItem
+                            type="checkbox"
+                            id="giftCard"
+                            label="Gift Card"
+                            checked={!!visitData.giftCard}
+                            onChange={handleChange('giftCard')}
+                        />
+                        <FormItem
+                            type="checkbox"
+                            id="diaper"
+                            label="Diaper"
+                            checked={!!visitData.diaper}
+                            onChange={handleChange('diaper')}
+                        />
+                    </>
+                ) : (
+                    // Show number inputs during checkout
+                    <>
+                        <FormItem
+                            type="number"
+                            id="orcaCard"
+                            placeholder="Value in Dollars"
+                            label="Orca Card"
+                            value={visitData.orcaCard}
+                            onChange={handleChange('orcaCard')}
+                        />
+                        <FormItem
+                            type="number"
+                            id="giftCard"
+                            label="Gift Card"
+                            placeholder="Value in Dollars"
+                            value={visitData.giftCard}
+                            onChange={handleChange('giftCard')}
+                        />
+                        <FormItem
+                            type="number"
+                            id="diaper"
+                            label="Diaper"
+                            placeholder="Diaper Count"
+                            value={visitData.diaper}
+                            onChange={handleChange('diaper')}
+                        />
+                    </>
+                )}
                 <FormItem
                     type="number"
                     id="financialAssistance"

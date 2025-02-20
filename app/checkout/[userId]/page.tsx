@@ -101,6 +101,7 @@ export default function CheckOut({ params }: CheckOutProps) {
                 onSubmit={() => setShow(true)}
                 onChange={setVisitFormData}
                 submitLabel="Save and Check Out"
+                isCheckIn={false}
             />
             <Modal show={show} setShow={setShow}>
                 <h3>Are you sure you want to checkout this client?</h3>

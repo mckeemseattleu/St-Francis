@@ -6,12 +6,14 @@ import type { DocFilter } from '@/utils/index';
 import Image from 'next/image';
 import Spinner from '@/components/Spinner/Spinner';
 import styles from './ClientSearchForm.module.css';
+import { Timestamp } from 'firebase/firestore';
 
 type ClientSearchFormProps = {
     onSubmit: (fields: DocFilter) => void;
     isLoading: boolean;
     onClear?: () => void;
 };
+
 export default function ClientSearchForm(props: ClientSearchFormProps) {
     const { onSubmit, onClear, isLoading } = props;
 
@@ -32,14 +34,22 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const fields: DocFilter = {};
-        const { firstName, lastName, birthday, filterByBirthday } = clientData;
+        const { firstName, lastName, birthday } = clientData;
+        
         if (firstName) fields['firstNameLower'] = firstName.toLowerCase();
         if (lastName) fields['lastNameLower'] = lastName.toLowerCase();
+        
         if (birthday) {
-            fields['birthday'] = birthday;
-            fields['filterByBirthday'] = filterByBirthday;
+            const [year, month, day] = birthday.split('-').map(Number);
+            const dateObj = new Date(Date.UTC(year, month - 1, day));
+            const timestamp = Timestamp.fromDate(dateObj);
+            
+            fields['birthday'] = {
+                opStr: '==',
+                value: timestamp
+            };
         }
-        // onSubmit callback from parent scope
+        
         onSubmit(fields);
     };
 
@@ -51,7 +61,6 @@ export default function ClientSearchForm(props: ClientSearchFormProps) {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value;
 
-        // set filterByBirthday based on birthday input
         if (e.target.name === 'birthday') {
             setClientData({
                 ...clientData,
