@@ -136,6 +136,7 @@ export default function Checkin({ params }: CheckinProps) {
                 onSubmit={handleSubmit}
                 onChange={onChange}
                 submitLabel={'New Visit / Check-in'}
+                isCheckIn={true}
             />
             <Modal show={show} setShow={setShow}>
                 <h3>Early Visit For {clientData?.firstName}</h3>

@@ -172,7 +172,7 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         id="orcaCard"
         min={0}
         onChange={[Function]}
-        placeholder="Count"
+        placeholder="Value in Dollars"
         type="number"
         value=""
       />
@@ -212,7 +212,7 @@ exports[`Visit Info Form Component matches snapshot without any props 1`] = `
         id="diaper"
         min={0}
         onChange={[Function]}
-        placeholder="Count"
+        placeholder="Diaper Count"
         type="number"
         value=""
       />
