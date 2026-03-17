@@ -1,0 +1,359 @@
+{
+  "period": "2024-01-01 to 2025-07-02",
+  "sampleSize": 1000,
+  "samplePercentage": 1.6410391059618952,
+  "clientsWithVisits": 81,
+  "estimatedTotal": 4936,
+  "recentClients": [
+    {
+      "clientId": "0ahnjL30D7yA7uKA6Voc",
+      "firstName": "Neidy",
+      "lastName": "Jorge Rico",
+      "lastVisitDate": "2025-06-25T19:43:27.607Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0YP6K6qzdalU2vpaMUWu",
+      "firstName": "Maria",
+      "lastName": "Aguayo-Garcia",
+      "lastVisitDate": "2025-06-24T20:11:57.318Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0dOsxroXyWb8czh1o5yI",
+      "firstName": "Michael",
+      "lastName": "Dunsmore",
+      "lastVisitDate": "2025-06-20T19:07:48.587Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0BtVqLa2kU3ukrWw5gZf",
+      "firstName": "Suhaib",
+      "lastName": "Al Rifai",
+      "lastVisitDate": "2025-06-13T20:50:34.778Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0GJOBo3TBzFyyjKDkLet",
+      "firstName": "Jonathan",
+      "lastName": "O'Dell",
+      "lastVisitDate": "2025-06-10T20:08:15.977Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "00Z80IqicR5lffT700eQ",
+      "firstName": "Loan",
+      "lastName": "Pham",
+      "lastVisitDate": "2025-06-10T19:04:20.192Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "01vgQuHzvyBDnlfU5nZz",
+      "firstName": "Afonso",
+      "lastName": "Meka",
+      "lastVisitDate": "2025-06-04T17:10:01.503Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "05qLcOkWTsU4E7ce1Bxy",
+      "firstName": "Violeta",
+      "lastName": "Pena Dominguez",
+      "lastVisitDate": "2025-05-22T17:30:55.086Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0Tzf8dUB11gWjwgeitoR",
+      "firstName": "Robert",
+      "lastName": "Chandler",
+      "lastVisitDate": "2025-05-20T18:22:05.700Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0JAZpIk4tUdvPHrh2i4a",
+      "firstName": "Heaven",
+      "lastName": "Cooper",
+      "lastVisitDate": "2025-05-20T18:10:23.143Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0RV29YorlIEHtd3XcMvp",
+      "firstName": "Michael",
+      "lastName": "Tolbert",
+      "lastVisitDate": "2025-05-14T17:48:39.019Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0c91z3QH1H4f3pHSUAj3",
+      "firstName": "Acha",
+      "lastName": "Kibali",
+      "lastVisitDate": "2025-05-13T20:14:40.108Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "09gh1AeKCu88qlhsOTnV",
+      "firstName": "Salad",
+      "lastName": "Mahamud",
+      "lastVisitDate": "2025-05-07T17:34:51.007Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "10LRTCOHp2v4surBZLgN",
+      "firstName": "Kassandra",
+      "lastName": "Bradley",
+      "lastVisitDate": "2025-04-30T17:08:23.307Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0KV6UKGETrafXHIMXQPY",
+      "firstName": "Abinidac",
+      "lastName": "Figueroa Gonzalez",
+      "lastVisitDate": "2025-04-28T19:03:30.191Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0bFbW0cj06iGOg3DLvz2",
+      "firstName": "Miguel",
+      "lastName": "Bautista Martin",
+      "lastVisitDate": "2025-04-21T20:22:43.104Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0DeO3ojGT8ripsERnNJJ",
+      "firstName": "Octavia",
+      "lastName": "Reid",
+      "lastVisitDate": "2025-04-21T19:49:05.277Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0nP1bPozATOEWlCUDktj",
+      "firstName": "Jennie",
+      "lastName": "Eng",
+      "lastVisitDate": "2025-04-17T19:23:31.325Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "130Q2fSuu9zkecJ94gR4",
+      "firstName": "Joseph",
+      "lastName": "Dupree",
+      "lastVisitDate": "2025-04-02T17:57:09.060Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0Yn7PRwGWZrPvJQQOJRM",
+      "firstName": "Antonia",
+      "lastName": "Maienda",
+      "lastVisitDate": "2025-03-31T18:14:15.955Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "04J1OeY8Q0A1MAnexUu3",
+      "firstName": "sharhonda",
+      "lastName": "white",
+      "lastVisitDate": "2025-03-26T17:12:50.239Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0pueM1jnrrD46jQdz0u6",
+      "firstName": "Teena",
+      "lastName": "Stipan",
+      "lastVisitDate": "2025-03-25T17:46:41.611Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0G7kB7HMJCXxuWk7nzNV",
+      "firstName": "Len",
+      "lastName": "Kuy",
+      "lastVisitDate": "2025-03-20T17:10:50.740Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0paX613eiUA385ZqdrhW",
+      "firstName": "Holly",
+      "lastName": "Heep",
+      "lastVisitDate": "2025-03-13T20:37:39.409Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0xXYNFHlslQme7nwhNeW",
+      "firstName": "Jhonny",
+      "lastName": "Bustamante",
+      "lastVisitDate": "2025-03-07T19:23:48.027Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0EEXXWY1cj6KB4TXp4po",
+      "firstName": "John",
+      "lastName": "Jack, Jr.",
+      "lastVisitDate": "2025-02-13T21:10:59.251Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0WucIv98jWkjlPioakq5",
+      "firstName": "Sanait",
+      "lastName": "Mengsteab",
+      "lastVisitDate": "2025-02-11T19:07:45.282Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "08FRrYWMIMD3WtPXnaT3",
+      "firstName": "Arlette",
+      "lastName": "Kikwisiya",
+      "lastVisitDate": "2025-02-04T20:22:09.731Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0HrVbDFPhxud8IRTT1cb",
+      "firstName": "Denise",
+      "lastName": "Steve",
+      "lastVisitDate": "2025-01-23T20:49:03.432Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0i98GB6xaYI7TP5oYXdJ",
+      "firstName": "Elijah",
+      "lastName": "Givens",
+      "lastVisitDate": "2025-01-21T18:52:34.362Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0awrSB127u8QE4siRLi1",
+      "firstName": "Etta",
+      "lastName": "Smith",
+      "lastVisitDate": "2025-01-17T20:50:51.475Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0TwjMljn9xsSs0pSkOwJ",
+      "firstName": "Lornell",
+      "lastName": "Davis",
+      "lastVisitDate": "2024-12-18T20:02:32.010Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0LTGrTUzUJgK5APVrbBU",
+      "firstName": "Dianne",
+      "lastName": "Dalbey",
+      "lastVisitDate": "2024-12-18T18:58:23.660Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0FWeFvKM4wYN1GF7BQud",
+      "firstName": "Josue",
+      "lastName": "Gaspar-Castaneda",
+      "lastVisitDate": "2024-11-27T21:24:05.101Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "05q3quoCjeakk4De4ZDl",
+      "firstName": "Rosalinda",
+      "lastName": "Oisewang",
+      "lastVisitDate": "2024-11-19T18:24:00.768Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0aevlgH1AZnol0QDvOMZ",
+      "firstName": "Pedro",
+      "lastName": "Diaz Ruiz",
+      "lastVisitDate": "2024-11-18T20:15:39.322Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "00PI7T4ObGpEmgTZDUIQ",
+      "firstName": "Brittaney",
+      "lastName": "Moses",
+      "lastVisitDate": "2024-11-08T20:09:01.045Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0YGNgLPFCstWZjERdFNV",
+      "firstName": "Tae",
+      "lastName": "Kim",
+      "lastVisitDate": "2024-11-05T18:12:39.279Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0tFklhgL9IEO0UgmeqTS",
+      "firstName": "Irene",
+      "lastName": "Teresa",
+      "lastVisitDate": "2024-11-04T19:54:03.524Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0Rv7GRfSkNOhbAeB4uV5",
+      "firstName": "jennifer",
+      "lastName": "romero",
+      "lastVisitDate": "2024-10-28T19:04:38.939Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0EBwcUzpAvnnmD1wXtQH",
+      "firstName": "john",
+      "lastName": "gonzalez",
+      "lastVisitDate": "2024-10-20T21:26:45.267Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0DojAWYF6NCCA4MJbSwU",
+      "firstName": "Sir Quincy",
+      "lastName": "Washington",
+      "lastVisitDate": "2024-10-15T17:08:35.329Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "01bTZprgGEjOOmf5bq6U",
+      "firstName": "Aminta",
+      "lastName": "Flores Diaz",
+      "lastVisitDate": "2024-10-11T20:00:41.977Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0UtieFd68gALxQxl6JbN",
+      "firstName": "Abdelbasit",
+      "lastName": "Abker",
+      "lastVisitDate": "2024-10-01T19:53:37.406Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0ETaaLV22CvHfFGeCHJU",
+      "firstName": "Oleg",
+      "lastName": "Shpungin",
+      "lastVisitDate": "2024-09-23T19:58:10.405Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0qYRrs5uM4hpD6a5mxhP",
+      "firstName": "Zarrhea",
+      "lastName": "Sease",
+      "lastVisitDate": "2024-09-20T18:29:23.389Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "01Rju9wYMGdhjYIKxHIo",
+      "firstName": "Alexis",
+      "lastName": "Garrison",
+      "lastVisitDate": "2024-09-20T17:44:16.076Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0Ypeqk441BikKYR7LAQl",
+      "firstName": "Evelia",
+      "lastName": "Garcia Barragan",
+      "lastVisitDate": "2024-09-20T17:38:04.868Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "050uBWfNadXulORvZtoG",
+      "firstName": "Joanna",
+      "lastName": "Garcia Martinez",
+      "lastVisitDate": "2024-09-03T17:31:22.058Z",
+      "visitCount": 1
+    },
+    {
+      "clientId": "0VFSwP33SkRUCfiIwIHV",
+      "firstName": "Azhar",
+      "lastName": "Abdulredha",
+      "lastVisitDate": "2024-08-29T19:13:10.019Z",
+      "visitCount": 1
+    }
+  ]
+}
