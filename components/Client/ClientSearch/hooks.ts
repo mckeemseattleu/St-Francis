@@ -42,7 +42,19 @@ export const useGetClientsSearch = () => {
                 )
             }));
 
-            setClients(clientsWithDuplicateFlag);
+            // Sort clients alphabetically by first name then last name
+            const sortedClients = clientsWithDuplicateFlag.sort((a, b) => {
+                const firstNameA = (a.firstName || '').toLowerCase();
+                const firstNameB = (b.firstName || '').toLowerCase();
+                if (firstNameA !== firstNameB) {
+                    return firstNameA.localeCompare(firstNameB);
+                }
+                const lastNameA = (a.lastName || '').toLowerCase();
+                const lastNameB = (b.lastName || '').toLowerCase();
+                return lastNameA.localeCompare(lastNameB);
+            });
+
+            setClients(sortedClients);
         },
     });
 

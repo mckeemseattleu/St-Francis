@@ -146,4 +146,46 @@ describe('useGetClientsSearch', () => {
         expect(result.current.clients[0].isDuplicate).toBe(true);
         expect(result.current.clients[1].isDuplicate).toBe(true);
     });
+
+    it('should sort clients alphabetically by first name and last name', async () => {
+        const mockClients = [
+            {
+                id: '1',
+                firstName: 'Zack',
+                lastName: 'Smith',
+                birthday: Timestamp.fromDate(new Date('1990-01-01')),
+            } as Client,
+            {
+                id: '2',
+                firstName: 'Alice',
+                lastName: 'Zane',
+                birthday: Timestamp.fromDate(new Date('1990-01-01')),
+            } as Client,
+            {
+                id: '3',
+                firstName: 'Alice',
+                lastName: 'Adams',
+                birthday: Timestamp.fromDate(new Date('1990-01-01')),
+            } as Client,
+        ];
+
+        const { listClients } = require('@/utils/index');
+        (listClients as jest.Mock).mockResolvedValue(mockClients);
+
+        const { result } = renderHook(() => useGetClientsSearch(), {
+            wrapper: createWrapper(),
+        });
+
+        await act(async () => {
+            await result.current.mutateAsync({} as DocFilter);
+        });
+
+        expect(result.current.clients).toHaveLength(3);
+        expect(result.current.clients[0].firstName).toBe('Alice');
+        expect(result.current.clients[0].lastName).toBe('Adams');
+        expect(result.current.clients[1].firstName).toBe('Alice');
+        expect(result.current.clients[1].lastName).toBe('Zane');
+        expect(result.current.clients[2].firstName).toBe('Zack');
+        expect(result.current.clients[2].lastName).toBe('Smith');
+    });
 }); 
