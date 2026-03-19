@@ -17,7 +17,8 @@ describe('ClientCard', () => {
         };
         render(
             <ClientCard
-                client={client}
+                client={client as any}
+                clientVisits={[]}
             />
         );
 

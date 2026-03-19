@@ -43,3 +43,6 @@ next-env.d.ts
 
 # firebase
 firebase/firebase.ts
+
+# cursor local config (never committed)
+.cursor/
